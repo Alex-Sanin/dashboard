@@ -5,6 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { useFormik } from 'formik';
 
 const regions = [
     {
@@ -37,10 +38,49 @@ const currencies = [
 ];
 
 const Configuration = () => {
-    const [region, setRegion] = useState('');
+    // const [data, setData] = useState('');
+    const [error, setError] = useState('');
 
-    const handleChange = (event) => {
-        setRegion(event.target.value);
+    const formik = useFormik({
+        // validationSchema,
+        initialValues: { customerName: '', simulationName: '' },
+        onSubmit: () => {
+            fetch('http://127.0.0.1:8000/sim_test1/api/post_validation', requestOptions)
+                .then((response) => response.text())
+                .then((result) => console.log(result))
+                .catch((error) => console.log('error', error));
+            formik.resetForm();
+        },
+    });
+
+    const raw = JSON.stringify({
+        customerName: formik.values.customerName,
+        simulationName: formik.values.simulationName,
+    });
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: raw,
+    };
+
+    const getData = async () => {
+        const response = await fetch(
+            'http://127.0.0.1:8000/sim_test1/api/get_data_for_the_main_table',
+            {
+                method: 'GET',
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+        const json = await response.json();
+        console.log('GET DATA RESPONSE: ', json);
+        if (!response.ok) {
+            setError(response?.error?.message);
+            console.log('ERROR: ', error);
+        }
     };
 
     return (
@@ -57,55 +97,55 @@ const Configuration = () => {
         >
             <Typography variant="h2">Configuration</Typography>
             <FormControl fullWidth>
-                <Stack direction="column" spacing={2}>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                        <TextField fullWidth label="Customer name" size="small" />
-                        <Tooltip title="Some tooltip" placement="right">
-                            <SvgIcon component={InfoOutlinedIcon} sx={{ width: 28, height: 28 }} />
-                        </Tooltip>
-                    </Stack>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                        <TextField fullWidth label="Simulation name" size="small" />
-                        <Tooltip title="Some tooltip" placement="right">
-                            <SvgIcon component={InfoOutlinedIcon} sx={{ width: 28, height: 28 }} />
-                        </Tooltip>
-                    </Stack>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                        <TextField fullWidth select label="Region" size="small">
-                            {regions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <Tooltip title="Some tooltip" placement="right">
-                            <SvgIcon component={InfoOutlinedIcon} sx={{ width: 28, height: 28 }} />
-                        </Tooltip>
-                    </Stack>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                        <TextField fullWidth select label="Currency" size="small">
-                            {currencies.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <Tooltip title="Some tooltip" placement="right">
-                            <SvgIcon component={InfoOutlinedIcon} sx={{ width: 28, height: 28 }} />
-                        </Tooltip>
-                    </Stack>
+                <form onSubmit={formik.handleSubmit}>
                     <Stack direction="column" spacing={2}>
-                        <Typography variant="h3">Battery test</Typography>
                         <Stack direction="row" alignItems="center" spacing={2}>
-                            <TextField fullWidth select label="Min size" size="small">
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={3}>3</MenuItem>
-                            </TextField>
-                            <TextField fullWidth select label="Max size" size="small">
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={3}>3</MenuItem>
+                            <TextField
+                                fullWidth
+                                label="Customer name"
+                                size="small"
+                                name="customerName"
+                                onChange={formik.handleChange}
+                                value={formik.values.customerName}
+                            />
+                            <Tooltip title="Some tooltip" placement="right">
+                                <SvgIcon
+                                    component={InfoOutlinedIcon}
+                                    sx={{ width: 28, height: 28 }}
+                                />
+                            </Tooltip>
+                        </Stack>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                            <TextField
+                                fullWidth
+                                label="Simulation name"
+                                size="small"
+                                name="simulationName"
+                                onChange={formik.handleChange}
+                                value={formik.values.simulationName}
+                            />
+                            <Tooltip title="Some tooltip" placement="right">
+                                <SvgIcon
+                                    component={InfoOutlinedIcon}
+                                    sx={{ width: 28, height: 28 }}
+                                />
+                            </Tooltip>
+                        </Stack>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                            <TextField
+                                fullWidth
+                                select
+                                label="Region"
+                                size="small"
+                                name="region"
+                                onChange={formik.handleChange}
+                                value={formik.values.customerName}
+                            >
+                                {regions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                             <Tooltip title="Some tooltip" placement="right">
                                 <SvgIcon
@@ -115,15 +155,12 @@ const Configuration = () => {
                             </Tooltip>
                         </Stack>
                         <Stack direction="row" alignItems="center" spacing={2}>
-                            <TextField fullWidth select label="Min power" size="small">
-                                <MenuItem value={1}>0.1</MenuItem>
-                                <MenuItem value={2}>0.2</MenuItem>
-                                <MenuItem value={3}>0.3</MenuItem>
-                            </TextField>
-                            <TextField fullWidth select label="Max power" size="small">
-                                <MenuItem value={1}>0.1</MenuItem>
-                                <MenuItem value={2}>0.2</MenuItem>
-                                <MenuItem value={3}>0.3</MenuItem>
+                            <TextField fullWidth select label="Currency" size="small">
+                                {currencies.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                             <Tooltip title="Some tooltip" placement="right">
                                 <SvgIcon
@@ -132,104 +169,162 @@ const Configuration = () => {
                                 />
                             </Tooltip>
                         </Stack>
-                        <Stack direction="row" alignItems="center" spacing={2}>
-                            <TextField fullWidth select label="Min cost" size="small">
-                                <MenuItem value={1}>$250</MenuItem>
-                                <MenuItem value={2}>$260</MenuItem>
-                                <MenuItem value={3}>$270</MenuItem>
-                            </TextField>
-                            <TextField fullWidth select label="Max cost" size="small">
-                                <MenuItem value={1}>$250</MenuItem>
-                                <MenuItem value={2}>$260</MenuItem>
-                                <MenuItem value={3}>$270</MenuItem>
-                            </TextField>
-                            <Tooltip title="Some tooltip" placement="right">
-                                <SvgIcon
-                                    component={InfoOutlinedIcon}
-                                    sx={{ width: 28, height: 28 }}
-                                />
-                            </Tooltip>
+                        <Stack direction="column" spacing={2}>
+                            <Typography variant="h3">Battery test</Typography>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                                <TextField fullWidth select label="Min size" size="small">
+                                    <MenuItem value={1}>1</MenuItem>
+                                    <MenuItem value={2}>2</MenuItem>
+                                    <MenuItem value={3}>3</MenuItem>
+                                </TextField>
+                                <TextField fullWidth select label="Max size" size="small">
+                                    <MenuItem value={1}>1</MenuItem>
+                                    <MenuItem value={2}>2</MenuItem>
+                                    <MenuItem value={3}>3</MenuItem>
+                                </TextField>
+                                <Tooltip title="Some tooltip" placement="right">
+                                    <SvgIcon
+                                        component={InfoOutlinedIcon}
+                                        sx={{ width: 28, height: 28 }}
+                                    />
+                                </Tooltip>
+                            </Stack>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                                <TextField fullWidth select label="Min power" size="small">
+                                    <MenuItem value={1}>0.1</MenuItem>
+                                    <MenuItem value={2}>0.2</MenuItem>
+                                    <MenuItem value={3}>0.3</MenuItem>
+                                </TextField>
+                                <TextField fullWidth select label="Max power" size="small">
+                                    <MenuItem value={1}>0.1</MenuItem>
+                                    <MenuItem value={2}>0.2</MenuItem>
+                                    <MenuItem value={3}>0.3</MenuItem>
+                                </TextField>
+                                <Tooltip title="Some tooltip" placement="right">
+                                    <SvgIcon
+                                        component={InfoOutlinedIcon}
+                                        sx={{ width: 28, height: 28 }}
+                                    />
+                                </Tooltip>
+                            </Stack>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                                <TextField fullWidth select label="Min cost" size="small">
+                                    <MenuItem value={1}>$250</MenuItem>
+                                    <MenuItem value={2}>$260</MenuItem>
+                                    <MenuItem value={3}>$270</MenuItem>
+                                </TextField>
+                                <TextField fullWidth select label="Max cost" size="small">
+                                    <MenuItem value={1}>$250</MenuItem>
+                                    <MenuItem value={2}>$260</MenuItem>
+                                    <MenuItem value={3}>$270</MenuItem>
+                                </TextField>
+                                <Tooltip title="Some tooltip" placement="right">
+                                    <SvgIcon
+                                        component={InfoOutlinedIcon}
+                                        sx={{ width: 28, height: 28 }}
+                                    />
+                                </Tooltip>
+                            </Stack>
                         </Stack>
-                    </Stack>
-                    <Stack direction="column" spacing={2}>
-                        <Typography variant="h3">PV</Typography>
-                        <Stack direction="row" alignItems="center" spacing={2}>
-                            <TextField fullWidth select label="Min size" size="small">
-                                <MenuItem value={1}>0.5</MenuItem>
-                                <MenuItem value={2}>1</MenuItem>
-                                <MenuItem value={3}>1.5</MenuItem>
-                            </TextField>
-                            <TextField fullWidth select label="Max size" size="small">
-                                <MenuItem value={1}>0.5</MenuItem>
-                                <MenuItem value={2}>1</MenuItem>
-                                <MenuItem value={3}>1.5</MenuItem>
-                            </TextField>
-                            <Tooltip title="Some tooltip" placement="right">
-                                <SvgIcon
-                                    component={InfoOutlinedIcon}
-                                    sx={{ width: 28, height: 28 }}
-                                />
-                            </Tooltip>
+                        <Stack direction="column" spacing={2}>
+                            <Typography variant="h3">PV</Typography>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                                <TextField fullWidth select label="Min size" size="small">
+                                    <MenuItem value={1}>0.5</MenuItem>
+                                    <MenuItem value={2}>1</MenuItem>
+                                    <MenuItem value={3}>1.5</MenuItem>
+                                </TextField>
+                                <TextField fullWidth select label="Max size" size="small">
+                                    <MenuItem value={1}>0.5</MenuItem>
+                                    <MenuItem value={2}>1</MenuItem>
+                                    <MenuItem value={3}>1.5</MenuItem>
+                                </TextField>
+                                <Tooltip title="Some tooltip" placement="right">
+                                    <SvgIcon
+                                        component={InfoOutlinedIcon}
+                                        sx={{ width: 28, height: 28 }}
+                                    />
+                                </Tooltip>
+                            </Stack>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                                <TextField fullWidth select label="Min cost" size="small">
+                                    <MenuItem value={1}>$600</MenuItem>
+                                    <MenuItem value={2}>$625</MenuItem>
+                                    <MenuItem value={3}>$650</MenuItem>
+                                </TextField>
+                                <TextField fullWidth select label="Max cost" size="small">
+                                    <MenuItem value={1}>$600</MenuItem>
+                                    <MenuItem value={2}>$625</MenuItem>
+                                    <MenuItem value={3}>$650</MenuItem>
+                                </TextField>
+                                <Tooltip title="Some tooltip" placement="right">
+                                    <SvgIcon
+                                        component={InfoOutlinedIcon}
+                                        sx={{ width: 28, height: 28 }}
+                                    />
+                                </Tooltip>
+                            </Stack>
                         </Stack>
-                        <Stack direction="row" alignItems="center" spacing={2}>
-                            <TextField fullWidth select label="Min cost" size="small">
-                                <MenuItem value={1}>$600</MenuItem>
-                                <MenuItem value={2}>$625</MenuItem>
-                                <MenuItem value={3}>$650</MenuItem>
-                            </TextField>
-                            <TextField fullWidth select label="Max cost" size="small">
-                                <MenuItem value={1}>$600</MenuItem>
-                                <MenuItem value={2}>$625</MenuItem>
-                                <MenuItem value={3}>$650</MenuItem>
-                            </TextField>
-                            <Tooltip title="Some tooltip" placement="right">
-                                <SvgIcon
-                                    component={InfoOutlinedIcon}
-                                    sx={{ width: 28, height: 28 }}
-                                />
-                            </Tooltip>
+                        <Stack direction="column" spacing={2}>
+                            <Typography variant="h3">Grid</Typography>
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                                <TextField fullWidth select label="Grid" size="small" z>
+                                    <MenuItem value={1}>0.1</MenuItem>
+                                    <MenuItem value={2}>0.2</MenuItem>
+                                    <MenuItem value={3}>0.3</MenuItem>
+                                </TextField>
+                                <Tooltip title="Some tooltip" placement="right">
+                                    <SvgIcon
+                                        component={InfoOutlinedIcon}
+                                        sx={{ width: 28, height: 28 }}
+                                    />
+                                </Tooltip>
+                            </Stack>
                         </Stack>
-                    </Stack>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                        <TextField fullWidth select label="Grid" size="small">
-                            <MenuItem value={1}>0.1</MenuItem>
-                            <MenuItem value={2}>0.2</MenuItem>
-                            <MenuItem value={3}>0.3</MenuItem>
-                        </TextField>
-                        <Tooltip title="Some tooltip" placement="right">
-                            <SvgIcon component={InfoOutlinedIcon} sx={{ width: 28, height: 28 }} />
-                        </Tooltip>
-                    </Stack>
-                    <Stack
-                        width="100%"
-                        direction="column"
-                        // justifyContent="center"
-                        // alignItems="center"
-                        spacing={2}
-                    >
                         <Stack
-                            direction="row"
-                            justifyContent="flex-start"
-                            alignItems="center"
+                            width="100%"
+                            direction="column"
+                            // justifyContent="center"
+                            // alignItems="center"
                             spacing={2}
                         >
-                            <Button variant="outlined" size="large" sx={{ minWidth: '160px' }}>
-                                Upload file
-                            </Button>
-                            <Tooltip title="Some tooltip" placement="right">
-                                <SvgIcon
-                                    component={InfoOutlinedIcon}
-                                    sx={{ width: 28, height: 28 }}
-                                />
-                            </Tooltip>
-                        </Stack>
-                        <Stack direction="row" justifyContent="flex-end">
-                            <Button variant="contained" size="large" sx={{ minWidth: '160px' }}>
-                                Run
-                            </Button>
+                            <Stack
+                                direction="row"
+                                justifyContent="flex-start"
+                                alignItems="center"
+                                spacing={2}
+                            >
+                                <Button variant="outlined" size="large" sx={{ minWidth: '160px' }}>
+                                    Upload file
+                                </Button>
+                                <Tooltip title="Some tooltip" placement="right">
+                                    <SvgIcon
+                                        component={InfoOutlinedIcon}
+                                        sx={{ width: 28, height: 28 }}
+                                    />
+                                </Tooltip>
+                            </Stack>
+                            <Stack direction="row" justifyContent="space-between">
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    type="submit"
+                                    sx={{ minWidth: '160px' }}
+                                >
+                                    Run
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    onClick={() => getData()}
+                                    sx={{ minWidth: '160px' }}
+                                >
+                                    GET REQUEST (test)
+                                </Button>
+                            </Stack>
                         </Stack>
                     </Stack>
-                </Stack>
+                </form>
             </FormControl>
         </Stack>
     );
