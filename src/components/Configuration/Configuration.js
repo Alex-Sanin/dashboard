@@ -66,7 +66,7 @@ const Configuration = () => {
 
     const getData = async () => {
         const response = await fetch(
-            'http://127.0.0.1:8000/sim_test1/api/get_data_for_the_main_table',
+            '/sim1/get_main_table/',
             {
                 method: 'GET',
                 headers: {
@@ -297,7 +297,7 @@ const Configuration = () => {
                                 <Button variant="outlined" size="large" sx={{ minWidth: '160px' }}>
                                     Upload file
                                 </Button>
-                                <Tooltip title="Some tooltip" placement="right">
+                                <Tooltip title="download example input file" placement="right">
                                     <SvgIcon
                                         component={InfoOutlinedIcon}
                                         sx={{ width: 28, height: 28 }}

@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 
-import SummaryTable from './SummaryTable/SummaryTable';
+import SimulationTable from './SimulationTable/SimulationTable';
 
 const Summary = () => {
     return (
@@ -16,7 +16,7 @@ const Summary = () => {
             }}
         >
             <Typography variant="h2">Summary</Typography>
-            <SummaryTable />
+            <SimulationTable />
         </Stack>
     );
 };
