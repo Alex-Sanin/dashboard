@@ -45,7 +45,7 @@ const Configuration = () => {
         // validationSchema,
         initialValues: { customerName: '', simulationName: '' },
         onSubmit: () => {
-            fetch('http://127.0.0.1:8000/sim_test1/api/post_validation', requestOptions)
+            fetch('/sim1/validate_user_configuration/', requestOptions)
                 .then((response) => response.text())
                 .then((result) => console.log(result))
                 .catch((error) => console.log('error', error));
@@ -66,7 +66,7 @@ const Configuration = () => {
 
     const getData = async () => {
         const response = await fetch(
-            '/sim1/get_main_table/',
+            '/sim1/get_simulation_main_table',
             {
                 method: 'GET',
                 headers: {

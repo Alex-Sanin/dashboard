@@ -16,7 +16,7 @@ const createData = (
     simulationName,
     date,
     region,
-    currency,
+    currency
     // batterySize,
     // batteryPower,
     // batteryCost,
@@ -136,7 +136,7 @@ const EnhancedTableHead = ({ order, orderBy, onRequestSort }) => {
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        // align="center"
+                        align="left"
                         padding="normal"
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -156,7 +156,7 @@ const EnhancedTableHead = ({ order, orderBy, onRequestSort }) => {
 
 const SimulationTable = () => {
     const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('calories');
+    const [orderBy, setOrderBy] = useState('userName');
     const [selectedRow, setSelectedRow] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -215,7 +215,7 @@ const SimulationTable = () => {
                                             }}
                                         >
                                             <TableCell
-                                                // align="center"
+                                                align="left"
                                                 component="th"
                                                 id={labelId}
                                                 scope="row"
@@ -224,11 +224,13 @@ const SimulationTable = () => {
                                                 {row.userName}
                                             </TableCell>
                                             <TableCell align="left">{row.customerName}</TableCell>
-                                            <TableCell align="left">
-                                                {row.simulationName}
+                                            <TableCell align="left">{row.simulationName}</TableCell>
+                                            <TableCell align="left" style={{ minWidth: '120px' }}>
+                                                {row.date}
                                             </TableCell>
-                                            <TableCell align="left" style={{minWidth: '150px'}}>{row.date}</TableCell>
-                                            <TableCell align="left">{row.region}</TableCell>
+                                            <TableCell align="left" style={{ minWidth: '120px' }}>
+                                                {row.region}
+                                            </TableCell>
                                             <TableCell align="left">{row.currency}</TableCell>
                                         </TableRow>
                                     );
