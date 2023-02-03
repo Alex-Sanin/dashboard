@@ -160,6 +160,8 @@ const SimulationTable = () => {
     const [selectedRow, setSelectedRow] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [error, setError] = useState('');
+
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -182,7 +184,21 @@ const SimulationTable = () => {
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    console.log('selected', selectedRow);
+    const getData = async () => {
+        const response = await fetch('/sim1/get_simulation_main_table', {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Credentials': true,
+                'Content-Type': 'application/json',
+            },
+        });
+        const json = await response.json();
+        console.log('GET DATA RESPONSE: ', json);
+        if (!response.ok) {
+            setError(response?.error?.message);
+            console.log('ERROR: ', error);
+        }
+    };
 
     return (
         <Box sx={{ width: '100%' }}>
