@@ -32,7 +32,7 @@ const App = () => {
                     <Grid item sm={12} md={8}>
                         <Stack direction="column" spacing={3}>
                             <Summary />
-                            <Result />
+                            {/*<Result />*/}
                         </Stack>
                     </Grid>
                 </Grid>

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { IconButton, SvgIcon, TextField, Typography } from '@mui/material';
+import { IconButton, SvgIcon, TextField, Tooltip, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -519,7 +520,20 @@ const Configuration = () => {
                                     />
                                     <input type="file" hidden />
                                 </Button>
-                                <TooltipIcon tooltipText="Some tooltip" pt="0" />
+                                <Tooltip
+                                    title={
+                                        <a href="" download>
+                                            Download example
+                                        </a>
+                                    }
+                                    placement="right"
+                                >
+                                    <SvgIcon
+                                        component={InfoOutlinedIcon}
+                                        sx={{ width: 28, height: 28 }}
+                                        style={{ paddingTop: 2, fill: '#1665C1' }}
+                                    />
+                                </Tooltip>
                             </Stack>
                             {formik.values?.file && (
                                 <Stack
@@ -527,7 +541,14 @@ const Configuration = () => {
                                     justifyContent="flex-start"
                                     alignItems="center"
                                 >
-                                    <Typography>{formik.values?.file?.name}</Typography>
+                                    <Typography
+                                        style={{
+                                            maxWidth: '90%',
+                                            overflow: 'hidden',
+                                        }}
+                                    >
+                                        {formik.values?.file?.name}
+                                    </Typography>
                                     <IconButton
                                         aria-label="delete"
                                         color="error"
