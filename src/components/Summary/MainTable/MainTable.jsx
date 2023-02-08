@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,53 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 
-const createData = (
-    userName,
-    customerName,
-    simulationName,
-    date,
-    region,
-    currency
-    // batterySize,
-    // batteryPower,
-    // batteryCost,
-    // pvSize,
-    // pvCost,
-    // roi
-) => {
-    return {
-        userName,
-        customerName,
-        simulationName,
-        date,
-        region,
-        currency,
-        // batterySize,
-        // batteryPower,
-        // batteryCost,
-        // pvSize,
-        // pvCost,
-        // roi,
-    };
-};
-
-const rows = [
-    createData('John', 'John', 'A', '2022-02-03', 'Israel', 'NIS'),
-    createData('Adam', 'Adam', 'A', '2021-11-22', 'South Africa', 'USD'),
-    createData('Robert', 'Robert', 'A', '2023-02-01', 'Israel', 'NIS'),
-    createData('Paul', 'Paul', 'A', '2022-06-29', 'Germany', 'EUR'),
-    createData('Jason', 'Jason', 'A', '2021-04-18', 'Israel', 'NIS'),
-    createData('Chris', 'Chris', 'A', '2023-01-12', 'South Africa', 'USD'),
-    createData('Peter', 'Peter', 'A', '2022-04-20', 'Israel', 'NIS'),
-    createData('Rick', 'Rick', 'A', '2020-10-11', 'Germany', 'EUR'),
-    createData('James', 'James', 'Simulation name', '2022-08-23', 'Israel', 'NIS'),
-    createData('Greg', 'Greg', 'A', '2023-01-04', 'Germany', 'EUR'),
-    createData('Bruce', 'Bruce', 'A', '2022-09-09', 'South Africa', 'USD'),
-    createData('George', 'George', 'A', '2021-12-31', 'South Africa', 'USD'),
-    createData('Reggie', 'Reggie', 'A', '2019-05-14', 'Israel', 'NIS'),
-    createData('Ben', 'Ben', 'A', '2023-01-31', 'Germany', 'EUR'),
-    createData('Tim', 'Tim', 'A', '2020-07-01', 'South Africa', 'USD'),
-];
+import Preloader from "../../loaders/Preloader";
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -125,7 +79,7 @@ const headCells = [
     },
 ];
 
-const EnhancedTableHead = ({ order, orderBy, onRequestSort }) => {
+const EnhancedTableHead = ({order, orderBy, onRequestSort}) => {
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -154,7 +108,7 @@ const EnhancedTableHead = ({ order, orderBy, onRequestSort }) => {
     );
 };
 
-const SimulationTable = () => {
+const MainTable = ({tableData, setDetailsTableData}) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('userName');
     const [selectedRow, setSelectedRow] = useState('');
@@ -162,6 +116,22 @@ const SimulationTable = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [error, setError] = useState('');
 
+    const getDetailsSimulationTableData = async () => {
+        const response = await fetch('/sim1/simulation_main_table_selected_row', {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Credentials': true,
+                'Content-Type': 'application/json',
+            },
+        });
+        const json = await response.json();
+        // console.log('GET DATA RESPONSE: ', json);
+        setDetailsTableData(Object.values(json));
+        if (!response.ok) {
+            setError(response?.error?.message);
+            console.log('ERROR: ', error);
+        }
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -171,6 +141,7 @@ const SimulationTable = () => {
 
     const handleRowSelect = (row) => {
         selectedRow === row ? setSelectedRow('') : setSelectedRow(row);
+        getDetailsSimulationTableData();
     };
 
     const handleChangePage = (event, newPage) => {
@@ -182,47 +153,35 @@ const SimulationTable = () => {
         setPage(0);
     };
 
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData?.length) : 0;
 
-    const getData = async () => {
-        const response = await fetch('/sim1/get_simulation_main_table', {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Credentials': true,
-                'Content-Type': 'application/json',
-            },
-        });
-        const json = await response.json();
-        console.log('GET DATA RESPONSE: ', json);
-        if (!response.ok) {
-            setError(response?.error?.message);
-            console.log('ERROR: ', error);
-        }
-    };
+    if (!tableData) {
+        return <Preloader />;
+    }
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Paper sx={{ width: '100%', mb: 2 }}>
+        <Box sx={{width: '100%'}}>
+            <Paper sx={{width: '100%', mb: 2}}>
                 <TableContainer>
-                    <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="medium">
+                    <Table sx={{minWidth: 750}} aria-labelledby="tableTitle" size="medium">
                         <EnhancedTableHead
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+                            rowCount={tableData.length}
                         />
                         <TableBody>
-                            {stableSort(rows, getComparator(order, orderBy))
+                            {stableSort(tableData, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = selectedRow === row.customerName;
+                                    const isItemSelected = selectedRow === row.id;
                                     const labelId = `enhanced-table-checkbox-${index}`;
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={() => handleRowSelect(row.customerName)}
+                                            onClick={() => handleRowSelect(row.id)}
                                             tabIndex={-1}
-                                            key={row.customerName}
+                                            key={row['customer name']}
                                             style={{
                                                 backgroundColor: isItemSelected
                                                     ? '#bfddfc'
@@ -237,17 +196,17 @@ const SimulationTable = () => {
                                                 scope="row"
                                                 padding="normal"
                                             >
-                                                {row.userName}
+                                                {row['user name']}
                                             </TableCell>
-                                            <TableCell align="left">{row.customerName}</TableCell>
-                                            <TableCell align="left">{row.simulationName}</TableCell>
-                                            <TableCell align="left" style={{ minWidth: '120px' }}>
-                                                {row.date}
+                                            <TableCell align="left">{row['customer name']}</TableCell>
+                                            <TableCell align="left">{row['simulation name']}</TableCell>
+                                            <TableCell align="left" style={{minWidth: '120px'}}>
+                                                {row['create time']}
                                             </TableCell>
-                                            <TableCell align="left" style={{ minWidth: '120px' }}>
+                                            <TableCell align="left" style={{minWidth: '120px'}}>
                                                 {row.region}
                                             </TableCell>
-                                            <TableCell align="left">{row.currency}</TableCell>
+                                            <TableCell align="left">{row?.currency.toUpperCase()}</TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -257,16 +216,16 @@ const SimulationTable = () => {
                                         height: 53 * emptyRows,
                                     }}
                                 >
-                                    <TableCell colSpan={6} />
+                                    <TableCell colSpan={6}/>
                                 </TableRow>
                             )}
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[5, 10, 25, 100]}
                     component="div"
-                    count={rows.length}
+                    count={tableData.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -276,4 +235,4 @@ const SimulationTable = () => {
         </Box>
     );
 };
-export default SimulationTable;
+export default MainTable;

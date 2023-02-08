@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { TextField, Typography, Tooltip, SvgIcon } from '@mui/material';
+import { IconButton, SvgIcon, TextField, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import {
     currencies,
@@ -17,6 +20,35 @@ import {
     initialPvCost,
     grid,
 } from '../../utils/constants';
+
+import TooltipIcon from './TooltipIcon';
+
+const validationSchema = yup.object().shape({
+    customerName: yup
+        .string()
+        .matches(/([A-Za-z]+(?: [A-Za-z]+)*)/, 'Please enter a valid name')
+        .min(3, 'Customer name is too short')
+        .max(100, 'Customer name is too long')
+        .required('This field is required'),
+    simulationName: yup
+        .string()
+        .min(3, 'Customer name is too short')
+        .max(100, 'Simulation name is too long')
+        .required('This field is required'),
+    region: yup.string().required('This field is required'),
+    currency: yup.string().required('This field is required'),
+    batteryMinSize: yup.string().required('This field is required'),
+    batteryMaxSize: yup.string().required('This field is required'),
+    batteryMinPower: yup.string().required('This field is required'),
+    batteryMaxPower: yup.string().required('This field is required'),
+    batteryMinCost: yup.string().required('This field is required'),
+    batteryMaxCost: yup.string().required('This field is required'),
+    pvMinSize: yup.string().required('This field is required'),
+    pvMaxSize: yup.string().required('This field is required'),
+    pvMinCost: yup.string().required('This field is required'),
+    pvMaxCost: yup.string().required('This field is required'),
+    grid: yup.string().required('This field is required'),
+});
 
 const Configuration = () => {
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
@@ -31,31 +63,36 @@ const Configuration = () => {
     const [maxPvCost, setMaxPvCost] = useState(initialPvCost);
 
     const formik = useFormik({
-        // validationSchema,
+        validationSchema,
         initialValues: {
             customerName: '',
             simulationName: '',
             region: '',
             currency: '',
-            minSize: '',
-            battery: {
-                minSize: '',
-                maxSize: '',
-                minPower: '',
-                maxPower: '',
-                minCost: '',
-                maxCost: '',
-            },
-            pv: {
-                minSize: '',
-                maxSize: '',
-                minCost: '',
-                maxCost: '',
-            },
+            batteryMinSize: '',
+            batteryMaxSize: '',
+            batteryMinPower: '',
+            batteryMaxPower: '',
+            batteryMinCost: '',
+            batteryMaxCost: '',
+            pvMinSize: '',
+            pvMaxSize: '',
+            pvMinCost: '',
+            pvMaxCost: '',
             grid: '',
+            file: '',
         },
-        onSubmit: () => {
-            fetch('/sim1/validate_user_configuration111/', requestOptions)
+        onSubmit: (values) => {
+            const keys = Object.keys(values);
+            const formData = new FormData();
+            for (const key of keys) {
+                formData.append(key, values[key]);
+            }
+            const requestOptions = {
+                method: 'POST',
+                body: formData,
+            };
+            fetch('/sim1/validate_user_configuration/', requestOptions)
                 .then((response) => response.text())
                 .then((result) => console.log(result))
                 .catch((error) => console.log('error', error));
@@ -63,81 +100,58 @@ const Configuration = () => {
         },
     });
 
-    const raw = JSON.stringify({
-        customerName: formik.values.customerName,
-        simulationName: formik.values.simulationName,
-        region: formik.values.region,
-        currency: formik.values.currency,
-        battery: {
-            minSize: formik.values.battery.minSize,
-            maxSize: formik.values.battery.maxSize,
-            minPower: formik.values.battery.minPower,
-            maxPower: formik.values.battery.maxPower,
-            minCost: formik.values.battery.minCost,
-            maxCost: formik.values.battery.maxCost,
-        },
-        pv: {
-            minSize: formik.values.pv.minSize,
-            maxSize: formik.values.pv.maxSize,
-            minCost: formik.values.pv.minCost,
-            maxCost: formik.values.pv.maxCost,
-        },
-        grid: formik.values.grid,
-    });
-
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: raw,
-    };
-
     useEffect(() => {
-        if (formik.values.battery.minSize) {
+        if (formik.values.batteryMinSize) {
             setMaxBatterySize(
-                initialBatterySize.filter((item) => item >= formik.values.battery.minSize)
+                initialBatterySize.filter((item) => item >= formik.values.batteryMinSize)
             );
         }
-        if (formik.values.battery.maxSize) {
+        if (formik.values.batteryMaxSize) {
             setMinBatterySize(
-                initialBatterySize.filter((item) => item <= formik.values.battery.maxSize)
+                initialBatterySize.filter((item) => item <= formik.values.batteryMaxSize)
             );
         }
-        if (formik.values.battery.minPower) {
+        if (formik.values.batteryMinPower) {
             setMaxBatteryPower(
-                initialBatteryPower.filter((item) => item >= formik.values.battery.minPower)
+                initialBatteryPower.filter((item) => item >= formik.values.batteryMinPower)
             );
         }
-        if (formik.values.battery.maxPower) {
+        if (formik.values.batteryMaxPower) {
             setMinBatteryPower(
-                initialBatteryPower.filter((item) => item <= formik.values.battery.maxPower)
+                initialBatteryPower.filter((item) => item <= formik.values.batteryMaxPower)
             );
         }
-        if (formik.values.battery.minCost) {
+        if (formik.values.batteryMinCost) {
             setMaxBatteryCost(
-                initialBatteryCost.filter((item) => item >= formik.values.battery.minCost)
+                initialBatteryCost.filter((item) => item >= formik.values.batteryMinCost)
             );
         }
-        if (formik.values.battery.maxCost) {
+        if (formik.values.batteryMaxCost) {
             setMinBatteryCost(
-                initialBatteryCost.filter((item) => item <= formik.values.battery.maxCost)
+                initialBatteryCost.filter((item) => item <= formik.values.batteryMaxCost)
             );
         }
 
-        if (formik.values.pv.minSize) {
-            setMaxPvSize(initialPvSize.filter((item) => item >= formik.values.pv.minSize));
+        if (formik.values.pvMinSize) {
+            setMaxPvSize(initialPvSize.filter((item) => item >= formik.values.pvMinSize));
         }
-        if (formik.values.pv.maxSize) {
-            setMinPvSize(initialPvSize.filter((item) => item <= formik.values.pv.maxSize));
+        if (formik.values.pvMaxSize) {
+            setMinPvSize(initialPvSize.filter((item) => item <= formik.values.pvMaxSize));
         }
-        if (formik.values.pv.minCost) {
-            setMaxPvCost(initialPvCost.filter((item) => item >= formik.values.pv.minCost));
+        if (formik.values.pvMinCost) {
+            setMaxPvCost(initialPvCost.filter((item) => item >= formik.values.pvMinCost));
         }
-        if (formik.values.pv.maxCost) {
-            setMinPvCost(initialPvCost.filter((item) => item <= formik.values.pv.maxCost));
+        if (formik.values.pvMaxCost) {
+            setMinPvCost(initialPvCost.filter((item) => item <= formik.values.pvMaxCost));
         }
     }, [formik.values]);
 
-    console.log(formik.values)
+    console.log(formik.values);
+
+    const onChangeFile = (e) => {
+        formik.setFieldValue('file', e.currentTarget.files[0]);
+    };
+    const handleDeleteFile = () => formik.setFieldValue('file', '');
 
     return (
         <Stack
@@ -155,7 +169,7 @@ const Configuration = () => {
             <FormControl fullWidth>
                 <form onSubmit={formik.handleSubmit}>
                     <Stack direction="column" spacing={2}>
-                        <Stack direction="row" alignItems="center" spacing={2}>
+                        <Stack direction="row" spacing={2}>
                             <TextField
                                 fullWidth
                                 label="Customer name"
@@ -163,15 +177,14 @@ const Configuration = () => {
                                 name="customerName"
                                 onChange={formik.handleChange}
                                 value={formik.values.customerName}
+                                error={formik.errors.customerName && formik.touched.customerName}
+                                helperText={
+                                    formik.touched.customerName && formik.errors.customerName
+                                }
                             />
-                            <Tooltip title="Some tooltip" placement="right">
-                                <SvgIcon
-                                    component={InfoOutlinedIcon}
-                                    sx={{ width: 28, height: 28 }}
-                                />
-                            </Tooltip>
+                            <TooltipIcon tooltipText="Some tooltip" />
                         </Stack>
-                        <Stack direction="row" alignItems="center" spacing={2}>
+                        <Stack direction="row" spacing={2}>
                             <TextField
                                 fullWidth
                                 label="Simulation name"
@@ -179,15 +192,16 @@ const Configuration = () => {
                                 name="simulationName"
                                 onChange={formik.handleChange}
                                 value={formik.values.simulationName}
+                                error={
+                                    formik.errors.simulationName && formik.touched.simulationName
+                                }
+                                helperText={
+                                    formik.touched.simulationName && formik.errors.simulationName
+                                }
                             />
-                            <Tooltip title="Some tooltip" placement="right">
-                                <SvgIcon
-                                    component={InfoOutlinedIcon}
-                                    sx={{ width: 28, height: 28 }}
-                                />
-                            </Tooltip>
+                            <TooltipIcon tooltipText="Some tooltip" />
                         </Stack>
-                        <Stack direction="row" alignItems="center" spacing={2}>
+                        <Stack direction="row" spacing={2}>
                             <TextField
                                 fullWidth
                                 select
@@ -196,6 +210,8 @@ const Configuration = () => {
                                 name="region"
                                 onChange={formik.handleChange}
                                 value={formik.values.region}
+                                error={formik.errors.region && formik.touched.region}
+                                helperText={formik.touched.region && formik.errors.region}
                             >
                                 {regions.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
@@ -203,14 +219,9 @@ const Configuration = () => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Tooltip title="Some tooltip" placement="right">
-                                <SvgIcon
-                                    component={InfoOutlinedIcon}
-                                    sx={{ width: 28, height: 28 }}
-                                />
-                            </Tooltip>
+                            <TooltipIcon tooltipText="Some tooltip" />
                         </Stack>
-                        <Stack direction="row" alignItems="center" spacing={2}>
+                        <Stack direction="row" spacing={2}>
                             <TextField
                                 fullWidth
                                 select
@@ -219,6 +230,8 @@ const Configuration = () => {
                                 name="currency"
                                 onChange={formik.handleChange}
                                 value={formik.values.currency}
+                                error={formik.errors.currency && formik.touched.currency}
+                                helperText={formik.touched.currency && formik.errors.currency}
                             >
                                 {currencies.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
@@ -226,24 +239,27 @@ const Configuration = () => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <Tooltip title="Some tooltip" placement="right">
-                                <SvgIcon
-                                    component={InfoOutlinedIcon}
-                                    sx={{ width: 28, height: 28 }}
-                                />
-                            </Tooltip>
+                            <TooltipIcon tooltipText="Some tooltip" />
                         </Stack>
                         <Stack direction="column" spacing={2}>
                             <Typography variant="h3">Battery</Typography>
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
                                     label="Min size"
                                     size="small"
-                                    name="battery.minSize"
+                                    name="batteryMinSize"
                                     onChange={formik.handleChange}
-                                    value={formik.values.battery.minSize}
+                                    value={formik.values.batteryMinSize}
+                                    error={
+                                        formik.errors.batteryMinSize &&
+                                        formik.touched.batteryMinSize
+                                    }
+                                    helperText={
+                                        formik.touched.batteryMinSize &&
+                                        formik.errors.batteryMinSize
+                                    }
                                 >
                                     {minBatterySize.map((option) => (
                                         <MenuItem key={option + '_minSize'} value={option}>
@@ -256,9 +272,17 @@ const Configuration = () => {
                                     select
                                     label="Max size"
                                     size="small"
-                                    name="battery.maxSize"
+                                    name="batteryMaxSize"
                                     onChange={formik.handleChange}
-                                    value={formik.values.battery.maxSize}
+                                    value={formik.values.batteryMaxSize}
+                                    error={
+                                        formik.errors.batteryMaxSize &&
+                                        formik.touched.batteryMaxSize
+                                    }
+                                    helperText={
+                                        formik.touched.batteryMaxSize &&
+                                        formik.errors.batteryMaxSize
+                                    }
                                 >
                                     {maxBatterySize.map((option) => (
                                         <MenuItem key={option + '_maxSize'} value={option}>
@@ -266,22 +290,25 @@ const Configuration = () => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <Tooltip title="Some tooltip" placement="right">
-                                    <SvgIcon
-                                        component={InfoOutlinedIcon}
-                                        sx={{ width: 28, height: 28 }}
-                                    />
-                                </Tooltip>
+                                <TooltipIcon tooltipText="Some tooltip" />
                             </Stack>
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
                                     label="Min power"
                                     size="small"
-                                    name="battery.minPower"
+                                    name="batteryMinPower"
                                     onChange={formik.handleChange}
-                                    value={formik.values.battery.minPower}
+                                    value={formik.values.batteryMinPower}
+                                    error={
+                                        formik.errors.batteryMinPower &&
+                                        formik.touched.batteryMinPower
+                                    }
+                                    helperText={
+                                        formik.touched.batteryMinPower &&
+                                        formik.errors.batteryMinPower
+                                    }
                                 >
                                     {minBatteryPower.map((option) => (
                                         <MenuItem key={option + '_minPower'} value={option}>
@@ -294,9 +321,17 @@ const Configuration = () => {
                                     select
                                     label="Max power"
                                     size="small"
-                                    name="battery.maxPower"
+                                    name="batteryMaxPower"
                                     onChange={formik.handleChange}
-                                    value={formik.values.battery.maxPower}
+                                    value={formik.values.batteryMaxPower}
+                                    error={
+                                        formik.errors.batteryMaxPower &&
+                                        formik.touched.batteryMaxPower
+                                    }
+                                    helperText={
+                                        formik.touched.batteryMaxPower &&
+                                        formik.errors.batteryMaxPower
+                                    }
                                 >
                                     {maxBatteryPower.map((option) => (
                                         <MenuItem key={option + 'maxPower'} value={option}>
@@ -304,22 +339,25 @@ const Configuration = () => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <Tooltip title="Some tooltip" placement="right">
-                                    <SvgIcon
-                                        component={InfoOutlinedIcon}
-                                        sx={{ width: 28, height: 28 }}
-                                    />
-                                </Tooltip>
+                                <TooltipIcon tooltipText="Some tooltip" />
                             </Stack>
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
                                     label="Min cost"
                                     size="small"
-                                    name="battery.minCost"
+                                    name="batteryMinCost"
                                     onChange={formik.handleChange}
-                                    value={formik.values.battery.minCost}
+                                    value={formik.values.batteryMinCost}
+                                    error={
+                                        formik.errors.batteryMinCost &&
+                                        formik.touched.batteryMinCost
+                                    }
+                                    helperText={
+                                        formik.touched.batteryMinCost &&
+                                        formik.errors.batteryMinCost
+                                    }
                                 >
                                     {minBatteryCost.map((option) => (
                                         <MenuItem key={option + '_minCost'} value={option}>
@@ -332,9 +370,17 @@ const Configuration = () => {
                                     select
                                     label="Max cost"
                                     size="small"
-                                    name="battery.maxCost"
+                                    name="batteryMaxCost"
                                     onChange={formik.handleChange}
-                                    value={formik.values.battery.maxCost}
+                                    value={formik.values.batteryMaxCost}
+                                    error={
+                                        formik.errors.batteryMaxCost &&
+                                        formik.touched.batteryMaxCost
+                                    }
+                                    helperText={
+                                        formik.touched.batteryMaxCost &&
+                                        formik.errors.batteryMaxCost
+                                    }
                                 >
                                     {maxBatteryCost.map((option) => (
                                         <MenuItem key={option + '_maxCost'} value={option}>
@@ -342,25 +388,22 @@ const Configuration = () => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <Tooltip title="Some tooltip" placement="right">
-                                    <SvgIcon
-                                        component={InfoOutlinedIcon}
-                                        sx={{ width: 28, height: 28 }}
-                                    />
-                                </Tooltip>
+                                <TooltipIcon tooltipText="Some tooltip" />
                             </Stack>
                         </Stack>
                         <Stack direction="column" spacing={2}>
                             <Typography variant="h3">PV</Typography>
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
                                     label="Min size"
                                     size="small"
-                                    name="pv.minSize"
+                                    name="pvMinSize"
                                     onChange={formik.handleChange}
-                                    value={formik.values.pv.minSize}
+                                    value={formik.values.pvMinSize}
+                                    error={formik.errors.pvMinSize && formik.touched.pvMinSize}
+                                    helperText={formik.touched.pvMinSize && formik.errors.pvMinSize}
                                 >
                                     {minPvSize.map((option) => (
                                         <MenuItem key={option + '_minPvSize'} value={option}>
@@ -373,9 +416,11 @@ const Configuration = () => {
                                     select
                                     label="Max size"
                                     size="small"
-                                    name="pv.maxSize"
+                                    name="pvMaxSize"
                                     onChange={formik.handleChange}
-                                    value={formik.values.pv.maxSize}
+                                    value={formik.values.pvMaxSize}
+                                    error={formik.errors.pvMaxSize && formik.touched.pvMaxSize}
+                                    helperText={formik.touched.pvMaxSize && formik.errors.pvMaxSize}
                                 >
                                     {maxPvSize.map((option) => (
                                         <MenuItem key={option + '_maxPvSize'} value={option}>
@@ -383,22 +428,19 @@ const Configuration = () => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <Tooltip title="Some tooltip" placement="right">
-                                    <SvgIcon
-                                        component={InfoOutlinedIcon}
-                                        sx={{ width: 28, height: 28 }}
-                                    />
-                                </Tooltip>
+                                <TooltipIcon tooltipText="Some tooltip" />
                             </Stack>
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
                                     label="Min cost"
                                     size="small"
-                                    name="pv.minCost"
+                                    name="pvMinCost"
                                     onChange={formik.handleChange}
-                                    value={formik.values.pv.minCost}
+                                    value={formik.values.pvMinCost}
+                                    error={formik.errors.pvMinCost && formik.touched.pvMinCost}
+                                    helperText={formik.touched.pvMinCost && formik.errors.pvMinCost}
                                 >
                                     {minPvCost.map((option) => (
                                         <MenuItem key={option + '_minPvCost'} value={option}>
@@ -411,9 +453,11 @@ const Configuration = () => {
                                     select
                                     label="Max cost"
                                     size="small"
-                                    name="pv.maxCost"
+                                    name="pvMaxCost"
                                     onChange={formik.handleChange}
-                                    value={formik.values.pv.maxCost}
+                                    value={formik.values.pvMaxCost}
+                                    error={formik.errors.pvMaxCost && formik.touched.pvMaxCost}
+                                    helperText={formik.touched.pvMaxCost && formik.errors.pvMaxCost}
                                 >
                                     {maxPvCost.map((option) => (
                                         <MenuItem key={option + '_maxPvCost'} value={option}>
@@ -421,17 +465,12 @@ const Configuration = () => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <Tooltip title="Some tooltip" placement="right">
-                                    <SvgIcon
-                                        component={InfoOutlinedIcon}
-                                        sx={{ width: 28, height: 28 }}
-                                    />
-                                </Tooltip>
+                                <TooltipIcon tooltipText="Some tooltip" />
                             </Stack>
                         </Stack>
                         <Stack direction="column" spacing={2}>
                             <Typography variant="h3">Grid</Typography>
-                            <Stack direction="row" alignItems="center" spacing={2}>
+                            <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
@@ -440,6 +479,8 @@ const Configuration = () => {
                                     name="grid"
                                     onChange={formik.handleChange}
                                     value={formik.values.grid}
+                                    error={formik.errors.grid && formik.touched.grid}
+                                    helperText={formik.touched.grid && formik.errors.grid}
                                 >
                                     {grid.map((option) => (
                                         <MenuItem key={option + '_grid'} value={option}>
@@ -447,12 +488,7 @@ const Configuration = () => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <Tooltip title="Some tooltip" placement="right">
-                                    <SvgIcon
-                                        component={InfoOutlinedIcon}
-                                        sx={{ width: 28, height: 28 }}
-                                    />
-                                </Tooltip>
+                                <TooltipIcon tooltipText="Some tooltip" />
                             </Stack>
                         </Stack>
                         <Stack
@@ -468,26 +504,43 @@ const Configuration = () => {
                                 alignItems="center"
                                 spacing={2}
                             >
-                                <Button variant="outlined" size="large" sx={{ minWidth: '160px' }}>
-                                    Upload file
-                                </Button>
-                                <Tooltip title="download example input file" placement="right">
-                                    <SvgIcon
-                                        component={InfoOutlinedIcon}
-                                        sx={{ width: 28, height: 28 }}
+                                <Button variant="outlined" component="label" size="large" fullWidth>
+                                    Upload File
+                                    <input
+                                        type="file"
+                                        name="file"
+                                        onChange={onChangeFile}
+                                        style={{ display: 'none' }}
                                     />
-                                </Tooltip>
-                            </Stack>
-                            <Stack direction="row" justifyContent="space-between">
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    type="submit"
-                                    sx={{ minWidth: '160px' }}
-                                >
-                                    Run
+                                    <SvgIcon
+                                        component={AttachFileIcon}
+                                        sx={{ width: 20, height: 20 }}
+                                        style={{ marginLeft: '10px' }}
+                                    />
+                                    <input type="file" hidden />
                                 </Button>
+                                <TooltipIcon tooltipText="Some tooltip" pt="0" />
                             </Stack>
+                            {formik.values?.file && (
+                                <Stack
+                                    direction="row"
+                                    justifyContent="flex-start"
+                                    alignItems="center"
+                                >
+                                    <Typography>{formik.values?.file?.name}</Typography>
+                                    <IconButton
+                                        aria-label="delete"
+                                        color="error"
+                                        size="large"
+                                        onClick={() => handleDeleteFile()}
+                                    >
+                                        <DeleteIcon component={DeleteForeverIcon} />
+                                    </IconButton>
+                                </Stack>
+                            )}
+                            <Button fullWidth variant="contained" size="large" type="submit">
+                                Run
+                            </Button>
                         </Stack>
                     </Stack>
                 </form>
