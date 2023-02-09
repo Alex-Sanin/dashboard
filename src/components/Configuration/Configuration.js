@@ -146,9 +146,6 @@ const Configuration = () => {
             setMinPvCost(initialPvCost.filter((item) => item <= formik.values.pvMaxCost));
         }
     }, [formik.values]);
-
-    console.log(formik.values);
-
     const onChangeFile = (e) => {
         formik.setFieldValue('file', e.currentTarget.files[0]);
     };

@@ -42,6 +42,12 @@ const stableSort = (array, comparator) => {
 
 const headCells = [
     {
+        id: 'id',
+        numeric: false,
+        disablePadding: true,
+        label: 'ID',
+    },
+    {
         id: 'userName',
         numeric: false,
         disablePadding: true,
@@ -159,6 +165,8 @@ const MainTable = ({tableData, setDetailsTableData}) => {
         return <Preloader />;
     }
 
+    console.log(tableData)
+
     return (
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
@@ -189,6 +197,7 @@ const MainTable = ({tableData, setDetailsTableData}) => {
                                                 cursor: 'pointer',
                                             }}
                                         >
+                                            <TableCell align="left">{row.id}</TableCell>
                                             <TableCell
                                                 align="left"
                                                 component="th"
