@@ -1,16 +1,15 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 
-import Preloader from "../../loaders/Preloader";
+import Preloader from '../../loaders/Preloader';
+import EnhancedTableHead from '../EnhancedTableHead';
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -85,36 +84,7 @@ const headCells = [
     },
 ];
 
-const EnhancedTableHead = ({order, orderBy, onRequestSort}) => {
-    const createSortHandler = (property) => (event) => {
-        onRequestSort(event, property);
-    };
-
-    return (
-        <TableHead>
-            <TableRow>
-                {headCells.map((headCell) => (
-                    <TableCell
-                        key={headCell.id}
-                        align="left"
-                        padding="normal"
-                        sortDirection={orderBy === headCell.id ? order : false}
-                    >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-    );
-};
-
-const MainTable = ({tableData, setDetailsTableData}) => {
+const MainTable = ({ tableData, setDetailsTableData, setBarChartData }) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('userName');
     const [selectedRow, setSelectedRow] = useState('');
@@ -122,7 +92,7 @@ const MainTable = ({tableData, setDetailsTableData}) => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [error, setError] = useState('');
 
-    const getDetailsSimulationTableData = async () => {
+    const getDetailsTableData = async () => {
         const response = await fetch('/sim1/simulation_main_table_selected_row', {
             method: 'GET',
             headers: {
@@ -131,8 +101,8 @@ const MainTable = ({tableData, setDetailsTableData}) => {
             },
         });
         const json = await response.json();
-        // console.log('GET DATA RESPONSE: ', json);
-        setDetailsTableData(Object.values(json));
+        setDetailsTableData(Object.values(json[0]));
+        setBarChartData(Object.values(json[3]));
         if (!response.ok) {
             setError(response?.error?.message);
             console.log('ERROR: ', error);
@@ -146,8 +116,14 @@ const MainTable = ({tableData, setDetailsTableData}) => {
     };
 
     const handleRowSelect = (row) => {
-        selectedRow === row ? setSelectedRow('') : setSelectedRow(row);
-        getDetailsSimulationTableData();
+        if (selectedRow === row) {
+            setSelectedRow('');
+            setDetailsTableData('');
+            setBarChartData('');
+        } else {
+            setSelectedRow(row);
+            getDetailsTableData();
+        }
     };
 
     const handleChangePage = (event, newPage) => {
@@ -165,14 +141,13 @@ const MainTable = ({tableData, setDetailsTableData}) => {
         return <Preloader />;
     }
 
-    console.log(tableData)
-
     return (
-        <Box sx={{width: '100%'}}>
-            <Paper sx={{width: '100%', mb: 2}}>
+        <Box sx={{ width: '100%' }}>
+            <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
                 <TableContainer>
-                    <Table sx={{minWidth: 750}} aria-labelledby="tableTitle" size="medium">
+                    <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="medium">
                         <EnhancedTableHead
+                            headCells={headCells}
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
@@ -189,7 +164,7 @@ const MainTable = ({tableData, setDetailsTableData}) => {
                                             hover
                                             onClick={() => handleRowSelect(row.id)}
                                             tabIndex={-1}
-                                            key={row['customer name']}
+                                            key={row.id}
                                             style={{
                                                 backgroundColor: isItemSelected
                                                     ? '#bfddfc'
@@ -205,17 +180,19 @@ const MainTable = ({tableData, setDetailsTableData}) => {
                                                 scope="row"
                                                 padding="normal"
                                             >
-                                                {row['user name']}
+                                                {row.userName}
                                             </TableCell>
-                                            <TableCell align="left">{row['customer name']}</TableCell>
-                                            <TableCell align="left">{row['simulation name']}</TableCell>
-                                            <TableCell align="left" style={{minWidth: '120px'}}>
-                                                {row['create time']}
+                                            <TableCell align="left">{row.customerName}</TableCell>
+                                            <TableCell align="left">{row.simulationName}</TableCell>
+                                            <TableCell align="left" style={{ minWidth: '120px' }}>
+                                                {row.createTime}
                                             </TableCell>
-                                            <TableCell align="left" style={{minWidth: '120px'}}>
+                                            <TableCell align="left" style={{ minWidth: '120px' }}>
                                                 {row.region}
                                             </TableCell>
-                                            <TableCell align="left">{row?.currency.toUpperCase()}</TableCell>
+                                            <TableCell align="left">
+                                                {row?.currency.toUpperCase()}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -225,7 +202,7 @@ const MainTable = ({tableData, setDetailsTableData}) => {
                                         height: 53 * emptyRows,
                                     }}
                                 >
-                                    <TableCell colSpan={6}/>
+                                    <TableCell colSpan={6} />
                                 </TableRow>
                             )}
                         </TableBody>

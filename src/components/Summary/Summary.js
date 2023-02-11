@@ -2,15 +2,17 @@ import { useState, useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import MainTable from './MainTable/MainTable';
-import DetailsTable from "./DetailsTable/DetailsTable";
+import DetailsTable from './DetailsTable/DetailsTable';
+import SummaryBarChart from './SummaryBarChart/SummaryBarChart';
 
 const Summary = () => {
-    const [simulationTableData, setSimulationTableData] = useState('');
+    const [mainTableData, setMainTableData] = useState('');
     const [detailsTableData, setDetailsTableData] = useState('');
+    const [barChartData, setBarChartData] = useState('');
     const [error, setError] = useState('');
 
-    const getMainSimulationTableData = async () => {
-        const response = await fetch('/sim1/get_simulation_main_table', {
+    const getMainTableData = async () => {
+        const response = await fetch('/sim1/run_simulation', {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Credentials': true,
@@ -19,7 +21,7 @@ const Summary = () => {
         });
         const json = await response.json();
         // console.log('GET DATA RESPONSE: ', json);
-        setSimulationTableData(Object.values(json));
+        setMainTableData(Object.values(json[1]));
         if (!response.ok) {
             setError(response?.error?.message);
             console.log('ERROR: ', error);
@@ -27,10 +29,10 @@ const Summary = () => {
     };
 
     useEffect(() => {
-        getMainSimulationTableData();
+        getMainTableData();
     }, []);
 
-    console.log(detailsTableData)
+    console.log(barChartData);
 
     return (
         <Stack
@@ -46,10 +48,12 @@ const Summary = () => {
         >
             <Typography variant="h2">Summary</Typography>
             <MainTable
-                tableData={simulationTableData}
+                tableData={mainTableData}
                 setDetailsTableData={setDetailsTableData}
+                setBarChartData={setBarChartData}
             />
-            {/*<DetailsTable tableData={detailsTableData}/>*/}
+            <DetailsTable tableData={detailsTableData} />
+            {barChartData && <SummaryBarChart barChartData={barChartData} />}
         </Stack>
     );
 };
