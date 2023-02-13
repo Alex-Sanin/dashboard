@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Typography, Stack } from '@mui/material';
 
 import Preloader from '../../loaders/Preloader';
 import EnhancedTableHead from '../EnhancedTableHead';
@@ -84,7 +85,7 @@ const headCells = [
     },
 ];
 
-const MainTable = ({ tableData, setDetailsTableData, setBarChartData }) => {
+const MainTable = ({ tableData, setDetailsTableData, setBarChartData, setPlSummaryTable }) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('userName');
     const [selectedRow, setSelectedRow] = useState('');
@@ -103,6 +104,7 @@ const MainTable = ({ tableData, setDetailsTableData, setBarChartData }) => {
         const json = await response.json();
         setDetailsTableData(Object.values(json[0]));
         setBarChartData(Object.values(json[3]));
+        setPlSummaryTable(Object.values(json[9]));
         if (!response.ok) {
             setError(response?.error?.message);
             console.log('ERROR: ', error);
@@ -142,83 +144,96 @@ const MainTable = ({ tableData, setDetailsTableData, setBarChartData }) => {
     }
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
-                <TableContainer>
-                    <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="medium">
-                        <EnhancedTableHead
-                            headCells={headCells}
-                            order={order}
-                            orderBy={orderBy}
-                            onRequestSort={handleRequestSort}
-                            rowCount={tableData.length}
-                        />
-                        <TableBody>
-                            {stableSort(tableData, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
-                                    const isItemSelected = selectedRow === row.id;
-                                    const labelId = `enhanced-table-checkbox-${index}`;
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={() => handleRowSelect(row.id)}
-                                            tabIndex={-1}
-                                            key={row.id}
-                                            style={{
-                                                backgroundColor: isItemSelected
-                                                    ? '#bfddfc'
-                                                    : 'white',
-                                                cursor: 'pointer',
-                                            }}
-                                        >
-                                            <TableCell align="left">{row.id}</TableCell>
-                                            <TableCell
-                                                align="left"
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="normal"
+        <Stack direction="column" spacing={2}>
+            <Typography variant="h3">Main table</Typography>
+            <Box sx={{ width: '100%' }}>
+                <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
+                    <TableContainer>
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size="medium">
+                            <EnhancedTableHead
+                                headCells={headCells}
+                                order={order}
+                                orderBy={orderBy}
+                                onRequestSort={handleRequestSort}
+                                rowCount={tableData.length}
+                            />
+                            <TableBody>
+                                {stableSort(tableData, getComparator(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, index) => {
+                                        const isItemSelected = selectedRow === row.id;
+                                        const labelId = `enhanced-table-checkbox-${index}`;
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={() => handleRowSelect(row.id)}
+                                                tabIndex={-1}
+                                                key={row.id}
+                                                style={{
+                                                    backgroundColor: isItemSelected
+                                                        ? '#bfddfc'
+                                                        : 'white',
+                                                    cursor: 'pointer',
+                                                }}
                                             >
-                                                {row.userName}
-                                            </TableCell>
-                                            <TableCell align="left">{row.customerName}</TableCell>
-                                            <TableCell align="left">{row.simulationName}</TableCell>
-                                            <TableCell align="left" style={{ minWidth: '120px' }}>
-                                                {row.createTime}
-                                            </TableCell>
-                                            <TableCell align="left" style={{ minWidth: '120px' }}>
-                                                {row.region}
-                                            </TableCell>
-                                            <TableCell align="left">
-                                                {row?.currency.toUpperCase()}
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow
-                                    style={{
-                                        height: 53 * emptyRows,
-                                    }}
-                                >
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, 100]}
-                    component="div"
-                    count={tableData.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
-        </Box>
+                                                <TableCell align="left">{row.id}</TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    component="th"
+                                                    id={labelId}
+                                                    scope="row"
+                                                    padding="normal"
+                                                >
+                                                    {row.userName}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {row.customerName}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {row.simulationName}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    style={{ minWidth: '120px' }}
+                                                >
+                                                    {row.createTime}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    style={{ minWidth: '120px' }}
+                                                >
+                                                    {row.region}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {row?.currency.toUpperCase()}
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRows > 0 && (
+                                    <TableRow
+                                        style={{
+                                            height: 53 * emptyRows,
+                                        }}
+                                    >
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25, 100]}
+                        component="div"
+                        count={tableData.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+            </Box>
+        </Stack>
     );
 };
 export default MainTable;

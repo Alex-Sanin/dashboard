@@ -1,4 +1,5 @@
 // Global imports
+import { useEffect, useState } from 'react';
 import { ThemeProvider as MaterialThemeProvider } from '@mui/material/styles';
 import { Grid, Stack } from '@mui/material';
 
@@ -12,6 +13,33 @@ import { materialTheme } from './theme';
 import './App.css';
 
 const App = () => {
+    const [mainTableData, setMainTableData] = useState('');
+    const [plSummaryTable, setPlSummaryTable] = useState('');
+    const [plDetailsTable, setPlDetailsTable] = useState('');
+
+    const getMainTableData = async () => {
+        const response = await fetch('/sim1/run_simulation', {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Credentials': true,
+                'Content-Type': 'application/json',
+            },
+        });
+        const json = await response.json();
+        // console.log('GET DATA RESPONSE: ', json);
+        setMainTableData(Object.values(json[1]));
+        setPlSummaryTable(Object.values(json[8]));
+        setPlDetailsTable(Object.values(json[12]));
+        // if (!response.ok) {
+        //     setError(response?.error?.message);
+        //     console.log('ERROR: ', error);
+        // }
+    };
+
+    useEffect(() => {
+        getMainTableData();
+    }, []);
+
     return (
         <MaterialThemeProvider theme={materialTheme}>
             <Stack
@@ -31,8 +59,14 @@ const App = () => {
                     </Grid>
                     <Grid item sm={12} md={8}>
                         <Stack direction="column" spacing={3}>
-                            <Summary />
-                            {/*<Result />*/}
+                            <Summary
+                                mainTableData={mainTableData}
+                                setPlSummaryTable={setPlSummaryTable}
+                            />
+                            <Result
+                                plSummaryTable={plSummaryTable}
+                                plDetailsTable={plDetailsTable}
+                            />
                         </Stack>
                     </Grid>
                 </Grid>

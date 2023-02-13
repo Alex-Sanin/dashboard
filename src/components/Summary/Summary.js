@@ -5,34 +5,9 @@ import MainTable from './MainTable/MainTable';
 import DetailsTable from './DetailsTable/DetailsTable';
 import SummaryBarChart from './SummaryBarChart/SummaryBarChart';
 
-const Summary = () => {
-    const [mainTableData, setMainTableData] = useState('');
+const Summary = ({mainTableData, setPlSummaryTable}) => {
     const [detailsTableData, setDetailsTableData] = useState('');
     const [barChartData, setBarChartData] = useState('');
-    const [error, setError] = useState('');
-
-    const getMainTableData = async () => {
-        const response = await fetch('/sim1/run_simulation', {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Credentials': true,
-                'Content-Type': 'application/json',
-            },
-        });
-        const json = await response.json();
-        // console.log('GET DATA RESPONSE: ', json);
-        setMainTableData(Object.values(json[1]));
-        if (!response.ok) {
-            setError(response?.error?.message);
-            console.log('ERROR: ', error);
-        }
-    };
-
-    useEffect(() => {
-        getMainTableData();
-    }, []);
-
-    console.log(barChartData);
 
     return (
         <Stack
@@ -51,6 +26,7 @@ const Summary = () => {
                 tableData={mainTableData}
                 setDetailsTableData={setDetailsTableData}
                 setBarChartData={setBarChartData}
+                setPlSummaryTable={setPlSummaryTable}
             />
             <DetailsTable tableData={detailsTableData} />
             {barChartData && <SummaryBarChart barChartData={barChartData} />}
