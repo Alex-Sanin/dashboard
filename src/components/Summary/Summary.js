@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import MainTable from './MainTable/MainTable';

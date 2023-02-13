@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 
 import PlTable from './PlTable/PlTable';
+import CashFlowGraph from './CashFlowGraph/CashFlowGraph';
 import EnergyCirculationDiagram from './EnergyCirculationDiagram/EnergyCirculationDiagram';
 
 const Result = ({ plSummaryTable, plDetailsTable }) => {
@@ -17,9 +18,12 @@ const Result = ({ plSummaryTable, plDetailsTable }) => {
             }}
         >
             <Typography variant="h2">Result</Typography>
-            <PlTable tableData={plSummaryTable} tableName="P&L Summary" />
-            <PlTable tableData={plDetailsTable} tableName="P&L Details" />
-            <EnergyCirculationDiagram />
+            <Stack direction="column" alignItems="center" spacing={4}>
+                <PlTable tableData={plSummaryTable} tableName="P&L Summary" />
+                <CashFlowGraph />
+                <PlTable tableData={plDetailsTable} tableName="P&L Details" />
+                <EnergyCirculationDiagram />
+            </Stack>
         </Stack>
     );
 };

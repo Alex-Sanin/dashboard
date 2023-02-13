@@ -44,7 +44,13 @@ const headCells = [
         id: 'simulationDetailId',
         numeric: false,
         disablePadding: true,
-        label: 'ID',
+        label: 'ID (main)',
+    },
+    {
+        id: 'simulationDetailId',
+        numeric: false,
+        disablePadding: true,
+        label: 'ID (details)',
     },
     {
         id: 'batterySize',
@@ -88,20 +94,32 @@ const headCells = [
         disablePadding: false,
         label: 'ROI',
     },
-    {
-        id: 'outputFile',
-        numeric: false,
-        disablePadding: false,
-        label: 'Output file',
-    },
+    // {
+    //     id: 'outputFile',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: 'Output file',
+    // },
 ];
 
 const DetailsTable = ({ tableData }) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('userName');
-    // const [selectedRow, setSelectedRow] = useState('');
+    const [selectedRow, setSelectedRow] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const getSelectedRowData = async () => {
+        const response = await fetch('/sim1/simulation_details_table_selected_row/', {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Credentials': true,
+                'Content-Type': 'application/json',
+            },
+        });
+        const json = await response.json();
+        console.log(json);
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -109,9 +127,10 @@ const DetailsTable = ({ tableData }) => {
         setOrderBy(property);
     };
 
-    // const handleRowSelect = (row) => {
-    //     selectedRow === row ? setSelectedRow('') : setSelectedRow(row);
-    // };
+    const handleRowSelect = (row) => {
+        getSelectedRowData();
+        selectedRow === row ? setSelectedRow('') : setSelectedRow(row);
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -123,6 +142,8 @@ const DetailsTable = ({ tableData }) => {
     };
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData?.length) : 0;
+
+    console.log(tableData);
 
     return (
         <Stack direction="column" spacing={2}>
@@ -147,20 +168,23 @@ const DetailsTable = ({ tableData }) => {
                                     {stableSort(tableData, getComparator(order, orderBy))
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, index) => {
-                                            // const isItemSelected = selectedRow === row.simulationsDetailsId;
+                                            const isItemSelected =
+                                                selectedRow === row.simulationsDetailsId;
                                             const labelId = `enhanced-table-checkbox-${index}`;
                                             return (
                                                 <TableRow
                                                     hover
-                                                    // onClick={() => handleRowSelect(row.simulationsDetailsId)}
+                                                    onClick={() =>
+                                                        handleRowSelect(row.simulationsDetailsId)
+                                                    }
                                                     tabIndex={-1}
                                                     key={row.simulationsDetailsId}
-                                                    // style={{
-                                                    //     backgroundColor: isItemSelected
-                                                    //         ? '#bfddfc'
-                                                    //         : 'white',
-                                                    //     cursor: 'pointer',
-                                                    // }}
+                                                    style={{
+                                                        backgroundColor: isItemSelected
+                                                            ? '#bfddfc'
+                                                            : 'white',
+                                                        cursor: 'pointer',
+                                                    }}
                                                 >
                                                     <TableCell
                                                         align="left"
@@ -168,6 +192,9 @@ const DetailsTable = ({ tableData }) => {
                                                         id={labelId}
                                                         scope="row"
                                                     >
+                                                        {row.simulationMainId}
+                                                    </TableCell>
+                                                    <TableCell align="left">
                                                         {row.simulationsDetailsId}
                                                     </TableCell>
                                                     <TableCell align="left">
@@ -184,9 +211,6 @@ const DetailsTable = ({ tableData }) => {
                                                     <TableCell align="left">{row.roi}</TableCell>
                                                     <TableCell align="left">
                                                         {row.gridConnection}
-                                                    </TableCell>
-                                                    <TableCell align="left">
-                                                        {row.outputFile}
                                                     </TableCell>
                                                 </TableRow>
                                             );

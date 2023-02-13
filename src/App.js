@@ -15,6 +15,7 @@ import './App.css';
 const App = () => {
     const [mainTableData, setMainTableData] = useState('');
     const [plSummaryTable, setPlSummaryTable] = useState('');
+    // const [plCashFlowGraph, setPlCashFlowGraph] = useState('');
     const [plDetailsTable, setPlDetailsTable] = useState('');
 
     const getMainTableData = async () => {
@@ -29,6 +30,7 @@ const App = () => {
         // console.log('GET DATA RESPONSE: ', json);
         setMainTableData(Object.values(json[1]));
         setPlSummaryTable(Object.values(json[8]));
+        // setPlCashFlowGraph(Object.values(json[10]));
         setPlDetailsTable(Object.values(json[12]));
         // if (!response.ok) {
         //     setError(response?.error?.message);
@@ -38,6 +40,7 @@ const App = () => {
 
     useEffect(() => {
         getMainTableData();
+
     }, []);
 
     return (
