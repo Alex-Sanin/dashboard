@@ -93,11 +93,11 @@ const Configuration = () => {
                 method: 'POST',
                 body: formData,
             };
-            fetch('/sim1/validate_user_configuration/', requestOptions)
+            fetch('/sim1/run_simulation/', requestOptions)
                 .then((response) => response.text())
                 .then((result) => console.log(result))
                 .catch((error) => console.log('error', error));
-            formik.resetForm();
+            // formik.resetForm();
         },
     });
 
