@@ -7,7 +7,9 @@ import factoryIcon from '../../../assets/images/factory.svg';
 import arrowRightRound from '../../../assets/images/arrowRightRound.svg';
 import arrowLeft from '../../../assets/images/arrowLeft.svg';
 
-const EnergyCirculationDiagram = () => {
+const EnergyCirculationDiagram = ({ diagramData }) => {
+
+    console.log(diagramData)
     return (
         <Stack direction="column" sx={{ gap: '20px' }}>
             <Stack

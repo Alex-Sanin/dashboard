@@ -4,7 +4,7 @@ import PlTable from './PlTable/PlTable';
 import CashFlowGraph from './CashFlowGraph/CashFlowGraph';
 import EnergyCirculationDiagram from './EnergyCirculationDiagram/EnergyCirculationDiagram';
 
-const Result = ({ plSummaryTable, plDetailsTable }) => {
+const Result = ({ plSummaryTable, plCashFlowGraph, plDetailsTable, plDiagram }) => {
     return (
         <Stack
             direction="column"
@@ -20,9 +20,9 @@ const Result = ({ plSummaryTable, plDetailsTable }) => {
             <Typography variant="h2">Result</Typography>
             <Stack direction="column" alignItems="center" spacing={4}>
                 <PlTable tableData={plSummaryTable} tableName="P&L Summary" />
-                <CashFlowGraph />
+                <CashFlowGraph graphData={plCashFlowGraph}/>
                 <PlTable tableData={plDetailsTable} tableName="P&L Details" />
-                <EnergyCirculationDiagram />
+                <EnergyCirculationDiagram diagramData={plDiagram}/>
             </Stack>
         </Stack>
     );

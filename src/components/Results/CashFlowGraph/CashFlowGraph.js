@@ -69,13 +69,13 @@ const cashFlowGraphData = [
 //     },
 // ];
 
-const CashFlowGraph = () => {
+const CashFlowGraph = ({ graphData }) => {
     return (
         <Stack direction="row" justifyContent="center" alignItems="flex-start" sx={{ pt: 3 }}>
             <LineChart
                 width={700}
                 height={400}
-                data={cashFlowGraphData}
+                data={graphData}
                 margin={{
                     top: 5,
                     right: 30,
@@ -84,17 +84,17 @@ const CashFlowGraph = () => {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="period" />
+                <XAxis dataKey="year" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
                 <Line
                     type="monotone"
-                    dataKey="operationProfit"
+                    dataKey="operation profit"
                     stroke="#1665C1"
                     activeDot={{ r: 8 }}
                 />
-                <Line type="monotone" dataKey="accumulativeCash" stroke="#a09b9b" />
+                <Line type="monotone" dataKey="accumulative cash" stroke="#a09b9b" />
             </LineChart>
         </Stack>
     );

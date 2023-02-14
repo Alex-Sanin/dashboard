@@ -17,6 +17,7 @@ const App = () => {
     const [plSummaryTable, setPlSummaryTable] = useState('');
     const [plCashFlowGraph, setPlCashFlowGraph] = useState('');
     const [plDetailsTable, setPlDetailsTable] = useState('');
+    const [plDiagram, setPlDiagram] = useState('');
 
     const getMainTableData = async () => {
         const response = await fetch('/sim1/run_simulation', {
@@ -32,6 +33,7 @@ const App = () => {
         setPlSummaryTable(Object.values(json[8]));
         setPlCashFlowGraph(Object.values(json[10]));
         setPlDetailsTable(Object.values(json[12]));
+        setPlDiagram(Object.values(json[14]));
         // if (!response.ok) {
         //     setError(response?.error?.message);
         //     console.log('ERROR: ', error);
@@ -42,8 +44,6 @@ const App = () => {
         getMainTableData();
 
     }, []);
-
-    console.log(plCashFlowGraph)
 
     return (
         <MaterialThemeProvider theme={materialTheme}>
@@ -70,7 +70,9 @@ const App = () => {
                             />
                             <Result
                                 plSummaryTable={plSummaryTable}
+                                plCashFlowGraph={plCashFlowGraph}
                                 plDetailsTable={plDetailsTable}
+                                plDiagram={plDiagram}
                             />
                         </Stack>
                     </Grid>
