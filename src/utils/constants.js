@@ -33,17 +33,17 @@ export const currencies = [
 
 export const initialBatterySize = Array.from(Array(100), (_, index) => index + 1);
 
-export const initialBatteryPower = [];
-let initialBatteryPowerValue = 0;
-while (initialBatteryPowerValue <= 10) {
-    initialBatteryPower.push(+initialBatteryPowerValue.toFixed(1));
-    initialBatteryPowerValue = initialBatteryPowerValue + 0.1;
-}
+export const initialBatteryPower = [0.1, 0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// let initialBatteryPowerValue = 1.5;
+// while (initialBatteryPowerValue <= 10) {
+//     initialBatteryPower.push(+initialBatteryPowerValue.toFixed(1));
+//     initialBatteryPowerValue = initialBatteryPowerValue + 0.1;
+// }
 
 export const initialBatteryCost = [];
-let initialBatteryCostValue = 0;
-while (initialBatteryCostValue <= 350) {
-    initialBatteryCost.push(+initialBatteryCostValue.toFixed(1));
+let initialBatteryCostValue = 150;
+while (initialBatteryCostValue <= 500) {
+    initialBatteryCost.push(+initialBatteryCostValue);
     initialBatteryCostValue = initialBatteryCostValue + 10;
 }
 
@@ -54,12 +54,12 @@ while (initialPvSizeValue <= 10) {
     initialPvSizeValue = initialPvSizeValue + 0.5;
 }
 
-export const initialPvCost = [];
-let initialPvCostValue = 0;
-while (initialPvCostValue <= 800) {
-    initialPvCost.push(+initialPvCostValue.toFixed(1));
-    initialPvCostValue = initialPvCostValue + 10;
-}
+export const initialPvCost = [0, 800, 900, 1000, 1100, 1200];
+// let initialPvCostValue = 0;
+// while (initialPvCostValue <= 1200) {
+//     initialPvCost.push(+initialPvCostValue.toFixed(1));
+//     initialPvCostValue = initialPvCostValue + 10;
+// }
 
 export const grid = [];
 let gridValue = 0;
