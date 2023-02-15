@@ -5,7 +5,7 @@ import MainTable from './MainTable/MainTable';
 import DetailsTable from './DetailsTable/DetailsTable';
 import SummaryBarChart from './SummaryBarChart/SummaryBarChart';
 
-const Summary = ({mainTableData, setPlSummaryTable}) => {
+const Summary = ({mainTableData, setPlSummaryTable, getMainTableData}) => {
     const [detailsTableData, setDetailsTableData] = useState('');
     const [barChartData, setBarChartData] = useState('');
 
@@ -27,6 +27,7 @@ const Summary = ({mainTableData, setPlSummaryTable}) => {
                 setDetailsTableData={setDetailsTableData}
                 setBarChartData={setBarChartData}
                 setPlSummaryTable={setPlSummaryTable}
+                getMainTableData={getMainTableData}
             />
             <DetailsTable tableData={detailsTableData} />
             {barChartData && <SummaryBarChart barChartData={barChartData} />}

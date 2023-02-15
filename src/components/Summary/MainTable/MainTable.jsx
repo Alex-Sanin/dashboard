@@ -35,7 +35,7 @@ const stableSort = (array, comparator) => {
         if (order !== 0) {
             return order;
         }
-        return a[1] - b[1];
+        return b[1] - a[1];
     });
     return stabilizedThis.map((el) => el[0]);
 };
@@ -176,7 +176,6 @@ const MainTable = ({ tableData, setDetailsTableData, setBarChartData, setPlSumma
                                                     cursor: 'pointer',
                                                 }}
                                             >
-                                                <TableCell align="left">{row.id}</TableCell>
                                                 <TableCell
                                                     align="left"
                                                     component="th"
@@ -184,8 +183,9 @@ const MainTable = ({ tableData, setDetailsTableData, setBarChartData, setPlSumma
                                                     scope="row"
                                                     padding="normal"
                                                 >
-                                                    {row.userName}
+                                                    {row.id}
                                                 </TableCell>
+                                                <TableCell align="left">{row.userName}</TableCell>
                                                 <TableCell align="left">
                                                     {row.customerName}
                                                 </TableCell>

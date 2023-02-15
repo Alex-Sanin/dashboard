@@ -60,13 +60,14 @@ const App = () => {
                 <Header />
                 <Grid container spacing={3} sx={{ px: 10 }}>
                     <Grid item sm={12} md={4}>
-                        <Configuration />
+                        <Configuration getMainTableData={getMainTableData}/>
                     </Grid>
                     <Grid item sm={12} md={8}>
                         <Stack direction="column" spacing={3}>
                             <Summary
                                 mainTableData={mainTableData}
                                 setPlSummaryTable={setPlSummaryTable}
+                                getMainTableData={getMainTableData}
                             />
                             <Result
                                 plSummaryTable={plSummaryTable}

@@ -47,7 +47,7 @@ const validationSchema = yup.object().shape({
     grid: yup.string().required('This field is required'),
 });
 
-const Configuration = () => {
+const Configuration = ({getMainTableData}) => {
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
     const [maxBatterySize, setMaxBatterySize] = useState(initialBatterySize);
     const [minBatteryPower, setMinBatteryPower] = useState(initialBatteryPower);
@@ -91,8 +91,9 @@ const Configuration = () => {
             };
             fetch('/sim1/run_simulation/', requestOptions)
                 .then((response) => response.text())
-                .then((result) => console.log(result))
+                .then(() => getMainTableData())
                 .catch((error) => console.log('error', error));
+
             // formik.resetForm();
         },
     });
