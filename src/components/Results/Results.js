@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material';
 
 import PlTable from './PlTable/PlTable';
 import CashFlowGraph from './CashFlowGraph/CashFlowGraph';
-import EnergyCirculationDiagram from './EnergyCirculationDiagram/EnergyCirculationDiagram';
+import PlDiagram from './PlDiagram/PlDiagram';
 
 const Result = ({ plSummaryTable, plCashFlowGraph, plDetailsTable, plDiagram }) => {
     return (
@@ -20,9 +20,9 @@ const Result = ({ plSummaryTable, plCashFlowGraph, plDetailsTable, plDiagram }) 
             <Typography variant="h2">Result</Typography>
             <Stack direction="column" alignItems="center" spacing={4}>
                 <PlTable tableData={plSummaryTable} tableName="P&L Summary" />
-                <CashFlowGraph graphData={plCashFlowGraph}/>
+                <CashFlowGraph graphData={plCashFlowGraph} />
                 <PlTable tableData={plDetailsTable} tableName="P&L Details" />
-                <EnergyCirculationDiagram diagramData={plDiagram}/>
+                {plDiagram && <PlDiagram diagramData={plDiagram} />}
             </Stack>
         </Stack>
     );

@@ -20,7 +20,7 @@ const App = () => {
     const [plDiagram, setPlDiagram] = useState('');
 
     const getMainTableData = async () => {
-        const response = await fetch('/sim1/run_simulation', {
+        const response = await fetch('/sim1/get_all_data', {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Credentials': true,
