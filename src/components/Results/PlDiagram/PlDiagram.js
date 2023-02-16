@@ -19,7 +19,7 @@ const PlDiagram = ({ diagramData }) => {
         <Stack direction="column" sx={{ gap: '20px' }}>
             <Stack direction="column" alignItems="center" spacing={2} sx={{ ml: '-12px' }}>
                 <Typography variant="h3">Market</Typography>
-                <Stack direction="row" jusifyContent="center" alignItems="center" spacing={3}>
+                <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
                     <Paper sx={{ minWidth: '100px',height: '100%', py: 1, px: 1.5 }}>
                         <Stack direction="column">
                             <Typography variant="body3" sx={{ pb: 1 }}>

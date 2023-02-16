@@ -42,7 +42,7 @@ const stableSort = (array, comparator) => {
 
 const headCells = [
     {
-        id: 'simulationDetailId',
+        id: 'simulationMainId',
         numeric: false,
         disablePadding: true,
         label: 'ID (main)',
