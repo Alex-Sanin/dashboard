@@ -19,9 +19,9 @@ const Result = ({ plSummaryTable, plCashFlowGraph, plDetailsTable, plDiagram }) 
         >
             <Typography variant="h2">Result</Typography>
             <Stack direction="column" alignItems="center" spacing={4}>
-                <PlTable tableData={plSummaryTable} tableName="P&L Summary" />
+                <PlTable tableData={plSummaryTable} tableName="P&l Summary - Yearly" />
                 <CashFlowGraph graphData={plCashFlowGraph} />
-                <PlTable tableData={plDetailsTable} tableName="P&L Details" />
+                <PlTable tableData={plDetailsTable} tableName="P&L Details - Yearly" />
                 {plDiagram && <PlDiagram diagramData={plDiagram} />}
             </Stack>
         </Stack>

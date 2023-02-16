@@ -1,13 +1,44 @@
-import { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import MainTable from './MainTable/MainTable';
 import DetailsTable from './DetailsTable/DetailsTable';
-import SummaryBarChart from './SummaryBarChart/SummaryBarChart';
+import RoiBarChart from './RoiBarChart/RoiBarChart';
 
-const Summary = ({mainTableData, setPlSummaryTable, getMainTableData}) => {
-    const [detailsTableData, setDetailsTableData] = useState('');
-    const [barChartData, setBarChartData] = useState('');
+const Summary = ({
+    mainTableData,
+    detailsTableData,
+    setDetailsTableData,
+    roiBarGraphData,
+    setRoiBarGraphData,
+    setPlSummaryTable,
+    setPlCashFlowGraph,
+    setPlDetailsTable,
+    setPlDiagram,
+    getMainTableData,
+}) => {
+    const getMainTableSelectedRowData = async () => {
+        const response = await fetch('/sim1/simulation_main_table_selected_row', {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Credentials': true,
+                'Content-Type': 'application/json',
+            },
+        });
+        const json = await response.json();
+        // console.log('simulation_main_table_selected_row: ', json);
+        setDetailsTableData(Object.values(json[0]));
+        setRoiBarGraphData(Object.values(json[3]));
+        setPlSummaryTable(Object.values(json[5]));
+        setPlCashFlowGraph(Object.values(json[7]));
+        setPlDetailsTable(Object.values(json[9]));
+        setPlDiagram(Object.values(json[11]));
+        // if (!response.ok) {
+        //     setError(response?.error?.message);
+        //     console.log('ERROR: ', error);
+        // }
+    };
+
+
 
     return (
         <Stack
@@ -24,13 +55,19 @@ const Summary = ({mainTableData, setPlSummaryTable, getMainTableData}) => {
             <Typography variant="h2">Summary</Typography>
             <MainTable
                 tableData={mainTableData}
-                setDetailsTableData={setDetailsTableData}
-                setBarChartData={setBarChartData}
-                setPlSummaryTable={setPlSummaryTable}
+                getMainTableSelectedRowData={getMainTableSelectedRowData}
                 getMainTableData={getMainTableData}
             />
-            <DetailsTable tableData={detailsTableData} />
-            {barChartData && <SummaryBarChart barChartData={barChartData} />}
+            <DetailsTable
+                tableData={detailsTableData}
+                // setRoiBarGraphData={setRoiBarGraphData}
+                setPlSummaryTable={setPlSummaryTable}
+                setPlCashFlowGraph={setPlCashFlowGraph}
+                setPlDetailsTable={setPlDetailsTable}
+                setPlDiagram={setPlDiagram}
+                getMainTableSelectedRowData={getMainTableSelectedRowData}
+            />
+            {roiBarGraphData && <RoiBarChart barChartData={roiBarGraphData} />}
         </Stack>
     );
 };

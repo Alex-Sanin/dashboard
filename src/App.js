@@ -14,6 +14,8 @@ import './App.css';
 
 const App = () => {
     const [mainTableData, setMainTableData] = useState('');
+    const [detailsTableData, setDetailsTableData] = useState('');
+    const [roiBarGraphData, setRoiBarGraphData] = useState('');
     const [plSummaryTable, setPlSummaryTable] = useState('');
     const [plCashFlowGraph, setPlCashFlowGraph] = useState('');
     const [plDetailsTable, setPlDetailsTable] = useState('');
@@ -30,6 +32,8 @@ const App = () => {
         const json = await response.json();
         // console.log('GET DATA RESPONSE: ', json);
         setMainTableData(Object.values(json[1]));
+        setDetailsTableData(Object.values(json[3]));
+        setRoiBarGraphData(Object.values(json[6]));
         setPlSummaryTable(Object.values(json[8]));
         setPlCashFlowGraph(Object.values(json[10]));
         setPlDetailsTable(Object.values(json[12]));
@@ -42,7 +46,6 @@ const App = () => {
 
     useEffect(() => {
         getMainTableData();
-
     }, []);
 
     return (
@@ -66,7 +69,14 @@ const App = () => {
                         <Stack direction="column" spacing={3}>
                             <Summary
                                 mainTableData={mainTableData}
+                                detailsTableData={detailsTableData}
+                                setDetailsTableData={setDetailsTableData}
+                                roiBarGraphData={roiBarGraphData}
+                                setRoiBarGraphData={setRoiBarGraphData}
                                 setPlSummaryTable={setPlSummaryTable}
+                                setPlCashFlowGraph={setPlCashFlowGraph}
+                                setPlDetailsTable={setPlDetailsTable}
+                                setPlDiagram={setPlDiagram}
                                 getMainTableData={getMainTableData}
                             />
                             <Result

@@ -85,31 +85,12 @@ const headCells = [
     },
 ];
 
-const MainTable = ({ tableData, setDetailsTableData, setBarChartData, setPlSummaryTable }) => {
+const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData }) => {
     const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('userName');
+    const [orderBy, setOrderBy] = useState('id');
     const [selectedRow, setSelectedRow] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [error, setError] = useState('');
-
-    const getDetailsTableData = async () => {
-        const response = await fetch('/sim1/simulation_main_table_selected_row', {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Credentials': true,
-                'Content-Type': 'application/json',
-            },
-        });
-        const json = await response.json();
-        setDetailsTableData(Object.values(json[0]));
-        setBarChartData(Object.values(json[3]));
-        setPlSummaryTable(Object.values(json[9]));
-        if (!response.ok) {
-            setError(response?.error?.message);
-            console.log('ERROR: ', error);
-        }
-    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -120,11 +101,10 @@ const MainTable = ({ tableData, setDetailsTableData, setBarChartData, setPlSumma
     const handleRowSelect = (row) => {
         if (selectedRow === row) {
             setSelectedRow('');
-            setDetailsTableData('');
-            setBarChartData('');
+            getMainTableData();
         } else {
             setSelectedRow(row);
-            getDetailsTableData();
+            getMainTableSelectedRowData();
         }
     };
 

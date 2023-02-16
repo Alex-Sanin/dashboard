@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import { Stack, Typography } from '@mui/material';
 
 import EnhancedTableHead from '../EnhancedTableHead';
+import Preloader from '../../loaders/Preloader';
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -94,23 +95,25 @@ const headCells = [
         disablePadding: false,
         label: 'ROI',
     },
-    // {
-    //     id: 'outputFile',
-    //     numeric: false,
-    //     disablePadding: false,
-    //     label: 'Output file',
-    // },
 ];
 
-const DetailsTable = ({ tableData }) => {
+const DetailsTable = ({
+    tableData,
+    // setRoiBarGraphData,
+    setPlSummaryTable,
+    setPlCashFlowGraph,
+    setPlDetailsTable,
+    setPlDiagram,
+    getMainTableSelectedRowData,
+}) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('userName');
     const [selectedRow, setSelectedRow] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    const getSelectedRowData = async () => {
-        const response = await fetch('/sim1/simulation_details_table_selected_row/', {
+    const getDetailsTableSelectedRowData = async () => {
+        const response = await fetch('/sim1/simulation_details_table_selected_row', {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Credentials': true,
@@ -118,7 +121,11 @@ const DetailsTable = ({ tableData }) => {
             },
         });
         const json = await response.json();
-        console.log(json);
+        // console.log('simulation_details_table_selected_row: ', json);
+        setPlSummaryTable(Object.values(json[1]));
+        setPlCashFlowGraph(Object.values(json[3]));
+        setPlDetailsTable(Object.values(json[5]));
+        setPlDiagram(Object.values(json[7]));
     };
 
     const handleRequestSort = (event, property) => {
@@ -128,8 +135,13 @@ const DetailsTable = ({ tableData }) => {
     };
 
     const handleRowSelect = (row) => {
-        getSelectedRowData();
-        selectedRow === row ? setSelectedRow('') : setSelectedRow(row);
+        if (selectedRow === row) {
+            setSelectedRow('');
+            getMainTableSelectedRowData();
+        } else {
+            setSelectedRow(row);
+            getDetailsTableSelectedRowData();
+        }
     };
 
     const handleChangePage = (event, newPage) => {
@@ -143,8 +155,9 @@ const DetailsTable = ({ tableData }) => {
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData?.length) : 0;
 
-    console.log(tableData);
-
+    if (!tableData) {
+        return <Preloader />;
+    }
     return (
         <Stack direction="column" spacing={2}>
             <Typography variant="h3">Details table</Typography>
@@ -163,89 +176,79 @@ const DetailsTable = ({ tableData }) => {
                                 onRequestSort={handleRequestSort}
                                 rowCount={tableData.length}
                             />
-                            {tableData && (
-                                <TableBody>
-                                    {stableSort(tableData, getComparator(order, orderBy))
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row, index) => {
-                                            const isItemSelected =
-                                                selectedRow === row.simulationsDetailsId;
-                                            const labelId = `enhanced-table-checkbox-${index}`;
-                                            return (
-                                                <TableRow
-                                                    hover
-                                                    onClick={() =>
-                                                        handleRowSelect(row.simulationsDetailsId)
-                                                    }
-                                                    tabIndex={-1}
-                                                    key={row.simulationsDetailsId}
-                                                    style={{
-                                                        backgroundColor: isItemSelected
-                                                            ? '#bfddfc'
-                                                            : 'white',
-                                                        cursor: 'pointer',
-                                                    }}
+                            <TableBody>
+                                {stableSort(tableData, getComparator(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, index) => {
+                                        const isItemSelected =
+                                            selectedRow === row.simulationsDetailsId;
+                                        const labelId = `enhanced-table-checkbox-${index}`;
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={() =>
+                                                    handleRowSelect(row.simulationsDetailsId)
+                                                }
+                                                tabIndex={-1}
+                                                key={row.simulationsDetailsId}
+                                                style={{
+                                                    backgroundColor: isItemSelected
+                                                        ? '#bfddfc'
+                                                        : 'white',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                <TableCell
+                                                    align="left"
+                                                    component="th"
+                                                    id={labelId}
+                                                    scope="row"
                                                 >
-                                                    <TableCell
-                                                        align="left"
-                                                        component="th"
-                                                        id={labelId}
-                                                        scope="row"
-                                                    >
-                                                        {row.simulationMainId}
-                                                    </TableCell>
-                                                    <TableCell align="left">
-                                                        {row.simulationsDetailsId}
-                                                    </TableCell>
-                                                    <TableCell align="left">
-                                                        {row.batterySize}
-                                                    </TableCell>
-                                                    <TableCell align="left">
-                                                        {row.batteryPower}
-                                                    </TableCell>
-                                                    <TableCell align="left">
-                                                        {row.batteryCost}
-                                                    </TableCell>
-                                                    <TableCell align="left">{row.pvSize}</TableCell>
-                                                    <TableCell align="left">{row.pvCost}</TableCell>
-                                                    <TableCell align="left">{row.roi}</TableCell>
-                                                    <TableCell align="left">
-                                                        {row.gridConnection}
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                    {emptyRows > 0 && (
-                                        <TableRow
-                                            style={{
-                                                height: 53 * emptyRows,
-                                            }}
-                                        >
-                                            <TableCell colSpan={6} />
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            )}
+                                                    {row.simulationMainId}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {row.simulationsDetailsId}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {row.batterySize}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {row.batteryPower}
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {row.batteryCost}
+                                                </TableCell>
+                                                <TableCell align="left">{row.pvSize}</TableCell>
+                                                <TableCell align="left">{row.pvCost}</TableCell>
+                                                <TableCell align="left">{row.roi}</TableCell>
+                                                <TableCell align="left">
+                                                    {row.gridConnection}
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRows > 0 && (
+                                    <TableRow
+                                        style={{
+                                            height: 53 * emptyRows,
+                                        }}
+                                    >
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
                         </Table>
                     </TableContainer>
-                    {!tableData && (
-                        <Stack justifyContent="center" alignItems="center" sx={{ p: 2 }}>
-                            <Typography variant="h3" style={{ color: '#1665c1' }}>
-                                Please select a row in the table above
-                            </Typography>
-                        </Stack>
-                    )}
-                    {tableData && (
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, 100]}
-                            component="div"
-                            count={tableData.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    )}
+
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25, 100]}
+                        component="div"
+                        count={tableData.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
                 </Paper>
             </Box>
         </Stack>
