@@ -47,7 +47,7 @@ const validationSchema = yup.object().shape({
     grid: yup.string().required('This field is required'),
 });
 
-const Configuration = ({getMainTableData}) => {
+const Configuration = ({ getMainTableData }) => {
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
     const [maxBatterySize, setMaxBatterySize] = useState(initialBatterySize);
     const [minBatteryPower, setMinBatteryPower] = useState(initialBatteryPower);
@@ -177,7 +177,7 @@ const Configuration = ({getMainTableData}) => {
                                     formik.touched.customerName && formik.errors.customerName
                                 }
                             />
-                            <TooltipIcon tooltipText="Some tooltip" />
+                            <TooltipIcon tooltipText="Fill in customer name" />
                         </Stack>
                         <Stack direction="row" spacing={2}>
                             <TextField
@@ -194,7 +194,7 @@ const Configuration = ({getMainTableData}) => {
                                     formik.touched.simulationName && formik.errors.simulationName
                                 }
                             />
-                            <TooltipIcon tooltipText="Some tooltip" />
+                            <TooltipIcon tooltipText="Fill in simulation name" />
                         </Stack>
                         <Stack direction="row" spacing={2}>
                             <TextField
@@ -214,7 +214,7 @@ const Configuration = ({getMainTableData}) => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <TooltipIcon tooltipText="Some tooltip" />
+                            <TooltipIcon tooltipText="Select region" />
                         </Stack>
                         <Stack direction="row" spacing={2}>
                             <TextField
@@ -234,7 +234,7 @@ const Configuration = ({getMainTableData}) => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            <TooltipIcon tooltipText="Some tooltip" />
+                            <TooltipIcon tooltipText="Select currency" />
                         </Stack>
                         <Stack direction="column" spacing={2}>
                             <Typography variant="h3">Battery</Typography>
@@ -242,7 +242,7 @@ const Configuration = ({getMainTableData}) => {
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Min size"
+                                    label="Min size (MWh)"
                                     size="small"
                                     name="batteryMinSize"
                                     onChange={formik.handleChange}
@@ -265,7 +265,7 @@ const Configuration = ({getMainTableData}) => {
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Max size"
+                                    label="Max size (MWh)"
                                     size="small"
                                     name="batteryMaxSize"
                                     onChange={formik.handleChange}
@@ -285,13 +285,13 @@ const Configuration = ({getMainTableData}) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Some tooltip" />
+                                <TooltipIcon tooltipText="Select battery’s minimum and maximum size" />
                             </Stack>
                             <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Min power"
+                                    label="Min power (MW)"
                                     size="small"
                                     name="batteryMinPower"
                                     onChange={formik.handleChange}
@@ -314,7 +314,7 @@ const Configuration = ({getMainTableData}) => {
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Max power"
+                                    label="Max power (MW)"
                                     size="small"
                                     name="batteryMaxPower"
                                     onChange={formik.handleChange}
@@ -334,13 +334,13 @@ const Configuration = ({getMainTableData}) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Some tooltip" />
+                                <TooltipIcon tooltipText="Select battery’s minimum and maximum power" />
                             </Stack>
                             <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Min cost"
+                                    label="Min cost ($/kWh)"
                                     size="small"
                                     name="batteryMinCost"
                                     onChange={formik.handleChange}
@@ -363,7 +363,7 @@ const Configuration = ({getMainTableData}) => {
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Max cost"
+                                    label="Max cost ($/kWh)"
                                     size="small"
                                     name="batteryMaxCost"
                                     onChange={formik.handleChange}
@@ -383,7 +383,7 @@ const Configuration = ({getMainTableData}) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Some tooltip" />
+                                <TooltipIcon tooltipText="Select battery’s minimum and maximum cost" />
                             </Stack>
                         </Stack>
                         <Stack direction="column" spacing={2}>
@@ -392,7 +392,7 @@ const Configuration = ({getMainTableData}) => {
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Min size"
+                                    label="Min size (MW)"
                                     size="small"
                                     name="pvMinSize"
                                     onChange={formik.handleChange}
@@ -409,7 +409,7 @@ const Configuration = ({getMainTableData}) => {
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Max size"
+                                    label="Max size (MW)"
                                     size="small"
                                     name="pvMaxSize"
                                     onChange={formik.handleChange}
@@ -423,13 +423,13 @@ const Configuration = ({getMainTableData}) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Some tooltip" />
+                                <TooltipIcon tooltipText="Select PV’s minimum and maximum size" />
                             </Stack>
                             <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Min cost"
+                                    label="Min cost ($/MW)"
                                     size="small"
                                     name="pvMinCost"
                                     onChange={formik.handleChange}
@@ -446,7 +446,7 @@ const Configuration = ({getMainTableData}) => {
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Max cost"
+                                    label="Max cost ($/MW)"
                                     size="small"
                                     name="pvMaxCost"
                                     onChange={formik.handleChange}
@@ -460,7 +460,7 @@ const Configuration = ({getMainTableData}) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Some tooltip" />
+                                <TooltipIcon tooltipText="Select PV’s minimum and maximum cost" />
                             </Stack>
                         </Stack>
                         <Stack direction="column" spacing={2}>
@@ -469,7 +469,7 @@ const Configuration = ({getMainTableData}) => {
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Grid"
+                                    label="Grid (MW)"
                                     size="small"
                                     name="grid"
                                     onChange={formik.handleChange}
@@ -483,7 +483,7 @@ const Configuration = ({getMainTableData}) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Some tooltip" />
+                                <TooltipIcon tooltipText="Set up maximum grid connection" />
                             </Stack>
                         </Stack>
                         <Stack
@@ -500,7 +500,7 @@ const Configuration = ({getMainTableData}) => {
                                 spacing={2}
                             >
                                 <Button variant="outlined" component="label" size="large" fullWidth>
-                                    Upload File
+                                    Upload Data File
                                     <input
                                         type="file"
                                         name="file"
@@ -517,7 +517,7 @@ const Configuration = ({getMainTableData}) => {
                                 <Tooltip
                                     title={
                                         <a href="" download>
-                                            Download example
+                                            Click here to download an example data file
                                         </a>
                                     }
                                     placement="right"
@@ -554,7 +554,7 @@ const Configuration = ({getMainTableData}) => {
                                 </Stack>
                             )}
                             <Button fullWidth variant="contained" size="large" type="submit">
-                                Run
+                                Run Simulation
                             </Button>
                         </Stack>
                     </Stack>

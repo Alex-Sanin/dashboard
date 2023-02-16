@@ -11,7 +11,7 @@ import arrowLeft from '../../../assets/images/arrowLeft.svg';
 import arrowShort from '../../../assets/images/arrowShort.svg';
 
 const PlDiagram = ({ diagramData }) => {
-    console.log(diagramData);
+
     if (!diagramData) {
         return <Preloader />;
     }
@@ -25,8 +25,8 @@ const PlDiagram = ({ diagramData }) => {
                             <Typography variant="body3" sx={{ pb: 1 }}>
                                 Battery:
                             </Typography>
-                            <Typography variant="body3">{diagramData[1].energy} MWh</Typography>
-                            <Typography variant="body3">{diagramData[1].cost} $</Typography>
+                            <Typography variant="body3">{diagramData[2].energy} MWh</Typography>
+                            <Typography variant="body3">{diagramData[2].cost} $</Typography>
                         </Stack>
                     </Paper>
                     <img src={arrowShort} alt="pic" />
@@ -35,8 +35,8 @@ const PlDiagram = ({ diagramData }) => {
                             <Typography variant="body3" sx={{ pb: 1 }}>
                                 Customer:
                             </Typography>
-                            <Typography variant="body3">{diagramData[2].energy} MWh</Typography>
-                            <Typography variant="body3">{diagramData[2].cost} $</Typography>
+                            <Typography variant="body3">{diagramData[1].energy} MWh</Typography>
+                            <Typography variant="body3">{diagramData[1].cost} $</Typography>
                         </Stack>
                     </Paper>
                 </Stack>
