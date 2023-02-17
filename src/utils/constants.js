@@ -31,6 +31,8 @@ export const currencies = [
     },
 ];
 
+export const dataFormatter = (number) => new Intl.NumberFormat('en-US').format(number);
+
 export const initialBatterySize = Array.from(Array(100), (_, index) => index + 1);
 
 export const initialBatteryPower = [0.1, 0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10];

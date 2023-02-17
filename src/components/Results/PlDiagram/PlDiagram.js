@@ -1,6 +1,7 @@
 import { Stack, Paper, Typography } from '@mui/material';
 
 import Preloader from '../../loaders/Preloader';
+import { dataFormatter } from '../../../utils/constants';
 
 import batteryIcon from '../../../assets/images/battery.svg';
 import powerLinesIcon from '../../../assets/images/powerLines.svg';
@@ -11,6 +12,16 @@ import arrowLeft from '../../../assets/images/arrowLeft.svg';
 import arrowShort from '../../../assets/images/arrowShort.svg';
 
 const PlDiagram = ({ diagramData }) => {
+    const data = diagramData.map((item) => {
+        return {
+            action: item.action,
+            from: item.from,
+            to: item.from,
+            cost: item.cost ? dataFormatter(item.cost) : '',
+            energy: item.energy ? dataFormatter(item.energy) : '',
+            income: item.income ? dataFormatter(item.income) : '',
+        };
+    });
 
     if (!diagramData) {
         return <Preloader />;
@@ -20,13 +31,13 @@ const PlDiagram = ({ diagramData }) => {
             <Stack direction="column" alignItems="center" spacing={2} sx={{ ml: '-12px' }}>
                 <Typography variant="h3">Market</Typography>
                 <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
-                    <Paper sx={{ minWidth: '100px',height: '100%', py: 1, px: 1.5 }}>
+                    <Paper sx={{ minWidth: '100px', height: '100%', py: 1, px: 1.5 }}>
                         <Stack direction="column">
                             <Typography variant="body3" sx={{ pb: 1 }}>
                                 Battery:
                             </Typography>
-                            <Typography variant="body3">{diagramData[2].energy} MWh</Typography>
-                            <Typography variant="body3">{diagramData[2].cost} $</Typography>
+                            <Typography variant="body3">{data[2].energy} MWh</Typography>
+                            <Typography variant="body3">{data[2].cost} $</Typography>
                         </Stack>
                     </Paper>
                     <img src={arrowShort} alt="pic" />
@@ -35,8 +46,8 @@ const PlDiagram = ({ diagramData }) => {
                             <Typography variant="body3" sx={{ pb: 1 }}>
                                 Customer:
                             </Typography>
-                            <Typography variant="body3">{diagramData[1].energy} MWh</Typography>
-                            <Typography variant="body3">{diagramData[1].cost} $</Typography>
+                            <Typography variant="body3">{data[1].energy} MWh</Typography>
+                            <Typography variant="body3">{data[1].cost} $</Typography>
                         </Stack>
                     </Paper>
                 </Stack>
@@ -85,8 +96,8 @@ const PlDiagram = ({ diagramData }) => {
                     }}
                 >
                     <Stack direction="column">
-                        <Typography variant="body3">{diagramData[6].energy} MWh</Typography>
-                        <Typography variant="body3">{diagramData[6].income} $</Typography>
+                        <Typography variant="body3">{data[6].energy} MWh</Typography>
+                        <Typography variant="body3">{data[6].income} $</Typography>
                     </Stack>
                 </Paper>
                 <Paper
@@ -98,8 +109,10 @@ const PlDiagram = ({ diagramData }) => {
                     }}
                 >
                     <Stack direction="column">
-                        <Typography variant="body3">{diagramData[4].energy} MWh</Typography>
-                        <Typography variant="body3">{diagramData[4].cost || diagramData[4].income || '-'} $</Typography>
+                        <Typography variant="body3">{data[4].energy} MWh</Typography>
+                        <Typography variant="body3">
+                            {data[4].cost || data[4].income || '-'} $
+                        </Typography>
                     </Stack>
                 </Paper>
                 <Paper
@@ -111,8 +124,8 @@ const PlDiagram = ({ diagramData }) => {
                     }}
                 >
                     <Stack direction="column">
-                        <Typography variant="body3">{diagramData[9].energy} MWh</Typography>
-                        <Typography variant="body3">{diagramData[9].income} $</Typography>
+                        <Typography variant="body3">{data[9].energy} MWh</Typography>
+                        <Typography variant="body3">{data[9].income} $</Typography>
                     </Stack>
                 </Paper>
             </Stack>
@@ -138,8 +151,10 @@ const PlDiagram = ({ diagramData }) => {
                     }}
                 >
                     <Stack direction="column">
-                        <Typography variant="body3">{diagramData[8].energy} MWh</Typography>
-                        <Typography variant="body3">{diagramData[8].cost || diagramData[8].income || '-'} $</Typography>
+                        <Typography variant="body3">{data[8].energy} MWh</Typography>
+                        <Typography variant="body3">
+                            {data[8].cost || data[8].income || '-'} $
+                        </Typography>
                     </Stack>
                 </Paper>
                 <Paper
@@ -151,8 +166,8 @@ const PlDiagram = ({ diagramData }) => {
                     }}
                 >
                     <Stack direction="column">
-                        <Typography variant="body3">{diagramData[3].energy} MWh</Typography>
-                        <Typography variant="body3">{diagramData[3].income} $</Typography>
+                        <Typography variant="body3">{data[3].energy} MWh</Typography>
+                        <Typography variant="body3">{data[3].income} $</Typography>
                     </Stack>
                 </Paper>
             </Stack>
@@ -186,8 +201,8 @@ const PlDiagram = ({ diagramData }) => {
                     }}
                 >
                     <Stack direction="column">
-                        <Typography variant="body3">{diagramData[5].energy} MWh</Typography>
-                        <Typography variant="body3">{diagramData[5].income} $</Typography>
+                        <Typography variant="body3">{data[5].energy} MWh</Typography>
+                        <Typography variant="body3">{data[5].income} $</Typography>
                     </Stack>
                 </Paper>
                 <Paper
@@ -199,8 +214,8 @@ const PlDiagram = ({ diagramData }) => {
                     }}
                 >
                     <Stack direction="column">
-                        <Typography variant="body3">{diagramData[7].energy} MWh</Typography>
-                        <Typography variant="body3">{diagramData[7].income} $</Typography>
+                        <Typography variant="body3">{data[7].energy} MWh</Typography>
+                        <Typography variant="body3">{data[7].income} $</Typography>
                     </Stack>
                 </Paper>
             </Stack>
