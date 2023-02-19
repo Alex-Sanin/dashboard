@@ -220,9 +220,9 @@ const DetailsTable = ({
                                                 </TableCell>
                                                 <TableCell align="left">{row.pvSize}</TableCell>
                                                 <TableCell align="left">{row.pvCost}</TableCell>
-                                                <TableCell align="left">{row.roi}</TableCell>
+                                                <TableCell align="left">{row.gridConnection}</TableCell>
                                                 <TableCell align="left">
-                                                    {row.gridConnection}
+                                                    {row.roi}
                                                 </TableCell>
                                             </TableRow>
                                         );

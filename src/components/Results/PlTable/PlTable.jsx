@@ -7,9 +7,23 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Stack, Typography } from '@mui/material';
 
-import Preloader from '../../../components/loaders/Preloader'
+import Preloader from '../../../components/loaders/Preloader';
+import { dataFormatter } from '../../../utils/constants';
 
 const PlTable = ({ tableData, tableName }) => {
+    const cellFormatter = (cell) => {
+        if (cell === '') {
+            return cell;
+        }
+        if (cell.match(/[a-zA-Z]/)) {
+            return cell;
+        }
+        if (cell.length === 4 && cell.startsWith('20')) {
+            return cell;
+        }
+        return dataFormatter(cell);
+    };
+
     if (!tableData) {
         return <Preloader />;
     }
@@ -24,7 +38,7 @@ const PlTable = ({ tableData, tableName }) => {
                                 {tableData.map((row, index) => (
                                     <TableRow hover key={index}>
                                         {row.map((cell, index) => (
-                                            <TableCell key={index}>{cell}</TableCell>
+                                            <TableCell key={index}>{cellFormatter(cell)}</TableCell>
                                         ))}
                                     </TableRow>
                                 ))}

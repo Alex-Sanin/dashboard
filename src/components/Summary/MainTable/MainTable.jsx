@@ -180,7 +180,7 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
-                                                    style={{ minWidth: '120px' }}
+                                                    // style={{ minWidth: '120px' }}
                                                 >
                                                     {row.region}
                                                 </TableCell>

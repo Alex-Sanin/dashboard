@@ -5,6 +5,7 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip } from 'recha
 import Preloader from '../../loaders/Preloader';
 
 const RoiBarChart = ({ barChartData }) => {
+
     const data = barChartData.map((item, index) => {
         return { roi: item, id: index };
     });
