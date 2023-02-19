@@ -11,6 +11,7 @@ import { Stack, Typography } from '@mui/material';
 
 import EnhancedTableHead from '../EnhancedTableHead';
 import Preloader from '../../loaders/Preloader';
+import { dataFormatter } from '../../../utils/constants';
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -216,14 +217,16 @@ const DetailsTable = ({
                                                     {row.batteryPower}
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    {row.batteryCost}
+                                                    {dataFormatter(row.batteryCost)}
                                                 </TableCell>
                                                 <TableCell align="left">{row.pvSize}</TableCell>
-                                                <TableCell align="left">{row.pvCost}</TableCell>
-                                                <TableCell align="left">{row.gridConnection}</TableCell>
                                                 <TableCell align="left">
-                                                    {row.roi}
+                                                    {dataFormatter(row.pvCost)}
                                                 </TableCell>
+                                                <TableCell align="left">
+                                                    {row.gridConnection}
+                                                </TableCell>
+                                                <TableCell align="left">{row.roi}</TableCell>
                                             </TableRow>
                                         );
                                     })}

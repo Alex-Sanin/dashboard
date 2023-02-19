@@ -18,7 +18,7 @@ const PlTable = ({ tableData, tableName }) => {
         if (cell.match(/[a-zA-Z]/)) {
             return cell;
         }
-        if (cell.length === 4 && cell.startsWith('20')) {
+        if (cell.length === 4 && (cell.startsWith('202') || cell.startsWith('203'))) {
             return cell;
         }
         return dataFormatter(cell);
