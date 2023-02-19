@@ -130,16 +130,16 @@ const Configuration = ({ getMainTableData }) => {
             );
         }
 
-        if (formik.values.pvMinSize) {
+        if (formik.values.pvMinSize || formik.values.pvMinSize === 0) {
             setMaxPvSize(initialPvSize.filter((item) => item >= formik.values.pvMinSize));
         }
-        if (formik.values.pvMaxSize) {
+        if (formik.values.pvMaxSize || formik.values.pvMaxSize === 0) {
             setMinPvSize(initialPvSize.filter((item) => item <= formik.values.pvMaxSize));
         }
-        if (formik.values.pvMinCost) {
+        if (formik.values.pvMinCost || formik.values.pvMinCost === 0) {
             setMaxPvCost(initialPvCost.filter((item) => item >= formik.values.pvMinCost));
         }
-        if (formik.values.pvMaxCost) {
+        if (formik.values.pvMaxCost || formik.values.pvMaxCost === 0) {
             setMinPvCost(initialPvCost.filter((item) => item <= formik.values.pvMaxCost));
         }
     }, [formik.values]);
@@ -147,6 +147,9 @@ const Configuration = ({ getMainTableData }) => {
         formik.setFieldValue('file', e.currentTarget.files[0]);
     };
     const handleDeleteFile = () => formik.setFieldValue('file', '');
+
+    // console.log('minPvSize', minPvSize);
+    // console.log('maxPvSize', maxPvSize);
 
     return (
         <Stack
