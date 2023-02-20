@@ -11,9 +11,26 @@ import Preloader from '../../../components/loaders/Preloader';
 import { dataFormatter } from '../../../utils/constants';
 
 const PlTable = ({ tableData, tableName }) => {
+    const isCellsName = (cell) => {
+        return (
+            cell.toLowerCase().includes('cost') ||
+            cell.toLowerCase().includes('investment') ||
+            cell.toLowerCase().includes('revenue') ||
+            cell.toLowerCase().includes('profit') ||
+            cell.toLowerCase().includes('income') ||
+            cell.toLowerCase().includes('cash')
+        );
+    };
+
     const cellFormatter = (cell) => {
         if (cell === '') {
             return cell;
+        }
+        if (isCellsName(cell)) {
+            return cell + ' ($)';
+        }
+        if (cell.toLowerCase().includes('roi')) {
+            return cell + ' (year)';
         }
         if (cell.match(/[a-zA-Z]/)) {
             return cell;
@@ -30,7 +47,7 @@ const PlTable = ({ tableData, tableName }) => {
     return (
         <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
             <Typography variant="h3">{tableName}</Typography>
-            <Box sx={{ width: '100%' }}>
+            <Box sx={{ width: '100%', maxHeight: '400px', overflow: 'scroll' }}>
                 <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
                     <TableContainer>
                         <Table aria-labelledby="tableTitle" size="medium">
