@@ -86,7 +86,7 @@ const PlDiagram = ({ diagramData, plDiagramDescription }) => {
                             transform: 'translate(-25px, 70px)',
                         }}
                     >
-                        Grid connection: {plDiagramDescription[0]}
+                        Grid connection: {plDiagramDescription[0]} MW
                     </Typography>
                 </Stack>
                 <img
@@ -145,17 +145,15 @@ const PlDiagram = ({ diagramData, plDiagramDescription }) => {
                     direction="column"
                     alignItems="center"
                     spacing={1}
-                    style={{
-                        transform: 'translateX(-25px)',
-                    }}
+                    style={{ transform: 'translateX(-30px)' }}
                 >
                     <img src={batteryIcon} alt="pic" style={{ height: '70px' }} />
                     <Typography variant="subtitle1">Battery</Typography>
                     <Stack direction="column" alignItems="center">
-                        <Typography variant="body3">Size: {plDiagramDescription[1]}</Typography>
-                        <Typography variant="body3">Power: {plDiagramDescription[2]}</Typography>
+                        <Typography variant="body3">Size: {plDiagramDescription[1]} MWh</Typography>
+                        <Typography variant="body3">Power: {plDiagramDescription[2]} Wh</Typography>
                         <Typography variant="body3">
-                            Cost: {dataFormatter(plDiagramDescription[3])}
+                            Cost: {dataFormatter(plDiagramDescription[3])} $
                         </Typography>
                     </Stack>
                 </Stack>
@@ -187,10 +185,10 @@ const PlDiagram = ({ diagramData, plDiagramDescription }) => {
                 >
                     <img src={solarPanelIcon} alt="pic" style={{ height: '70px' }} />
                     <Typography variant="subtitle1">PV</Typography>
-                    <Stack direction="column">
-                        <Typography variant="body3">Size: {plDiagramDescription[4]}</Typography>
+                    <Stack direction="column" alignItems="center">
+                        <Typography variant="body3">Size: {plDiagramDescription[4]} MW</Typography>
                         <Typography variant="body3">
-                            Cost: {dataFormatter(plDiagramDescription[5])}
+                            Cost: {dataFormatter(plDiagramDescription[5])} $
                         </Typography>
                     </Stack>
                 </Stack>
