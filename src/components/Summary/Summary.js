@@ -8,6 +8,8 @@ const Summary = ({
     mainTableData,
     detailsTableData,
     setDetailsTableData,
+    bestRoi,
+    setBestRoi,
     roiBarGraphData,
     setRoiBarGraphData,
     setPlSummaryTable,
@@ -30,6 +32,7 @@ const Summary = ({
         const json = await response.json();
         // console.log('simulation_main_table_selected_row: ', json);
         setDetailsTableData(Object.values(json[0]));
+        setBestRoi(json[2]);
         setRoiBarGraphData(Object.values(json[3]));
         setPlSummaryTable(Object.values(json[5]));
         setPlCashFlowGraph(Object.values(json[7]));
@@ -68,7 +71,7 @@ const Summary = ({
                 setPlDiagram={setPlDiagram}
                 getMainTableSelectedRowData={getMainTableSelectedRowData}
             />
-            {roiBarGraphData && <RoiBarChart barChartData={roiBarGraphData} />}
+            {roiBarGraphData && <RoiBarChart bestRoi={bestRoi} barChartData={roiBarGraphData} />}
         </Stack>
     );
 };

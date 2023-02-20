@@ -4,13 +4,10 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip } from 'recha
 
 import Preloader from '../../loaders/Preloader';
 
-const RoiBarChart = ({ barChartData }) => {
-
+const RoiBarChart = ({ bestRoi, barChartData }) => {
     const data = barChartData.map((item, index) => {
         return { roi: item, id: index };
     });
-
-    const bestRoi = barChartData.sort((a, b) => a - b)[0];
 
     if (!barChartData) {
         return <Preloader />;
@@ -38,7 +35,7 @@ const RoiBarChart = ({ barChartData }) => {
                     <Bar dataKey="roi">
                         {data.map((entry, index) => (
                             <Cell
-                                fill={entry.roi === bestRoi ? '#1665C1' : '#E5E5E5'}
+                                fill={entry.id === bestRoi ? '#1665C1' : '#E5E5E5'}
                                 key={`cell-${index}`}
                             />
                         ))}

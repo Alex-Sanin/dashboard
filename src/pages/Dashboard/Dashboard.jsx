@@ -9,6 +9,7 @@ import Result from '../../components/Results/Results';
 const Dashboard = () => {
     const [mainTableData, setMainTableData] = useState('');
     const [detailsTableData, setDetailsTableData] = useState('');
+    const [bestRoi, setBestRoi] = useState('');
     const [roiBarGraphData, setRoiBarGraphData] = useState('');
     const [plSummaryTable, setPlSummaryTable] = useState('');
     const [plCashFlowGraph, setPlCashFlowGraph] = useState('');
@@ -28,6 +29,7 @@ const Dashboard = () => {
         // console.log('GET DATA RESPONSE: ', json);
         setMainTableData(Object.values(json[1]));
         setDetailsTableData(Object.values(json[3]));
+        setBestRoi(json[5]);
         setRoiBarGraphData(Object.values(json[6]));
         setPlSummaryTable(Object.values(json[8]));
         setPlCashFlowGraph(Object.values(json[10]));
@@ -66,6 +68,8 @@ const Dashboard = () => {
                             mainTableData={mainTableData}
                             detailsTableData={detailsTableData}
                             setDetailsTableData={setDetailsTableData}
+                            bestRoi={bestRoi}
+                            setBestRoi={setBestRoi}
                             roiBarGraphData={roiBarGraphData}
                             setRoiBarGraphData={setRoiBarGraphData}
                             setPlSummaryTable={setPlSummaryTable}
