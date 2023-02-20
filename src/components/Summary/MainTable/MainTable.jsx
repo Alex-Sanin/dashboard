@@ -98,13 +98,13 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
         setOrderBy(property);
     };
 
-    const handleRowSelect = (row) => {
-        if (selectedRow === row) {
+    const handleRowSelect = (simulationMainId, userName) => {
+        if (selectedRow === simulationMainId) {
             setSelectedRow('');
             getMainTableData();
         } else {
-            setSelectedRow(row);
-            getMainTableSelectedRowData();
+            setSelectedRow(simulationMainId);
+            getMainTableSelectedRowData(simulationMainId, userName);
         }
     };
 
@@ -141,14 +141,20 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
                                 {stableSort(tableData, getComparator(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
-                                        const isItemSelected = selectedRow === row.id;
+                                        const isItemSelected = selectedRow === row.simulationMainId;
                                         const labelId = `enhanced-table-checkbox-${index}`;
+
                                         return (
                                             <TableRow
                                                 hover
-                                                onClick={() => handleRowSelect(row.id)}
+                                                onClick={() =>
+                                                    handleRowSelect(
+                                                        row.simulationMainId,
+                                                        row.userName
+                                                    )
+                                                }
                                                 tabIndex={-1}
-                                                key={row.id}
+                                                key={row.simulationMainId}
                                                 style={{
                                                     backgroundColor: isItemSelected
                                                         ? '#bfddfc'
@@ -163,7 +169,7 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
                                                     scope="row"
                                                     padding="normal"
                                                 >
-                                                    {row.id}
+                                                    {row.simulationMainId}
                                                 </TableCell>
                                                 <TableCell align="left">{row.userName}</TableCell>
                                                 <TableCell align="left">
@@ -174,16 +180,11 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
-                                                    style={{ minWidth: '120px' }}
+                                                    style={{ minWidth: '100px' }}
                                                 >
                                                     {row.createTime}
                                                 </TableCell>
-                                                <TableCell
-                                                    align="left"
-                                                    // style={{ minWidth: '120px' }}
-                                                >
-                                                    {row.region}
-                                                </TableCell>
+                                                <TableCell align="left">{row.region}</TableCell>
                                                 <TableCell align="left">
                                                     {row?.currency.toUpperCase()}
                                                 </TableCell>

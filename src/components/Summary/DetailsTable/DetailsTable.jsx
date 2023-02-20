@@ -108,19 +108,26 @@ const DetailsTable = ({
     getMainTableSelectedRowData,
 }) => {
     const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('userName');
+    const [orderBy, setOrderBy] = useState('simulationMainId');
     const [selectedRow, setSelectedRow] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    const getDetailsTableSelectedRowData = async () => {
-        const response = await fetch('/sim1/simulation_details_table_selected_row', {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Credentials': true,
-                'Content-Type': 'application/json',
-            },
-        });
+    const getDetailsTableSelectedRowData = async (
+        simulationMainId,
+        simulationsDetailsId,
+        userName
+    ) => {
+        const response = await fetch(
+            `/sim1/simulation_details_table_selected_row/?user_name=${userName}&simulation_main_table_id=${simulationMainId}&simulation_details_table_id=${simulationsDetailsId}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
         const json = await response.json();
         // console.log('simulation_details_table_selected_row: ', json);
         setPlSummaryTable(Object.values(json[1]));
@@ -135,13 +142,13 @@ const DetailsTable = ({
         setOrderBy(property);
     };
 
-    const handleRowSelect = (row) => {
-        if (selectedRow === row) {
+    const handleRowSelect = (simulationMainId, simulationsDetailsId, userName) => {
+        if (selectedRow === simulationsDetailsId) {
             setSelectedRow('');
             getMainTableSelectedRowData();
         } else {
-            setSelectedRow(row);
-            getDetailsTableSelectedRowData();
+            setSelectedRow(simulationsDetailsId);
+            getDetailsTableSelectedRowData(simulationMainId, simulationsDetailsId, userName);
         }
     };
 
@@ -165,11 +172,7 @@ const DetailsTable = ({
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
                     <TableContainer>
-                        <Table
-                            // sx={{ minWidth: 750 }}
-                            aria-labelledby="tableTitle"
-                            size="medium"
-                        >
+                        <Table aria-labelledby="tableTitle" size="medium">
                             <EnhancedTableHead
                                 headCells={headCells}
                                 order={order}
@@ -184,11 +187,16 @@ const DetailsTable = ({
                                         const isItemSelected =
                                             selectedRow === row.simulationsDetailsId;
                                         const labelId = `enhanced-table-checkbox-${index}`;
+
                                         return (
                                             <TableRow
                                                 hover
                                                 onClick={() =>
-                                                    handleRowSelect(row.simulationsDetailsId)
+                                                    handleRowSelect(
+                                                        row.simulationMainId,
+                                                        row.simulationsDetailsId,
+                                                        row.userName
+                                                    )
                                                 }
                                                 tabIndex={-1}
                                                 key={row.simulationsDetailsId}

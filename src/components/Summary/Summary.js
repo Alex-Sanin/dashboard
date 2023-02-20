@@ -16,14 +16,17 @@ const Summary = ({
     setPlDiagram,
     getMainTableData,
 }) => {
-    const getMainTableSelectedRowData = async () => {
-        const response = await fetch('/sim1/simulation_main_table_selected_row', {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Credentials': true,
-                'Content-Type': 'application/json',
-            },
-        });
+    const getMainTableSelectedRowData = async (mainTableId, userName) => {
+        const response = await fetch(
+            `/sim1/simulation_main_table_selected_row/?user_name=${userName}&simulation_main_table_id=${mainTableId}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
         const json = await response.json();
         // console.log('simulation_main_table_selected_row: ', json);
         setDetailsTableData(Object.values(json[0]));
@@ -37,8 +40,6 @@ const Summary = ({
         //     console.log('ERROR: ', error);
         // }
     };
-
-
 
     return (
         <Stack

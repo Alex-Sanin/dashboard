@@ -1,10 +1,16 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Button } from '@mui/material';
 
 import PlTable from './PlTable/PlTable';
 import CashFlowGraph from './CashFlowGraph/CashFlowGraph';
 import PlDiagram from './PlDiagram/PlDiagram';
 
-const Result = ({ plSummaryTable, plCashFlowGraph, plDetailsTable, plDiagram }) => {
+const Result = ({
+    plSummaryTable,
+    plCashFlowGraph,
+    plDetailsTable,
+    plDiagram,
+    plDiagramDescription,
+}) => {
     return (
         <Stack
             direction="column"
@@ -22,7 +28,17 @@ const Result = ({ plSummaryTable, plCashFlowGraph, plDetailsTable, plDiagram }) 
                 <PlTable tableData={plSummaryTable} tableName="P&l Summary - Yearly" />
                 <CashFlowGraph graphData={plCashFlowGraph} />
                 <PlTable tableData={plDetailsTable} tableName="P&L Details - Yearly" />
-                {plDiagram && <PlDiagram diagramData={plDiagram} />}
+                {plDiagram && (
+                    <PlDiagram
+                        diagramData={plDiagram}
+                        plDiagramDescription={plDiagramDescription}
+                    />
+                )}
+            </Stack>
+            <Stack direction="row" justifyContent="flex-end">
+                <Button variant="contained" size="large" type="submit" sx={{ width: '220px' }}>
+                    Download Data
+                </Button>
             </Stack>
         </Stack>
     );

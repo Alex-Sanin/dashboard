@@ -4,14 +4,14 @@ import Preloader from '../../loaders/Preloader';
 import { dataFormatter } from '../../../utils/constants';
 
 import batteryIcon from '../../../assets/images/battery.svg';
-import powerLinesIcon from '../../../assets/images/powerLines.svg';
+import gridConnection from '../../../assets/images/gridConnection.svg';
 import solarPanelIcon from '../../../assets/images/solarPanel.svg';
 import factoryIcon from '../../../assets/images/factory.svg';
 import arrowRightRound from '../../../assets/images/arrowRightRound.svg';
 import arrowLeft from '../../../assets/images/arrowLeft.svg';
 import arrowShort from '../../../assets/images/arrowShort.svg';
 
-const PlDiagram = ({ diagramData }) => {
+const PlDiagram = ({ diagramData, plDiagramDescription }) => {
     const data = diagramData.map((item) => {
         return {
             action: item.action,
@@ -77,7 +77,18 @@ const PlDiagram = ({ diagramData }) => {
                         transform: 'translate(4px, 61px) rotate(0deg) rotateY(180deg)',
                     }}
                 />
-                <img src={powerLinesIcon} alt="pic" style={{ height: '70px' }} />
+                <Stack direction="column" spacing={1}>
+                    <img src={gridConnection} alt="pic" style={{ height: '70px' }} />
+                    <Typography
+                        variant="subtitle1"
+                        style={{
+                            position: 'absolute',
+                            transform: 'translate(-25px, 70px)',
+                        }}
+                    >
+                        Grid connection: {plDiagramDescription[0]}
+                    </Typography>
+                </Stack>
                 <img
                     src={arrowRightRound}
                     alt="pic"
@@ -130,24 +141,65 @@ const PlDiagram = ({ diagramData }) => {
                 </Paper>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={2} sx={{ position: 'relative' }}>
-                <img src={batteryIcon} alt="pic" style={{ height: '70px' }} />
-                <img src={arrowLeft} alt="pic" style={{ width: '360px' }} />
+                <Stack
+                    direction="column"
+                    alignItems="center"
+                    spacing={1}
+                    style={{
+                        transform: 'translateX(-25px)',
+                    }}
+                >
+                    <img src={batteryIcon} alt="pic" style={{ height: '70px' }} />
+                    <Typography variant="subtitle1">Battery</Typography>
+                    <Stack direction="column" alignItems="center">
+                        <Typography variant="body3">Size: {plDiagramDescription[1]}</Typography>
+                        <Typography variant="body3">Power: {plDiagramDescription[2]}</Typography>
+                        <Typography variant="body3">
+                            Cost: {dataFormatter(plDiagramDescription[3])}
+                        </Typography>
+                    </Stack>
+                </Stack>
+                <img
+                    src={arrowLeft}
+                    alt="pic"
+                    style={{
+                        width: '330px',
+                        transform: 'translateX(-50px)',
+                    }}
+                />
                 <img
                     src={arrowLeft}
                     alt="pic"
                     style={{
                         position: 'absolute',
-                        width: '360px',
-                        transform: 'translateX(55px) rotate(270deg)',
+                        width: '410px',
+                        transform: 'translateX(17px) rotate(270deg)',
                     }}
                 />
-                <img src={solarPanelIcon} alt="pic" style={{ height: '70px' }} />
+                <Stack
+                    direction="column"
+                    alignItems="center"
+                    spacing={1}
+                    style={{
+                        position: 'absolute',
+                        transform: 'translateX(412px)',
+                    }}
+                >
+                    <img src={solarPanelIcon} alt="pic" style={{ height: '70px' }} />
+                    <Typography variant="subtitle1">PV</Typography>
+                    <Stack direction="column">
+                        <Typography variant="body3">Size: {plDiagramDescription[4]}</Typography>
+                        <Typography variant="body3">
+                            Cost: {dataFormatter(plDiagramDescription[5])}
+                        </Typography>
+                    </Stack>
+                </Stack>
                 <Paper
                     sx={{
                         position: 'absolute',
                         py: 1,
                         px: 1.5,
-                        transform: 'translate(73px, 37px)',
+                        transform: 'translate(103px, 37px)',
                     }}
                 >
                     <Stack direction="column">
@@ -162,7 +214,7 @@ const PlDiagram = ({ diagramData }) => {
                         position: 'absolute',
                         py: 1,
                         px: 1.5,
-                        transform: 'translate(250px, 120px)',
+                        transform: 'translate(240px, 120px)',
                     }}
                 >
                     <Stack direction="column">

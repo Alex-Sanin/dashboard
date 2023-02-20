@@ -14,6 +14,7 @@ const Dashboard = () => {
     const [plCashFlowGraph, setPlCashFlowGraph] = useState('');
     const [plDetailsTable, setPlDetailsTable] = useState('');
     const [plDiagram, setPlDiagram] = useState('');
+    const [plDiagramDescription, setPlDiagramDescription] = useState('');
 
     const getMainTableData = async () => {
         const response = await fetch('/sim1/get_all_data', {
@@ -32,6 +33,7 @@ const Dashboard = () => {
         setPlCashFlowGraph(Object.values(json[10]));
         setPlDetailsTable(Object.values(json[12]));
         setPlDiagram(Object.values(json[14]));
+        setPlDiagramDescription(Object.values(json[16]));
         // if (!response.ok) {
         //     setError(response?.error?.message);
         //     console.log('ERROR: ', error);
@@ -77,6 +79,7 @@ const Dashboard = () => {
                             plCashFlowGraph={plCashFlowGraph}
                             plDetailsTable={plDetailsTable}
                             plDiagram={plDiagram}
+                            plDiagramDescription={plDiagramDescription}
                         />
                     </Stack>
                 </Grid>
