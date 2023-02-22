@@ -148,9 +148,6 @@ const Configuration = ({ getMainTableData }) => {
     };
     const handleDeleteFile = () => formik.setFieldValue('file', '');
 
-    // console.log('minPvSize', minPvSize);
-    // console.log('maxPvSize', maxPvSize);
-
     return (
         <Stack
             direction="column"

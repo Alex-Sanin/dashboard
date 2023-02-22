@@ -162,9 +162,7 @@ const DetailsTable = ({
     };
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData?.length) : 0;
-
-    console.log(tableData)
-
+    
     if (!tableData) {
         return <Preloader />;
     }
