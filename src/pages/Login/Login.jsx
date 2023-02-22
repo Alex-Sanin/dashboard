@@ -19,7 +19,7 @@ const Login = () => {
         initialValues: { email: '', password: '' },
         validateOnBlur: true,
         validateOnChange: true,
-        onSubmit: (values) => {
+        onSubmit: () => {
             const requestOptions = {
                 method: 'POST',
                 body: JSON.stringify({
@@ -35,8 +35,6 @@ const Login = () => {
             formik.resetForm();
         },
     });
-
-    console.log(formik.values);
 
     return (
         <Stack

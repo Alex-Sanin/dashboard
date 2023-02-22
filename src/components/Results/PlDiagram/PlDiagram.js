@@ -83,7 +83,7 @@ const PlDiagram = ({ diagramData, plDiagramDescription }) => {
                         variant="subtitle1"
                         style={{
                             position: 'absolute',
-                            transform: 'translate(-25px, 70px)',
+                            transform: 'translate(-40px, 70px)',
                         }}
                     >
                         Grid connection: {plDiagramDescription[0]} MW

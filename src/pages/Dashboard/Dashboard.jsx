@@ -26,7 +26,7 @@ const Dashboard = () => {
             },
         });
         const json = await response.json();
-        console.log('GET DATA RESPONSE: ', json);
+        // console.log('GET DATA RESPONSE: ', json);
         setMainTableData(Object.values(json[1]));
         setDetailsTableData(Object.values(json[3]));
         setBestRoi(json[5]);
