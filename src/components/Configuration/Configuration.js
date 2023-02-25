@@ -516,7 +516,7 @@ const Configuration = ({ getMainTableData }) => {
                                 </Button>
                                 <Tooltip
                                     title={
-                                        <a href="" download>
+                                        <a href="http://18.158.182.8:8001/sim1/download_example_input_file/" download>
                                             Click here to download an example data file
                                         </a>
                                     }

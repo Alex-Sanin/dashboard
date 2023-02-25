@@ -36,9 +36,15 @@ const Result = ({
                 )}
             </Stack>
             <Stack direction="row" justifyContent="flex-end">
-                <Button variant="contained" size="large" type="submit" sx={{ width: '220px' }}>
-                    Download Data
-                </Button>
+                <a
+                    href="http://18.158.182.8:8001/sim1/download_results_file/"
+                    download
+                    style={{ textDecoration: 'none' }}
+                >
+                    <Button variant="contained" size="large" type="submit" sx={{ width: '220px' }}>
+                        Download Data
+                    </Button>
+                </a>
             </Stack>
         </Stack>
     );
