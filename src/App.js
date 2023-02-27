@@ -16,7 +16,7 @@ const RouteProvider = ({ isAuth }) => {
 };
 
 const App = () => {
-    const [isAuth, setIsAuth] = useState(true);
+    const [isAuth, setIsAuth] = useState(false);
     const [userName, setUserName] = useState('');
 
     return (
