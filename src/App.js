@@ -16,10 +16,11 @@ const RouteProvider = ({ isAuth }) => {
 };
 
 const App = () => {
-    const [isAuth, setIsAuth] = useState(true);
+    const [isAuth, setIsAuth] = useState(false);
+    const [userName, setUserName] = useState('none');
 
     return (
-        <AuthContext.Provider value={{ setIsAuth }}>
+        <AuthContext.Provider value={{ setIsAuth, userName, setUserName }}>
             <MaterialThemeProvider theme={materialTheme}>
                 <RouteProvider isAuth={isAuth} />
             </MaterialThemeProvider>

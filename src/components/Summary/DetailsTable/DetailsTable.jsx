@@ -105,7 +105,10 @@ const DetailsTable = ({
     setPlCashFlowGraph,
     setPlDetailsTable,
     setPlDiagram,
+    setDataFileLink,
     getMainTableSelectedRowData,
+    setExecutiveSummaryData,
+    setContributionBarGraphData,
 }) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('simulationMainId');
@@ -134,6 +137,9 @@ const DetailsTable = ({
         setPlCashFlowGraph(Object.values(json[3]));
         setPlDetailsTable(Object.values(json[5]));
         setPlDiagram(Object.values(json[7]));
+        setDataFileLink(Object.values(json[13]));
+        setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
+        setContributionBarGraphData(json.contribution_bar_graph);
     };
 
     const handleRequestSort = (event, property) => {
@@ -162,7 +168,7 @@ const DetailsTable = ({
     };
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData?.length) : 0;
-    
+
     if (!tableData) {
         return <Preloader />;
     }

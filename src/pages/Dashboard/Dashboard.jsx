@@ -3,10 +3,13 @@ import { Grid, Stack } from '@mui/material';
 
 import Header from '../../components/Header/Header';
 import Configuration from '../../components/Configuration/Configuration';
+import ExecutiveSummary from '../../components/ExecutiveSummary/ExecutiveSummary';
 import Summary from '../../components/Summary/Summary';
 import Result from '../../components/Results/Results';
 
 const Dashboard = () => {
+    const [executiveSummaryData, setExecutiveSummaryData] = useState('');
+    const [contributionBarGraphData, setContributionBarGraphData] = useState('');
     const [mainTableData, setMainTableData] = useState('');
     const [detailsTableData, setDetailsTableData] = useState('');
     const [bestRoi, setBestRoi] = useState('');
@@ -16,6 +19,7 @@ const Dashboard = () => {
     const [plDetailsTable, setPlDetailsTable] = useState('');
     const [plDiagram, setPlDiagram] = useState('');
     const [plDiagramDescription, setPlDiagramDescription] = useState('');
+    const [dataFileLink, setDataFileLink] = useState('');
 
     const getMainTableData = async () => {
         const response = await fetch('/sim1/get_all_data', {
@@ -26,7 +30,7 @@ const Dashboard = () => {
             },
         });
         const json = await response.json();
-        console.log('GET DATA RESPONSE: ', json);
+        // console.log('GET DATA RESPONSE: ', json);
         setMainTableData(Object.values(json[1]));
         setDetailsTableData(Object.values(json[3]));
         setBestRoi(json[5]);
@@ -36,10 +40,9 @@ const Dashboard = () => {
         setPlDetailsTable(Object.values(json[12]));
         setPlDiagram(Object.values(json[14]));
         setPlDiagramDescription(Object.values(json[16]));
-        // if (!response.ok) {
-        //     setError(response?.error?.message);
-        //     console.log('ERROR: ', error);
-        // }
+        setDataFileLink(json[20]);
+        setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
+        setContributionBarGraphData(json.contribution_bar_graph);
     };
 
     useEffect(() => {
@@ -59,33 +62,47 @@ const Dashboard = () => {
         >
             <Header />
             <Grid container spacing={3} sx={{ px: 10 }}>
-                <Grid item sm={12} md={4}>
-                    <Configuration getMainTableData={getMainTableData} />
+                <Grid item sm={12} md={12}>
+                    <ExecutiveSummary
+                        executiveSummaryData={executiveSummaryData}
+                        contributionBarGraphData={contributionBarGraphData}
+                    />
                 </Grid>
-                <Grid item sm={12} md={8}>
-                    <Stack direction="column" spacing={3}>
-                        <Summary
-                            mainTableData={mainTableData}
-                            detailsTableData={detailsTableData}
-                            setDetailsTableData={setDetailsTableData}
-                            bestRoi={bestRoi}
-                            setBestRoi={setBestRoi}
-                            roiBarGraphData={roiBarGraphData}
-                            setRoiBarGraphData={setRoiBarGraphData}
-                            setPlSummaryTable={setPlSummaryTable}
-                            setPlCashFlowGraph={setPlCashFlowGraph}
-                            setPlDetailsTable={setPlDetailsTable}
-                            setPlDiagram={setPlDiagram}
-                            getMainTableData={getMainTableData}
-                        />
-                        <Result
-                            plSummaryTable={plSummaryTable}
-                            plCashFlowGraph={plCashFlowGraph}
-                            plDetailsTable={plDetailsTable}
-                            plDiagram={plDiagram}
-                            plDiagramDescription={plDiagramDescription}
-                        />
-                    </Stack>
+                <Grid item sm={12} md={12}>
+                    <Grid container spacing={3}>
+                        <Grid item sm={12} md={4}>
+                            <Configuration getMainTableData={getMainTableData} />
+                        </Grid>
+                        <Grid item sm={12} md={8}>
+                            <Stack direction="column" spacing={3}>
+                                <Summary
+                                    mainTableData={mainTableData}
+                                    detailsTableData={detailsTableData}
+                                    setDetailsTableData={setDetailsTableData}
+                                    bestRoi={bestRoi}
+                                    setBestRoi={setBestRoi}
+                                    roiBarGraphData={roiBarGraphData}
+                                    setRoiBarGraphData={setRoiBarGraphData}
+                                    setPlSummaryTable={setPlSummaryTable}
+                                    setPlCashFlowGraph={setPlCashFlowGraph}
+                                    setPlDetailsTable={setPlDetailsTable}
+                                    setPlDiagram={setPlDiagram}
+                                    setDataFileLink={setDataFileLink}
+                                    setExecutiveSummaryData={setExecutiveSummaryData}
+                                    setContributionBarGraphData={setContributionBarGraphData}
+                                    getMainTableData={getMainTableData}
+                                />
+                                <Result
+                                    plSummaryTable={plSummaryTable}
+                                    plCashFlowGraph={plCashFlowGraph}
+                                    plDetailsTable={plDetailsTable}
+                                    plDiagram={plDiagram}
+                                    plDiagramDescription={plDiagramDescription}
+                                    dataFileLink={dataFileLink}
+                                />
+                            </Stack>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </Stack>

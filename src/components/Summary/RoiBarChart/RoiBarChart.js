@@ -29,8 +29,8 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="id" />
-                    <YAxis />
+                    <XAxis dataKey="id" label={{ value: 'Results', offset: 0, position: 'insideBottom' }}/>
+                    <YAxis label={{ value: 'Years', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Bar dataKey="roi">
                         {data.map((entry, index) => (

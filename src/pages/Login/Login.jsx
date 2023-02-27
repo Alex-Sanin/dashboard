@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Stack, Paper, Typography, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
@@ -13,7 +13,8 @@ const validationSchema = yup.object().shape({
 });
 
 const Login = () => {
-    const { setIsAuth } = useContext(AuthContext);
+    const [errorMessage, setErrorMessage] = useState('');
+    const { setIsAuth, setUserName } = useContext(AuthContext);
     const formik = useFormik({
         validationSchema,
         initialValues: { email: '', password: '' },
@@ -28,13 +29,23 @@ const Login = () => {
                 }),
             };
             fetch('/sim1/user_authentication/', requestOptions)
-                .then((response) => response.text())
-                .then(() => setIsAuth(true))
+                // .then((response) => response.text())
+                .then((response) => response.json())
+                .then((data) => handleAuth(data))
                 .catch((error) => console.log('error', error));
 
             formik.resetForm();
         },
     });
+
+    const handleAuth = (data) => {
+        if (data.message === 'Login successful') {
+            setIsAuth(true);
+            setUserName(data['user first name'] + ' ' + data['user last name']);
+        } else {
+            setErrorMessage('The email address or password is incorrect');
+        }
+    };
 
     return (
         <Stack
@@ -49,7 +60,6 @@ const Login = () => {
                 <Stack direction="column" spacing={2}>
                     <Stack direction="column" alignItems="center" spacing={3}>
                         <img src={logo} alt="pic" style={{ width: '70%' }} />
-                        {/*<Typography variant="h1">Welcome</Typography>*/}
                         <Typography variant="body3">Please sign-in to your account</Typography>
                     </Stack>
                     <form onSubmit={formik.handleSubmit}>
@@ -77,6 +87,11 @@ const Login = () => {
                             <Button fullWidth variant="contained" size="large" type="submit">
                                 Log in
                             </Button>
+                            {errorMessage && (
+                                <Typography variant="body1" color="#d32f2f">
+                                    {errorMessage}
+                                </Typography>
+                            )}
                         </Stack>
                     </form>
                 </Stack>
