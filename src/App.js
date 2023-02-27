@@ -16,8 +16,8 @@ const RouteProvider = ({ isAuth }) => {
 };
 
 const App = () => {
-    const [isAuth, setIsAuth] = useState(false);
-    const [userName, setUserName] = useState('none');
+    const [isAuth, setIsAuth] = useState(true);
+    const [userName, setUserName] = useState('');
 
     return (
         <AuthContext.Provider value={{ setIsAuth, userName, setUserName }}>

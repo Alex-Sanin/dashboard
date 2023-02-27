@@ -19,7 +19,8 @@ const Dashboard = () => {
     const [plDetailsTable, setPlDetailsTable] = useState('');
     const [plDiagram, setPlDiagram] = useState('');
     const [plDiagramDescription, setPlDiagramDescription] = useState('');
-    const [dataFileLink, setDataFileLink] = useState('');
+    const [exampleFilePath, setExampleFilePath] = useState('');
+    const [dataFilePath, setDataFilePath] = useState('');
 
     const getMainTableData = async () => {
         const response = await fetch('/sim1/get_all_data', {
@@ -40,7 +41,8 @@ const Dashboard = () => {
         setPlDetailsTable(Object.values(json[12]));
         setPlDiagram(Object.values(json[14]));
         setPlDiagramDescription(Object.values(json[16]));
-        setDataFileLink(json[20]);
+        setExampleFilePath(json[18]);
+        setDataFilePath(json[20]);
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
     };
@@ -71,7 +73,10 @@ const Dashboard = () => {
                 <Grid item sm={12} md={12}>
                     <Grid container spacing={3}>
                         <Grid item sm={12} md={4}>
-                            <Configuration getMainTableData={getMainTableData} />
+                            <Configuration
+                                exampleFilePath={exampleFilePath}
+                                getMainTableData={getMainTableData}
+                            />
                         </Grid>
                         <Grid item sm={12} md={8}>
                             <Stack direction="column" spacing={3}>
@@ -87,7 +92,8 @@ const Dashboard = () => {
                                     setPlCashFlowGraph={setPlCashFlowGraph}
                                     setPlDetailsTable={setPlDetailsTable}
                                     setPlDiagram={setPlDiagram}
-                                    setDataFileLink={setDataFileLink}
+                                    setExampleFilePath={setExampleFilePath}
+                                    setDataFilePath={setDataFilePath}
                                     setExecutiveSummaryData={setExecutiveSummaryData}
                                     setContributionBarGraphData={setContributionBarGraphData}
                                     getMainTableData={getMainTableData}
@@ -98,7 +104,7 @@ const Dashboard = () => {
                                     plDetailsTable={plDetailsTable}
                                     plDiagram={plDiagram}
                                     plDiagramDescription={plDiagramDescription}
-                                    dataFileLink={dataFileLink}
+                                    dataFilePath={dataFilePath}
                                 />
                             </Stack>
                         </Grid>

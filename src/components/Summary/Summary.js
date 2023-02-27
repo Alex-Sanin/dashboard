@@ -16,10 +16,11 @@ const Summary = ({
     setPlCashFlowGraph,
     setPlDetailsTable,
     setPlDiagram,
-    setDataFileLink,
+    setExampleFilePath,
+    setDataFilePath,
     getMainTableData,
     setExecutiveSummaryData,
-                     setContributionBarGraphData,
+    setContributionBarGraphData,
 }) => {
     const getMainTableSelectedRowData = async (mainTableId, userName) => {
         const response = await fetch(
@@ -41,7 +42,8 @@ const Summary = ({
         setPlCashFlowGraph(Object.values(json[7]));
         setPlDetailsTable(Object.values(json[9]));
         setPlDiagram(Object.values(json[11]));
-        setDataFileLink(json[17]);
+        setExampleFilePath(json[15]);
+        setDataFilePath(json[17]);
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
     };
@@ -71,7 +73,8 @@ const Summary = ({
                 setPlCashFlowGraph={setPlCashFlowGraph}
                 setPlDetailsTable={setPlDetailsTable}
                 setPlDiagram={setPlDiagram}
-                setDataFileLink={setDataFileLink}
+                setExampleFilePath={setExampleFilePath}
+                setDataFilePath={setDataFilePath}
                 setExecutiveSummaryData={setExecutiveSummaryData}
                 setContributionBarGraphData={setContributionBarGraphData}
                 getMainTableSelectedRowData={getMainTableSelectedRowData}

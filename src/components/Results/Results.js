@@ -10,8 +10,10 @@ const Result = ({
     plDetailsTable,
     plDiagram,
     plDiagramDescription,
-    dataFileLink,
+    dataFilePath,
 }) => {
+
+    const resultFileLink = `http://18.158.182.8:8001/sim1/download_file?file=${dataFilePath}`
 
     return (
         <Stack
@@ -37,13 +39,13 @@ const Result = ({
                     />
                 )}
             </Stack>
-            <Stack direction="row" justifyContent="flex-end">
-                <a href={dataFileLink} download style={{ textDecoration: 'none' }}>
+            {dataFilePath && <Stack direction="row" justifyContent="flex-end">
+                <a href={resultFileLink} download style={{ textDecoration: 'none' }}>
                     <Button variant="contained" size="large" type="submit" sx={{ width: '220px' }}>
                         Download Data
                     </Button>
                 </a>
-            </Stack>
+            </Stack>}
         </Stack>
     );
 };

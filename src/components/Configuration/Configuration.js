@@ -47,7 +47,7 @@ const validationSchema = yup.object().shape({
     grid: yup.string().required('This field is required'),
 });
 
-const Configuration = ({ getMainTableData }) => {
+const Configuration = ({ exampleFilePath, getMainTableData }) => {
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
     const [maxBatterySize, setMaxBatterySize] = useState(initialBatterySize);
     const [minBatteryPower, setMinBatteryPower] = useState(initialBatteryPower);
@@ -58,6 +58,7 @@ const Configuration = ({ getMainTableData }) => {
     const [maxPvSize, setMaxPvSize] = useState(initialPvSize);
     const [minPvCost, setMinPvCost] = useState(initialPvCost);
     const [maxPvCost, setMaxPvCost] = useState(initialPvCost);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const formik = useFormik({
         validationSchema,
@@ -90,10 +91,10 @@ const Configuration = ({ getMainTableData }) => {
                 body: formData,
             };
             fetch('/sim1/run_simulation/', requestOptions)
-                .then((response) => response.text())
+                .then((response) => response.json())
+                .then((data) => handleErrorMessage(data))
                 .then(() => getMainTableData())
                 .catch((error) => console.log('error', error));
-
             // formik.resetForm();
         },
     });
@@ -147,6 +148,16 @@ const Configuration = ({ getMainTableData }) => {
         formik.setFieldValue('file', e.currentTarget.files[0]);
     };
     const handleDeleteFile = () => formik.setFieldValue('file', '');
+
+    const handleErrorMessage = (response) => {
+        if (response.message === 'Simulation did NOT run as simulation name already exists') {
+            setErrorMessage(response.message);
+        } else {
+            setErrorMessage('');
+        }
+    };
+
+    const exampleFileLink = `http://18.158.182.8:8001/sim1/download_file?file=${exampleFilePath}`;
 
     return (
         <Stack
@@ -516,7 +527,7 @@ const Configuration = ({ getMainTableData }) => {
                                 </Button>
                                 <Tooltip
                                     title={
-                                        <a href="http://18.158.182.8:8001/sim1/download_example_input_file/" download>
+                                        <a href={exampleFileLink} download>
                                             Click here to download an example data file
                                         </a>
                                     }
@@ -556,6 +567,11 @@ const Configuration = ({ getMainTableData }) => {
                             <Button fullWidth variant="contained" size="large" type="submit">
                                 Run Simulation
                             </Button>
+                            {errorMessage && (
+                                <Typography variant="body1" color="#d32f2f">
+                                    {errorMessage}
+                                </Typography>
+                            )}
                         </Stack>
                     </Stack>
                 </form>

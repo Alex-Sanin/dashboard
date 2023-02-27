@@ -105,7 +105,8 @@ const DetailsTable = ({
     setPlCashFlowGraph,
     setPlDetailsTable,
     setPlDiagram,
-    setDataFileLink,
+                          setExampleFilePath,
+    setDataFilePath,
     getMainTableSelectedRowData,
     setExecutiveSummaryData,
     setContributionBarGraphData,
@@ -137,7 +138,8 @@ const DetailsTable = ({
         setPlCashFlowGraph(Object.values(json[3]));
         setPlDetailsTable(Object.values(json[5]));
         setPlDiagram(Object.values(json[7]));
-        setDataFileLink(Object.values(json[13]));
+        setDataFilePath(json[13]);
+        setExampleFilePath(json[15]);
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
     };

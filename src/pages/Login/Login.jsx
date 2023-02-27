@@ -3,9 +3,15 @@ import { Stack, Paper, Typography, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import SvgIcon from '@mui/material/SvgIcon';
 
-import logo from '../../assets/images/logo.jpeg';
 import { AuthContext } from '../../utils/AuthContext';
+
+import { ReactComponent as ShowIcon } from '../../assets/images/Show.svg';
+import { ReactComponent as HideIcon } from '../../assets/images/Hide.svg';
+import logo from '../../assets/images/logo.jpeg';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Please enter a valid email').required('This field is required'),
@@ -14,6 +20,7 @@ const validationSchema = yup.object().shape({
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
+    const [type, setType] = useState('password');
     const { setIsAuth, setUserName } = useContext(AuthContext);
     const formik = useFormik({
         validationSchema,
@@ -47,6 +54,8 @@ const Login = () => {
         }
     };
 
+    const handleClickToggle = () => setType(type === 'password' ? 'text' : 'password');
+
     return (
         <Stack
             justifyContent="center"
@@ -79,10 +88,26 @@ const Login = () => {
                                 label="Password"
                                 size="small"
                                 name="password"
+                                type={type}
                                 onChange={formik.handleChange}
                                 value={formik.values.password}
                                 error={formik.errors.password && formik.touched.password}
                                 helperText={formik.touched.password && formik.errors.password}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={handleClickToggle}>
+                                                <SvgIcon
+                                                    inheritViewBox
+                                                    component={
+                                                        type === 'password' ? ShowIcon : HideIcon
+                                                    }
+                                                    sx={{ width: 18, height: 18 }}
+                                                />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                             <Button fullWidth variant="contained" size="large" type="submit">
                                 Log in
