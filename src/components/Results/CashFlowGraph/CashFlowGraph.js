@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 import { dataFormatter } from '../../../utils/constants';
 import ChartLegendIcon from '../../../assets/images/ChartLegendIcon';
+import Preloader from '../../loaders/Preloader';
 
 const CashFlowGraph = ({ graphData }) => {
+    const [data, setData] = useState([]);
     const [isActiveLineOP, setIsActiveLineOP] = useState(true);
     const [isActiveLineAC, setIsActiveLineAC] = useState(true);
 
@@ -17,6 +19,24 @@ const CashFlowGraph = ({ graphData }) => {
             setIsActiveLineAC(!isActiveLineAC);
         }
     };
+
+    useEffect(() => {
+        if (graphData) {
+            setData(
+                graphData.map((item) => {
+                    return {
+                        year: item.year,
+                        'Operation profit': Number(item['operation profit']),
+                        'Accumulative cash': Number(item['accumulative cash']),
+                    };
+                })
+            );
+        }
+    }, [graphData]);
+    
+    if (!graphData) {
+        return <Preloader />;
+    }
 
     return (
         <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
@@ -31,7 +51,7 @@ const CashFlowGraph = ({ graphData }) => {
                 <LineChart
                     width={700}
                     height={400}
-                    data={graphData}
+                    data={data}
                     margin={{
                         top: 5,
                         right: 30,
@@ -45,15 +65,16 @@ const CashFlowGraph = ({ graphData }) => {
                     <Tooltip formatter={dataFormatter} />
                     <Line
                         type="monotone"
-                        dataKey="operation profit"
+                        dataKey="Operation profit"
                         stroke="#1665C1"
                         activeDot={{ r: 8 }}
                         style={{ opacity: isActiveLineOP ? 1 : 0 }}
                     />
                     <Line
                         type="monotone"
-                        dataKey="accumulative cash"
+                        dataKey="Accumulative cash"
                         stroke="#a09b9b"
+                        activeDot={{ r: 8 }}
                         style={{ opacity: isActiveLineAC ? 1 : 0 }}
                     />
                 </LineChart>
