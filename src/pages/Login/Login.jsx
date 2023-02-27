@@ -100,7 +100,7 @@ const Login = () => {
                                                 <SvgIcon
                                                     inheritViewBox
                                                     component={
-                                                        type === 'password' ? ShowIcon : HideIcon
+                                                        type === 'password' ? HideIcon : ShowIcon
                                                     }
                                                     sx={{ width: 18, height: 18 }}
                                                 />
