@@ -22,8 +22,8 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
     }
 
     return (
-        <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
-            <Typography variant="h3">Yearly contribution</Typography>
+        <Stack direction="column" spacing={1} sx={{ width: '100%', ml: '-45px' }}>
+            <Typography variant="h3" sx={{ ml: '45px', textDecoration: 'underline' }}>Yearly contribution</Typography>
             <Stack direction="column" justifyContent="center">
                 <BarChart
                     width={400}
@@ -53,7 +53,7 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
                     <Bar dataKey="pvIncome" stackId="a" fill="#1665C1" />
                     <Bar dataKey="batteryIncome" stackId="a" fill="#E5E5E5" />
                 </BarChart>
-                <Stack direction="row" spacing={2} justifyContent="center">
+                <Stack direction="row" spacing={2} sx={{ ml: '75px' }}>
                     <Stack
                         direction="row"
                         spacing={1}

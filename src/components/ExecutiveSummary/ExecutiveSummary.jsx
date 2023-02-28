@@ -75,7 +75,7 @@ const ExecutiveSummary = ({ executiveSummaryData, contributionBarGraphData }) =>
                             Return on Investment: {results.return_on_investment}
                         </Typography>
                         <Typography variant="body1">
-                            Investment: {results.return_on_investment}
+                            Investment: {results.investment}
                         </Typography>
                         <Typography variant="body1">Yearly cost: {results.yearly_cost}</Typography>
                         <Typography variant="body1">
@@ -83,6 +83,9 @@ const ExecutiveSummary = ({ executiveSummaryData, contributionBarGraphData }) =>
                         </Typography>
                         <Typography variant="body1">
                             Yearly p&l: {results.yearly_operation_profit}
+                        </Typography>
+                        <Typography variant="body1">
+                            Simulation number: {results['simulation #']}
                         </Typography>
                     </Stack>
                 </Grid>
