@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Grid, Stack } from '@mui/material';
 
 import Header from '../../components/Header/Header';
@@ -6,6 +6,7 @@ import Configuration from '../../components/Configuration/Configuration';
 import ExecutiveSummary from '../../components/ExecutiveSummary/ExecutiveSummary';
 import Summary from '../../components/Summary/Summary';
 import Result from '../../components/Results/Results';
+import { AuthContext } from '../../utils/AuthContext';
 
 const Dashboard = () => {
     const [executiveSummaryData, setExecutiveSummaryData] = useState('');
@@ -22,8 +23,10 @@ const Dashboard = () => {
     const [exampleFilePath, setExampleFilePath] = useState('');
     const [dataFilePath, setDataFilePath] = useState('');
 
+    const { token } = useContext(AuthContext);
+
     const getMainTableData = async () => {
-        const response = await fetch('/sim1/get_all_data', {
+        const response = await fetch(`/sim1/get_all_data/?authorization=${token}`, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Credentials': true,
@@ -81,6 +84,7 @@ const Dashboard = () => {
                         <Grid item sm={12} md={8}>
                             <Stack direction="column" spacing={3}>
                                 <Summary
+                                    token={token}
                                     mainTableData={mainTableData}
                                     detailsTableData={detailsTableData}
                                     setDetailsTableData={setDetailsTableData}

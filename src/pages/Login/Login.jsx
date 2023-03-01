@@ -21,7 +21,7 @@ const validationSchema = yup.object().shape({
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [type, setType] = useState('password');
-    const { setIsAuth, setUserName } = useContext(AuthContext);
+    const { setIsAuth, setUserName, setToken } = useContext(AuthContext);
     const formik = useFormik({
         validationSchema,
         initialValues: { email: '', password: '' },
@@ -36,7 +36,6 @@ const Login = () => {
                 }),
             };
             fetch('/sim1/user_authentication/', requestOptions)
-                // .then((response) => response.text())
                 .then((response) => response.json())
                 .then((data) => handleAuth(data))
                 .catch((error) => console.log('error', error));
@@ -49,6 +48,7 @@ const Login = () => {
         if (data.message === 'Login successful') {
             setIsAuth(true);
             setUserName(data['user first name'] + ' ' + data['user last name']);
+            setToken(data.token);
         } else {
             setErrorMessage('The email address or password is incorrect');
         }

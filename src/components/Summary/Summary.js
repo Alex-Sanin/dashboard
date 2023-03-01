@@ -5,6 +5,7 @@ import DetailsTable from './DetailsTable/DetailsTable';
 import RoiBarChart from './RoiBarChart/RoiBarChart';
 
 const Summary = ({
+    token,
     mainTableData,
     detailsTableData,
     setDetailsTableData,
@@ -24,7 +25,7 @@ const Summary = ({
 }) => {
     const getMainTableSelectedRowData = async (mainTableId, userName) => {
         const response = await fetch(
-            `/sim1/simulation_main_table_selected_row/?user_name=${userName}&simulation_main_table_id=${mainTableId}`,
+            `/sim1/simulation_main_table_selected_row/?user_name=${userName}&simulation_main_table_id=${mainTableId}&authorization=${token}`,
             {
                 method: 'GET',
                 headers: {
@@ -67,8 +68,8 @@ const Summary = ({
                 getMainTableData={getMainTableData}
             />
             <DetailsTable
+                token={token}
                 tableData={detailsTableData}
-                // setRoiBarGraphData={setRoiBarGraphData}
                 setPlSummaryTable={setPlSummaryTable}
                 setPlCashFlowGraph={setPlCashFlowGraph}
                 setPlDetailsTable={setPlDetailsTable}
