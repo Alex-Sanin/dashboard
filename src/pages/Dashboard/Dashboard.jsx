@@ -23,10 +23,10 @@ const Dashboard = () => {
     const [exampleFilePath, setExampleFilePath] = useState('');
     const [dataFilePath, setDataFilePath] = useState('');
 
-    const { token } = useContext(AuthContext);
+    const { userName, token, email } = useContext(AuthContext);
 
     const getMainTableData = async () => {
-        const response = await fetch(`/sim1/get_all_data/?authorization=${token}`, {
+        const response = await fetch(`/sim1/get_all_data/?authorization=${token}&username=${email}&user_name=${userName}`, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Credentials': true,
@@ -77,6 +77,9 @@ const Dashboard = () => {
                     <Grid container spacing={3}>
                         <Grid item sm={12} md={4}>
                             <Configuration
+                                token={token}
+                                email={email}
+                                userName={userName}
                                 exampleFilePath={exampleFilePath}
                                 getMainTableData={getMainTableData}
                             />
@@ -85,6 +88,8 @@ const Dashboard = () => {
                             <Stack direction="column" spacing={3}>
                                 <Summary
                                     token={token}
+                                    email={email}
+                                    profileName={userName}
                                     mainTableData={mainTableData}
                                     detailsTableData={detailsTableData}
                                     setDetailsTableData={setDetailsTableData}
@@ -103,6 +108,9 @@ const Dashboard = () => {
                                     getMainTableData={getMainTableData}
                                 />
                                 <Result
+                                    token={token}
+                                    email={email}
+                                    userName={userName}
                                     plSummaryTable={plSummaryTable}
                                     plCashFlowGraph={plCashFlowGraph}
                                     plDetailsTable={plDetailsTable}

@@ -6,6 +6,8 @@ import RoiBarChart from './RoiBarChart/RoiBarChart';
 
 const Summary = ({
     token,
+    email,
+    profileName,
     mainTableData,
     detailsTableData,
     setDetailsTableData,
@@ -25,7 +27,7 @@ const Summary = ({
 }) => {
     const getMainTableSelectedRowData = async (mainTableId, userName) => {
         const response = await fetch(
-            `/sim1/simulation_main_table_selected_row/?user_name=${userName}&simulation_main_table_id=${mainTableId}&authorization=${token}`,
+            `/sim1/simulation_main_table_selected_row/?user_name=${profileName}&simulation_main_table_id=${mainTableId}&authorization=${token}&username=${email}&selected_row_name=${userName}`,
             {
                 method: 'GET',
                 headers: {
@@ -69,6 +71,8 @@ const Summary = ({
             />
             <DetailsTable
                 token={token}
+                email={email}
+                profileName={profileName}
                 tableData={detailsTableData}
                 setPlSummaryTable={setPlSummaryTable}
                 setPlCashFlowGraph={setPlCashFlowGraph}

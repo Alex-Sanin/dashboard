@@ -47,7 +47,7 @@ const validationSchema = yup.object().shape({
     grid: yup.string().required('This field is required'),
 });
 
-const Configuration = ({ exampleFilePath, getMainTableData }) => {
+const Configuration = ({ exampleFilePath, getMainTableData, token, email, userName }) => {
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
     const [maxBatterySize, setMaxBatterySize] = useState(initialBatterySize);
     const [minBatteryPower, setMinBatteryPower] = useState(initialBatteryPower);
@@ -90,7 +90,7 @@ const Configuration = ({ exampleFilePath, getMainTableData }) => {
                 method: 'POST',
                 body: formData,
             };
-            fetch('/sim1/run_simulation/', requestOptions)
+            fetch(`/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`, requestOptions)
                 .then((response) => response.json())
                 .then((data) => handleErrorMessage(data))
                 .then(() => getMainTableData())

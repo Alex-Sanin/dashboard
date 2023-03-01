@@ -100,6 +100,8 @@ const headCells = [
 
 const DetailsTable = ({
     token,
+    email,
+    profileName,
     tableData,
     setPlSummaryTable,
     setPlCashFlowGraph,
@@ -123,7 +125,7 @@ const DetailsTable = ({
         userName
     ) => {
         const response = await fetch(
-            `/sim1/simulation_details_table_selected_row/?user_name=${userName}&simulation_main_table_id=${simulationMainId}&simulation_details_table_id=${simulationsDetailsId}&authorization=${token}`,
+            `/sim1/simulation_details_table_selected_row/?user_name=${profileName}&simulation_main_table_id=${simulationMainId}&simulation_details_table_id=${simulationsDetailsId}&authorization=${token}&username=${email}&selected_row_name=${userName}`,
             {
                 method: 'GET',
                 headers: {
