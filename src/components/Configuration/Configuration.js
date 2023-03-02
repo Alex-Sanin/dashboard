@@ -157,7 +157,7 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
         }
     };
 
-    const exampleFileLink = `http://18.158.182.8:8001/sim1/download_file?file=${exampleFilePath}`;
+    const exampleFileLink = `http://18.158.182.8:8001/sim1/download_file?file=${exampleFilePath}&authorization=${token}&username=${email}&user_name=${userName}`;
 
     return (
         <Stack
