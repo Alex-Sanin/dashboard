@@ -90,7 +90,10 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                 method: 'POST',
                 body: formData,
             };
-            fetch(`/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`, requestOptions)
+            fetch(
+                `/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
+                requestOptions
+            )
                 .then((response) => response.json())
                 .then((data) => handleErrorMessage(data))
                 .then(() => getMainTableData())
@@ -98,6 +101,36 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
             // formik.resetForm();
         },
     });
+
+    const getExampleFile = async () => {
+        fetch(
+            `/sim1/download_file?file=${exampleFilePath}&authorization=${token}&username=${email}&user_name=${userName}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/csv',
+                },
+            }
+        )
+            .then((response) => response.blob())
+            .then((blob) => {
+                // Create blob link to download
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `exampe_file.csv`);
+
+                // Append to html link element page
+                document.body.appendChild(link);
+
+                // Start download
+                link.click();
+
+                // Clean up and remove the link
+                link.parentNode.removeChild(link);
+            });
+        // console.log('GET DATA RESPONSE: ', json);
+    };
 
     useEffect(() => {
         if (formik.values.batteryMinSize) {
@@ -156,8 +189,6 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
             setErrorMessage('');
         }
     };
-
-    const exampleFileLink = `http://18.158.182.8:8001/sim1/download_file?file=${exampleFilePath}&authorization=${token}&username=${email}&user_name=${userName}`;
 
     return (
         <Stack
@@ -497,13 +528,7 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                                 <TooltipIcon tooltipText="Set up maximum grid connection" />
                             </Stack>
                         </Stack>
-                        <Stack
-                            width="100%"
-                            direction="column"
-                            // justifyContent="center"
-                            // alignItems="center"
-                            spacing={2}
-                        >
+                        <Stack width="100%" direction="column" spacing={2}>
                             <Stack
                                 direction="row"
                                 justifyContent="flex-start"
@@ -527,9 +552,14 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                                 </Button>
                                 <Tooltip
                                     title={
-                                        <a href={exampleFileLink} download>
+                                        <Typography
+                                            variant="body2"
+                                            display="inline"
+                                            onClick={() => getExampleFile()}
+                                            sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                        >
                                             Click here to download an example data file
-                                        </a>
+                                        </Typography>
                                     }
                                     placement="right"
                                 >
