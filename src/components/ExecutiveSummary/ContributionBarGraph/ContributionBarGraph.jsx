@@ -4,8 +4,9 @@ import { Typography, Stack } from '@mui/material';
 
 import Preloader from '../../loaders/Preloader';
 import BarTooltip from './BarTooltip';
+import { dataFormatter } from '../../../utils/constants';
 
-import ChartLegendIcon from "../../../assets/images/ChartLegendIcon";
+import ChartLegendIcon from '../../../assets/images/ChartLegendIcon';
 
 const ContributionBarGraph = ({ contributionBarGraphData }) => {
     let data = {};
@@ -23,7 +24,9 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
 
     return (
         <Stack direction="column" spacing={1} sx={{ width: '100%', ml: '-45px' }}>
-            <Typography variant="h3" sx={{ ml: '45px', textDecoration: 'underline' }}>Yearly contribution</Typography>
+            <Typography variant="h3" sx={{ ml: '90px', textDecoration: 'underline' }}>
+                Yearly contribution
+            </Typography>
             <Stack direction="column" justifyContent="center">
                 <BarChart
                     width={400}
@@ -32,13 +35,13 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
                     margin={{
                         top: 20,
                         right: 30,
-                        left: 20,
+                        left: 40,
                         bottom: 5,
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
-                    <YAxis />
+                    <YAxis tickFormatter={dataFormatter} />
                     <Tooltip
                         content={
                             <BarTooltip
@@ -49,7 +52,6 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
                             />
                         }
                     />
-                    {/*<Legend />*/}
                     <Bar dataKey="pvIncome" stackId="a" fill="#1665C1" />
                     <Bar dataKey="batteryIncome" stackId="a" fill="#E5E5E5" />
                 </BarChart>

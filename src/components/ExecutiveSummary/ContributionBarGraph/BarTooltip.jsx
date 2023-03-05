@@ -1,6 +1,8 @@
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
+import { dataFormatter } from '../../../utils/constants';
+
 const BarTooltip = ({ pvIncome, pvPercentage, batteryIncome, batteryPercentage }) => {
     return (
         <Stack
@@ -11,10 +13,10 @@ const BarTooltip = ({ pvIncome, pvPercentage, batteryIncome, batteryPercentage }
             }}
         >
             <Typography variant="body3">
-                Battery income: {batteryIncome} ({batteryPercentage}%)
+                Battery income: {dataFormatter(batteryIncome)} ({batteryPercentage}%)
             </Typography>
             <Typography variant="body3">
-                PV income: {pvIncome} ({pvPercentage}%)
+                PV income: {dataFormatter(pvIncome)} ({pvPercentage}%)
             </Typography>
         </Stack>
     );
