@@ -48,7 +48,7 @@ const ExecutiveSummary = ({ executiveSummaryData, contributionBarGraphData }) =>
                                 Battery power: {configuration.battery_power}
                             </Typography>
                             <Typography variant="body1">
-                                Customer cost: {configuration.battery_cost}
+                                Battery cost: {configuration.battery_cost}
                             </Typography>
                             {!configuration.pv_size ? null : (
                                 <Typography variant="body1">
