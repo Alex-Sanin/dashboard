@@ -42,17 +42,17 @@ const stableSort = (array, comparator) => {
 };
 
 const headCells = [
-    {
-        id: 'simulationMainId',
-        numeric: false,
-        disablePadding: true,
-        label: 'ID (main)',
-    },
+    //{
+    //    id: 'simulationMainId',
+    //    numeric: false,
+    //    disablePadding: true,
+    //    label: 'ID (main)',
+    //},
     {
         id: 'simulationDetailId',
         numeric: false,
         disablePadding: true,
-        label: 'ID (details)',
+        label: 'ID',
     },
     {
         id: 'batterySize',
@@ -217,14 +217,6 @@ const DetailsTable = ({
                                                     cursor: 'pointer',
                                                 }}
                                             >
-                                                <TableCell
-                                                    align="left"
-                                                    component="th"
-                                                    id={labelId}
-                                                    scope="row"
-                                                >
-                                                    {row.simulationMainId}
-                                                </TableCell>
                                                 <TableCell align="left">
                                                     {row.simulationsDetailsId}
                                                 </TableCell>
