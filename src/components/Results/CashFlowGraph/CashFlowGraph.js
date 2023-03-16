@@ -40,7 +40,7 @@ const CashFlowGraph = ({ graphData }) => {
 
     return (
         <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
-            <Typography variant="h3">P&L Cash Flow</Typography>
+            <Typography variant="h3">P&L Cash Flow (NIS)</Typography>
             <Stack
                 direction="column"
                 justifyContent="center"
