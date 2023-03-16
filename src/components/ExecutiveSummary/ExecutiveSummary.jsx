@@ -85,7 +85,7 @@ const ExecutiveSummary = ({ executiveSummaryData, contributionBarGraphData }) =>
                             Yearly p&l: {results.yearly_operation_profit}
                         </Typography>
                         <Typography variant="body1">
-                            Simulation number: {results['simulation #']}
+                            Simulation id: {results['simulation #']}
                         </Typography>
                     </Stack>
                 </Grid>
