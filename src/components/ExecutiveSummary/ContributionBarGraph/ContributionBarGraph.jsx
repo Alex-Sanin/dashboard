@@ -25,7 +25,7 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
     return (
         <Stack direction="column" spacing={1} sx={{ width: '100%', ml: '-45px' }}>
             <Typography variant="h3" sx={{ ml: '90px', textDecoration: 'underline' }}>
-                Yearly contribution
+                Yearly contribution (NIS)
             </Typography>
             <Stack direction="column" justifyContent="center">
                 <BarChart
