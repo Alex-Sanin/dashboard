@@ -65,9 +65,10 @@ export const initialPvCost = [0, 800, 900, 1000, 1100, 1200];
 //     initialPvCostValue = initialPvCostValue + 10;
 // }
 
-export const grid = [];
-let gridValue = 0;
-while (gridValue <= 10) {
-    grid.push(+gridValue.toFixed(1));
-    gridValue = gridValue + 0.1;
-}
+export const grid = Array.from(Array(10), (_, index) => index + 1);
+//export const grid = [];
+//let gridValue = 0;
+//while (gridValue <= 10) {
+//    grid.push(+gridValue.toFixed(1));
+//    gridValue = gridValue + 0.1;
+//}
