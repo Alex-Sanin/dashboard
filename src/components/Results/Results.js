@@ -3,6 +3,7 @@ import { Stack, Typography, Button } from '@mui/material';
 import PlTable from './PlTable/PlTable';
 import CashFlowGraph from './CashFlowGraph/CashFlowGraph';
 import PlDiagram from './PlDiagram/PlDiagram';
+import React from 'react';
 
 const Result = ({
     token,
@@ -31,15 +32,20 @@ const Result = ({
         >
             <Typography variant="h2">Result</Typography>
             <Stack direction="column" alignItems="center" spacing={4}>
-                <PlTable tableData={plSummaryTable} tableName="P&l Summary - Yearly" />
                 <CashFlowGraph graphData={plCashFlowGraph} />
-                <PlTable tableData={plDetailsTable} tableName="P&L Details - Yearly" />
                 {plDiagram && (
-                    <PlDiagram
-                        diagramData={plDiagram}
-                        plDiagramDescription={plDiagramDescription}
-                    />
+                    <>
+                        <Typography variant="h3" width="100%">
+                            Energy Flow
+                        </Typography>
+                        <PlDiagram
+                            diagramData={plDiagram}
+                            plDiagramDescription={plDiagramDescription}
+                        />
+                    </>
                 )}
+                <PlTable tableData={plSummaryTable} tableName="P&l Summary - Yearly" />
+                <PlTable tableData={plDetailsTable} tableName="P&L Details - Yearly" />
             </Stack>
             {dataFilePath && (
                 <Stack direction="row" justifyContent="flex-end">

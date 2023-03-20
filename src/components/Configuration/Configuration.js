@@ -22,7 +22,7 @@ import {
     grid,
 } from '../../utils/constants';
 
-import TooltipIcon from './TooltipIcon';
+import TooltipIcon from '../TooltipIcon/TooltipIcon';
 
 const validationSchema = yup.object().shape({
     customerName: yup
@@ -67,6 +67,8 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
             simulationName: 'simulation test 1',
             region: 'Israel',
             currency: 'NIS',
+            discount: '',
+            interestRate: '',
             batteryMinSize: '8',
             batteryMaxSize: '8',
             batteryMinPower: '2',
@@ -91,7 +93,7 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                 body: formData,
             };
             fetch(
-                `/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
+                `/sim1/get_simulation_run_time/?authorization=${token}&username=${email}&user_name=${userName}`,
                 requestOptions
             )
                 .then((response) => response.json())
@@ -278,6 +280,50 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                             </TextField>
                             <TooltipIcon tooltipText="Select currency" />
                         </Stack>
+                        <Stack direction="column" spacing={2}>
+                            <Typography variant="h3">Cost of Doing Business</Typography>
+                            <Stack direction="row" spacing={2}>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    label="Discount"
+                                    size="small"
+                                    name="discount"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.discount}
+                                    error={formik.errors.discount && formik.touched.discount}
+                                    helperText={formik.touched.discount && formik.errors.discount}
+                                >
+                                    {currencies.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TooltipIcon tooltipText="Select discount" />
+                            </Stack>
+                            <Stack direction="row" spacing={2}>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    label="Interest rate"
+                                    size="small"
+                                    name="interestRate"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.currency}
+                                    error={formik.errors.currency && formik.touched.currency}
+                                    helperText={formik.touched.currency && formik.errors.currency}
+                                >
+                                    {currencies.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TooltipIcon tooltipText="Select interest rate" />
+                            </Stack>
+                        </Stack>
+
                         <Stack direction="column" spacing={2}>
                             <Typography variant="h3">Battery</Typography>
                             <Stack direction="row" spacing={2}>
@@ -566,7 +612,7 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                                     <SvgIcon
                                         component={InfoOutlinedIcon}
                                         sx={{ width: 28, height: 28 }}
-                                        style={{ paddingTop: 2, fill: '#1665C1' }}
+                                        style={{ paddingTop: 2, fill: '#556B2F' }}
                                     />
                                 </Tooltip>
                             </Stack>

@@ -35,7 +35,7 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
                     <Bar dataKey="roi">
                         {data.map((entry, index) => (
                             <Cell
-                                fill={entry.id === bestRoi ? '#1665C1' : '#E5E5E5'}
+                                fill={entry.id === bestRoi ? '#556B2F' : '#E5E5E5'}
                                 key={`cell-${index}`}
                             />
                         ))}

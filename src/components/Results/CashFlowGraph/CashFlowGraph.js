@@ -33,14 +33,14 @@ const CashFlowGraph = ({ graphData }) => {
             );
         }
     }, [graphData]);
-    
+
     if (!graphData) {
         return <Preloader />;
     }
 
     return (
         <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
-            <Typography variant="h3">P&L Cash Flow (NIS)</Typography>
+            <Typography variant="h3">P&L - Cash Flow (NIS)</Typography>
             <Stack
                 direction="column"
                 justifyContent="center"
@@ -66,7 +66,7 @@ const CashFlowGraph = ({ graphData }) => {
                     <Line
                         type="monotone"
                         dataKey="Operation profit"
-                        stroke="#1665C1"
+                        stroke="#556B2F"
                         activeDot={{ r: 8 }}
                         style={{ opacity: isActiveLineOP ? 1 : 0 }}
                     />
@@ -86,8 +86,8 @@ const CashFlowGraph = ({ graphData }) => {
                         onClick={() => handleLineVisibility('OP')}
                         sx={{ cursor: 'pointer' }}
                     >
-                        <ChartLegendIcon color="#1665C1" />
-                        <Typography variant="body1" style={{ color: '#1665C1' }}>
+                        <ChartLegendIcon color="#556B2F" />
+                        <Typography variant="body1" style={{ color: '#556B2F' }}>
                             Operation profit
                         </Typography>
                     </Stack>

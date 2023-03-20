@@ -52,7 +52,7 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
                             />
                         }
                     />
-                    <Bar dataKey="pvIncome" stackId="a" fill="#1665C1" />
+                    <Bar dataKey="pvIncome" stackId="a" fill="#556B2F" />
                     <Bar dataKey="batteryIncome" stackId="a" fill="#E5E5E5" />
                 </BarChart>
                 <Stack direction="row" spacing={2} sx={{ ml: '75px' }}>
@@ -62,8 +62,8 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
                         alignItems="center"
                         sx={{ cursor: 'pointer' }}
                     >
-                        <ChartLegendIcon color="#1665C1" />
-                        <Typography variant="body1" style={{ color: '#1665C1' }}>
+                        <ChartLegendIcon color="#556B2F" />
+                        <Typography variant="body1" style={{ color: '#556B2F' }}>
                             PV income
                         </Typography>
                     </Stack>

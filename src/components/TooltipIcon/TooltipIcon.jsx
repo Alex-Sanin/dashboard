@@ -7,7 +7,7 @@ const TooltipIcon = ({tooltipText, pt='10px'}) => {
             <SvgIcon
                 component={InfoOutlinedIcon}
                 sx={{ width: 28, height: 28 }}
-                style={{ paddingTop: pt, fill: "#1665C1" }}
+                style={{ paddingTop: pt, fill: "#556B2F" }}
             />
         </Tooltip>
     )

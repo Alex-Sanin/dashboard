@@ -112,6 +112,7 @@ const DetailsTable = ({
     getMainTableSelectedRowData,
     setExecutiveSummaryData,
     setContributionBarGraphData,
+    setExecutiveSummaryTableData,
 }) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('simulationMainId');
@@ -144,6 +145,7 @@ const DetailsTable = ({
         setExampleFilePath(json[15]);
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
+        setExecutiveSummaryTableData(json.npv_irr);
     };
 
     const handleRequestSort = (event, property) => {
@@ -212,7 +214,7 @@ const DetailsTable = ({
                                                 key={row.simulationsDetailsId}
                                                 style={{
                                                     backgroundColor: isItemSelected
-                                                        ? '#bfddfc'
+                                                        ? '#bace9a'
                                                         : 'white',
                                                     cursor: 'pointer',
                                                 }}

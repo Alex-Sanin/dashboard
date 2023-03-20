@@ -157,7 +157,7 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
                                                 key={row.simulationMainId}
                                                 style={{
                                                     backgroundColor: isItemSelected
-                                                        ? '#bfddfc'
+                                                        ? '#bace9a'
                                                         : 'white',
                                                     cursor: 'pointer',
                                                 }}

@@ -3,6 +3,7 @@ import { Grid, Stack } from '@mui/material';
 
 import Header from '../../components/Header/Header';
 import Configuration from '../../components/Configuration/Configuration';
+import TheBestSimulation from '../../components/TheBestSimulation/TheBestSimulation';
 import ExecutiveSummary from '../../components/ExecutiveSummary/ExecutiveSummary';
 import Summary from '../../components/Summary/Summary';
 import Result from '../../components/Results/Results';
@@ -11,6 +12,7 @@ import { AuthContext } from '../../utils/AuthContext';
 const Dashboard = () => {
     const [executiveSummaryData, setExecutiveSummaryData] = useState('');
     const [contributionBarGraphData, setContributionBarGraphData] = useState('');
+    const [executiveSummaryTableData, setExecutiveSummaryTableData] = useState('');
     const [mainTableData, setMainTableData] = useState('');
     const [detailsTableData, setDetailsTableData] = useState('');
     const [bestRoi, setBestRoi] = useState('');
@@ -26,15 +28,17 @@ const Dashboard = () => {
     const { userName, token, email } = useContext(AuthContext);
 
     const getMainTableData = async () => {
-        const response = await fetch(`/sim1/get_all_data/?authorization=${token}&username=${email}&user_name=${userName}`, {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Credentials': true,
-                'Content-Type': 'application/json',
-            },
-        });
+        const response = await fetch(
+            `/sim1/get_all_data/?authorization=${token}&username=${email}&user_name=${userName}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
         const json = await response.json();
-        // console.log('GET DATA RESPONSE: ', json);
         setMainTableData(Object.values(json[1]));
         setDetailsTableData(Object.values(json[3]));
         setBestRoi(json[5]);
@@ -48,6 +52,8 @@ const Dashboard = () => {
         setDataFilePath(json[20]);
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
+        setExecutiveSummaryTableData(json.npv_irr);
+
     };
 
     useEffect(() => {
@@ -71,19 +77,29 @@ const Dashboard = () => {
                     <ExecutiveSummary
                         executiveSummaryData={executiveSummaryData}
                         contributionBarGraphData={contributionBarGraphData}
+                        executiveSummaryTableData={executiveSummaryTableData}
                     />
                 </Grid>
                 <Grid item sm={12} md={12}>
                     <Grid container spacing={3}>
                         <Grid item sm={12} md={4}>
-                            <Configuration
-                                token={token}
-                                email={email}
-                                userName={userName}
-                                exampleFilePath={exampleFilePath}
-                                getMainTableData={getMainTableData}
-                            />
+                            <Stack direction="column" spacing={3}>
+                                <Configuration
+                                    token={token}
+                                    email={email}
+                                    userName={userName}
+                                    exampleFilePath={exampleFilePath}
+                                    getMainTableData={getMainTableData}
+                                />
+                                <TheBestSimulation
+                                    token={token}
+                                    email={email}
+                                    userName={userName}
+                                    exampleFilePath={exampleFilePath}
+                                />
+                            </Stack>
                         </Grid>
+
                         <Grid item sm={12} md={8}>
                             <Stack direction="column" spacing={3}>
                                 <Summary
@@ -105,6 +121,7 @@ const Dashboard = () => {
                                     setDataFilePath={setDataFilePath}
                                     setExecutiveSummaryData={setExecutiveSummaryData}
                                     setContributionBarGraphData={setContributionBarGraphData}
+                                    setExecutiveSummaryTableData={setExecutiveSummaryTableData}
                                     getMainTableData={getMainTableData}
                                 />
                                 <Result

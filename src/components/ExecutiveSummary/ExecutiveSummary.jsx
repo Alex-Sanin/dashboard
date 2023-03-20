@@ -2,14 +2,19 @@ import React from 'react';
 import { Stack, Grid, Typography, Paper } from '@mui/material';
 
 import ContributionBarGraph from '../ExecutiveSummary/ContributionBarGraph/ContributionBarGraph';
+import ExecutiveSummaryTable from './ExecutiveSummaryTable/ExecutiveSummaryTable';
 import Preloader from '../loaders/Preloader';
 
-const ExecutiveSummary = ({ executiveSummaryData, contributionBarGraphData }) => {
+const ExecutiveSummary = ({
+    executiveSummaryData,
+    contributionBarGraphData,
+    executiveSummaryTableData,
+}) => {
     const { configuration, results } = executiveSummaryData;
 
-    if (!executiveSummaryData || !contributionBarGraphData) {
+    if (!executiveSummaryData || !contributionBarGraphData || !executiveSummaryTableData) {
         return (
-            <Paper sx={{p: 5}}>
+            <Paper sx={{ p: 5 }}>
                 <Preloader />
             </Paper>
         );
@@ -74,9 +79,7 @@ const ExecutiveSummary = ({ executiveSummaryData, contributionBarGraphData }) =>
                         <Typography variant="body1">
                             Return on Investment: {results.return_on_investment}
                         </Typography>
-                        <Typography variant="body1">
-                            Investment: {results.investment}
-                        </Typography>
+                        <Typography variant="body1">Investment: {results.investment}</Typography>
                         <Typography variant="body1">Yearly cost: {results.yearly_cost}</Typography>
                         <Typography variant="body1">
                             Yearly income: {results.yearly_income}
@@ -93,6 +96,7 @@ const ExecutiveSummary = ({ executiveSummaryData, contributionBarGraphData }) =>
                     <ContributionBarGraph contributionBarGraphData={contributionBarGraphData} />
                 </Grid>
             </Grid>
+            <ExecutiveSummaryTable tableData={executiveSummaryTableData}/>
         </Stack>
     );
 };
