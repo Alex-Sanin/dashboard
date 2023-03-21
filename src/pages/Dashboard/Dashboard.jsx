@@ -95,7 +95,23 @@ const Dashboard = () => {
                                     token={token}
                                     email={email}
                                     userName={userName}
-                                    exampleFilePath={exampleFilePath}
+
+                                    setMainTableData={setMainTableData}
+                                    setDetailsTableData={setDetailsTableData}
+                                    setBestRoi={setBestRoi}
+
+                                    setRoiBarGraphData={setRoiBarGraphData}
+                                    setPlSummaryTable={setPlSummaryTable}
+                                    setPlCashFlowGraph={setPlCashFlowGraph}
+
+                                    setPlDetailsTable={setPlDetailsTable}
+                                    setPlDiagram={setPlDiagram}
+                                    setExampleFilePath={setExampleFilePath}
+
+                                    setDataFilePath={setDataFilePath}
+                                    setExecutiveSummaryData={setExecutiveSummaryData}
+                                    setContributionBarGraphData={setContributionBarGraphData}
+                                    setExecutiveSummaryTableData={setExecutiveSummaryTableData}
                                 />
                             </Stack>
                         </Grid>
@@ -117,6 +133,7 @@ const Dashboard = () => {
                                     setPlCashFlowGraph={setPlCashFlowGraph}
                                     setPlDetailsTable={setPlDetailsTable}
                                     setPlDiagram={setPlDiagram}
+                                    setPlDiagramDescription={setPlDiagramDescription}
                                     setExampleFilePath={setExampleFilePath}
                                     setDataFilePath={setDataFilePath}
                                     setExecutiveSummaryData={setExecutiveSummaryData}

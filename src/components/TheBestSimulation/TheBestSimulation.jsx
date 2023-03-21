@@ -14,7 +14,25 @@ const validationSchema = yup.object().shape({
     customer: yup.string().required('This field is required'),
 });
 
-const TheBestSimulation = ({ token, email, userName }) => {
+const TheBestSimulation = ({
+    token,
+    email,
+    userName,
+    setMainTableData,
+    setDetailsTableData,
+    setBestRoi,
+    setRoiBarGraphData,
+    setPlSummaryTable,
+    setPlCashFlowGraph,
+    setPlDetailsTable,
+    setPlDiagram,
+    setPlDiagramDescription,
+    setExampleFilePath,
+    setDataFilePath,
+    setExecutiveSummaryData,
+    setContributionBarGraphData,
+    setExecutiveSummaryTableData,
+}) => {
     const [customersList, setCustomersList] = useState([]);
 
     const formik = useFormik({
@@ -22,19 +40,32 @@ const TheBestSimulation = ({ token, email, userName }) => {
         initialValues: {
             customer: '',
         },
-        onSubmit: (values) => {
-            const requestOptions = {
-                method: 'POST',
-                body: values,
-            };
-            fetch(
-                `/sim1/best_results/?authorization=${token}&username=${email}&user_name=${userName}`,
-                requestOptions
-            )
-                .then((response) => response.json())
-                // .then(() => getMainTableData())
-                .catch((error) => console.log('error', error));
-            // formik.resetForm();
+        onSubmit: () => {
+            const response = fetch(
+                `/sim1/best_results/?authorization=${token}&username=${email}&user_name=${userName}&customer_name=${formik.values.customer}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            const json = response.json();
+            setMainTableData(Object.values(json[1]));
+            setDetailsTableData(Object.values(json[3]));
+            setBestRoi(json[5]);
+            setRoiBarGraphData(Object.values(json[6]));
+            setPlSummaryTable(Object.values(json[8]));
+            setPlCashFlowGraph(Object.values(json[10]));
+            setPlDetailsTable(Object.values(json[12]));
+            setPlDiagram(Object.values(json[14]));
+            setPlDiagramDescription(Object.values(json[16]));
+            setExampleFilePath(json[18]);
+            setDataFilePath(json[20]);
+            setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
+            setContributionBarGraphData(json.contribution_bar_graph);
+            setExecutiveSummaryTableData(json.npv_irr);
         },
     });
 

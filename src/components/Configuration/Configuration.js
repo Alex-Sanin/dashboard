@@ -686,7 +686,11 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                                 Run Simulation
                             </Button>
                             {errorMessage && (
-                                <Typography variant="body1" color="#d32f2f">
+                                <Typography
+                                    variant="body1"
+                                    color="#d32f2f"
+                                    sx={{ textAlign: 'center' }}
+                                >
                                     {errorMessage}
                                 </Typography>
                             )}
