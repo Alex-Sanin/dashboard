@@ -24,6 +24,7 @@ const Summary = ({
     getMainTableData,
     setExecutiveSummaryData,
     setContributionBarGraphData,
+    setExecutiveSummaryTableData,
 }) => {
     const getMainTableSelectedRowData = async (mainTableId, userName) => {
         const response = await fetch(
@@ -49,6 +50,7 @@ const Summary = ({
         setDataFilePath(json[17]);
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
+        setExecutiveSummaryTableData(json.npv_irr);
     };
 
     return (
@@ -82,6 +84,7 @@ const Summary = ({
                 setDataFilePath={setDataFilePath}
                 setExecutiveSummaryData={setExecutiveSummaryData}
                 setContributionBarGraphData={setContributionBarGraphData}
+                setExecutiveSummaryTableData={setExecutiveSummaryTableData}
                 getMainTableSelectedRowData={getMainTableSelectedRowData}
             />
             {roiBarGraphData && <RoiBarChart bestRoi={bestRoi} barChartData={roiBarGraphData} />}

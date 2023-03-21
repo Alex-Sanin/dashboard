@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
-import { dataFormatter } from '../../../utils/constants';
+import { dataFormatter } from '../../../utils/functions';
 import ChartLegendIcon from '../../../assets/images/ChartLegendIcon';
 import Preloader from '../../loaders/Preloader';
 

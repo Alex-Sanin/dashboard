@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 import { Stack, Typography } from '@mui/material';
 
 import Preloader from '../../../components/loaders/Preloader';
-import { dataFormatter } from '../../../utils/constants';
+import { dataFormatter } from '../../../utils/functions';
 
 const PlTable = ({ tableData, tableName }) => {
     const isCellsName = (cell) => {

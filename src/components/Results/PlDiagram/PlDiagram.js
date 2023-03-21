@@ -1,7 +1,7 @@
 import { Stack, Paper, Typography } from '@mui/material';
 
 import Preloader from '../../loaders/Preloader';
-import { dataFormatter } from '../../../utils/constants';
+import { dataFormatter } from '../../../utils/functions';
 
 import batteryIcon from '../../../assets/images/battery.svg';
 import gridConnection from '../../../assets/images/gridConnection.svg';

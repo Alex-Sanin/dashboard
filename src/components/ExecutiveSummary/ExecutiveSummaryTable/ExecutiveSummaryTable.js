@@ -42,7 +42,7 @@ const ExecutiveSummaryTable = ({ tableData }) => {
         <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
             <Typography variant="h3">{tableData.graph_title}</Typography>
             <Box sx={{ width: '100%' }}>
-                <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
+                <Paper sx={{ maxWidth: '100%' }}>
                     <Table aria-labelledby="tableTitle" size="medium">
                         <TableHead>
                             <TableRow>

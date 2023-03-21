@@ -14,6 +14,8 @@ import * as yup from 'yup';
 import {
     currencies,
     regions,
+    discount,
+    interestRate,
     initialBatterySize,
     initialBatteryPower,
     initialBatteryCost,
@@ -23,6 +25,7 @@ import {
 } from '../../utils/constants';
 
 import TooltipIcon from '../TooltipIcon/TooltipIcon';
+import { timeFormatter } from '../../utils/functions';
 
 const validationSchema = yup.object().shape({
     customerName: yup
@@ -47,6 +50,27 @@ const validationSchema = yup.object().shape({
     grid: yup.string().required('This field is required'),
 });
 
+const initialValues = {
+    customerName: 'customer test 1',
+    simulationName: 'simulation test 1',
+    region: 'Israel',
+    currency: 'NIS',
+    discount: '0',
+    interestRate: '0',
+    batteryMinSize: '8',
+    batteryMaxSize: '8',
+    batteryMinPower: '2',
+    batteryMaxPower: '2',
+    batteryMinCost: '300',
+    batteryMaxCost: '300',
+    pvMinSize: '1',
+    pvMaxSize: '1',
+    pvMinCost: '800',
+    pvMaxCost: '800',
+    grid: '1',
+    file: '',
+};
+
 const Configuration = ({ exampleFilePath, getMainTableData, token, email, userName }) => {
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
     const [maxBatterySize, setMaxBatterySize] = useState(initialBatterySize);
@@ -58,30 +82,12 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
     const [maxPvSize, setMaxPvSize] = useState(initialPvSize);
     const [minPvCost, setMinPvCost] = useState(initialPvCost);
     const [maxPvCost, setMaxPvCost] = useState(initialPvCost);
+    const [runSimulationsTime, setRunSimulationsTime] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const formik = useFormik({
         validationSchema,
-        initialValues: {
-            customerName: 'customer test 1',
-            simulationName: 'simulation test 1',
-            region: 'Israel',
-            currency: 'NIS',
-            discount: '',
-            interestRate: '',
-            batteryMinSize: '8',
-            batteryMaxSize: '8',
-            batteryMinPower: '2',
-            batteryMaxPower: '2',
-            batteryMinCost: '300',
-            batteryMaxCost: '300',
-            pvMinSize: '1',
-            pvMaxSize: '1',
-            pvMinCost: '800',
-            pvMaxCost: '800',
-            grid: '1',
-            file: '',
-        },
+        initialValues,
         onSubmit: (values) => {
             const keys = Object.keys(values);
             const formData = new FormData();
@@ -93,7 +99,7 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                 body: formData,
             };
             fetch(
-                `/sim1/get_simulation_run_time/?authorization=${token}&username=${email}&user_name=${userName}`,
+                `/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
                 requestOptions
             )
                 .then((response) => response.json())
@@ -131,7 +137,25 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                 // Clean up and remove the link
                 link.parentNode.removeChild(link);
             });
-        // console.log('GET DATA RESPONSE: ', json);
+    };
+
+    const getSimulationRunTime = async (values) => {
+        const keys = Object.keys(values);
+        const formData = new FormData();
+        for (const key of keys) {
+            formData.append(key, values[key]);
+        }
+        const requestOptions = {
+            method: 'POST',
+            body: formData,
+        };
+        fetch(
+            `/sim1/get_simulation_run_time/?authorization=${token}&username=${email}&user_name=${userName}`,
+            requestOptions
+        )
+            .then((response) => response.json())
+            .then((data) => setRunSimulationsTime(data))
+            .catch((error) => console.log('error', error));
     };
 
     useEffect(() => {
@@ -178,7 +202,24 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
         if (formik.values.pvMaxCost || formik.values.pvMaxCost === 0) {
             setMinPvCost(initialPvCost.filter((item) => item <= formik.values.pvMaxCost));
         }
-    }, [formik.values]);
+
+        getSimulationRunTime(formik.values);
+    }, [
+        formik.values.batteryMinSize,
+        formik.values.batteryMaxSize,
+        formik.values.batteryMinPower,
+        formik.values.batteryMaxPower,
+        formik.values.batteryMinCost,
+        formik.values.batteryMaxCost,
+        formik.values.pvMinSize,
+        formik.values.pvMaxSize,
+        formik.values.pvMinCost,
+        formik.values.pvMaxCost,
+    ]);
+
+    useEffect(() => {
+        setErrorMessage('');
+    }, [formik.values.simulationName]);
     const onChangeFile = (e) => {
         formik.setFieldValue('file', e.currentTarget.files[0]);
     };
@@ -294,15 +335,12 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                                     error={formik.errors.discount && formik.touched.discount}
                                     helperText={formik.touched.discount && formik.errors.discount}
                                 >
-                                    {currencies.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                    {discount.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}%
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Select discount" />
-                            </Stack>
-                            <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
@@ -310,17 +348,21 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                                     size="small"
                                     name="interestRate"
                                     onChange={formik.handleChange}
-                                    value={formik.values.currency}
-                                    error={formik.errors.currency && formik.touched.currency}
-                                    helperText={formik.touched.currency && formik.errors.currency}
+                                    value={formik.values.interestRate}
+                                    error={
+                                        formik.errors.interestRate && formik.touched.interestRate
+                                    }
+                                    helperText={
+                                        formik.touched.interestRate && formik.errors.interestRate
+                                    }
                                 >
-                                    {currencies.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                    {interestRate.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}%
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Select interest rate" />
+                                <TooltipIcon tooltipText="Select discount and Interest rate" />
                             </Stack>
                         </Stack>
 
@@ -647,6 +689,18 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                                 <Typography variant="body1" color="#d32f2f">
                                     {errorMessage}
                                 </Typography>
+                            )}
+                            {runSimulationsTime && (
+                                <Stack direction="column" spacing={1}>
+                                    <Typography variant="h3" sx={{ textAlign: 'center' }}>
+                                        {`Total number of simulations: ${runSimulationsTime.total_number_of_simulations}`}
+                                    </Typography>
+                                    <Typography variant="h3" sx={{ textAlign: 'center' }}>
+                                        {`Total time to run all simulations: ${timeFormatter(
+                                            runSimulationsTime.total_time_to_run_all_simulations_in_seconds
+                                        )}`}
+                                    </Typography>
+                                </Stack>
                             )}
                         </Stack>
                     </Stack>

@@ -1,5 +1,3 @@
-export const baseURL = '';
-
 //Configuration form
 export const regions = [
     {
@@ -31,17 +29,21 @@ export const currencies = [
     },
 ];
 
-export const dataFormatter = (number) => new Intl.NumberFormat('en-US').format(number);
-
+export const discount = [];
+let discountValue = 0;
+while (discountValue <= 20) {
+   discount.push(+discountValue);
+   discountValue = discountValue + 1;
+}
+export const interestRate = [];
+let interestRateValue = 0;
+while (interestRateValue <= 20) {
+    interestRate.push(+interestRateValue);
+    interestRateValue = interestRateValue + 1;
+}
 export const initialBatterySize = Array.from(Array(100), (_, index) => index + 1);
 
 export const initialBatteryPower = Array.from(Array(50), (_, index) => index + 1);
-//export const initialBatteryPower = [0.1, 0.25, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-// let initialBatteryPowerValue = 1.5;
-// while (initialBatteryPowerValue <= 10) {
-//     initialBatteryPower.push(+initialBatteryPowerValue.toFixed(1));
-//     initialBatteryPowerValue = initialBatteryPowerValue + 0.1;
-// }
 
 export const initialBatteryCost = [];
 let initialBatteryCostValue = 150;
@@ -51,24 +53,7 @@ while (initialBatteryCostValue <= 500) {
 }
 
 export const initialPvSize = Array.from(Array(100), (_, index) => index + 1);
-//export const initialPvSize = [];
-//let initialPvSizeValue = 0;
-//while (initialPvSizeValue <= 10) {
-//    initialPvSize.push(+initialPvSizeValue.toFixed(1));
-//    initialPvSizeValue = initialPvSizeValue + 0.5;
-//}
 
 export const initialPvCost = [0, 800, 900, 1000, 1100, 1200];
-// let initialPvCostValue = 0;
-// while (initialPvCostValue <= 1200) {
-//     initialPvCost.push(+initialPvCostValue.toFixed(1));
-//     initialPvCostValue = initialPvCostValue + 10;
-// }
 
 export const grid = Array.from(Array(10), (_, index) => index + 1);
-//export const grid = [];
-//let gridValue = 0;
-//while (gridValue <= 10) {
-//    grid.push(+gridValue.toFixed(1));
-//    gridValue = gridValue + 0.1;
-//}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
-import { dataFormatter } from '../../../utils/constants';
+import { dataFormatter } from '../../../utils/functions';
 
 const BarTooltip = ({ pvIncome, pvPercentage, batteryIncome, batteryPercentage }) => {
     return (

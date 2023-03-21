@@ -11,7 +11,7 @@ import { Stack, Typography } from '@mui/material';
 
 import EnhancedTableHead from '../EnhancedTableHead';
 import Preloader from '../../loaders/Preloader';
-import { dataFormatter } from '../../../utils/constants';
+import { dataFormatter } from '../../../utils/functions';
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {

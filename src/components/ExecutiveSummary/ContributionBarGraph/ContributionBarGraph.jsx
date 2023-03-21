@@ -4,7 +4,7 @@ import { Typography, Stack } from '@mui/material';
 
 import Preloader from '../../loaders/Preloader';
 import BarTooltip from './BarTooltip';
-import { dataFormatter } from '../../../utils/constants';
+import { dataFormatter } from '../../../utils/functions';
 
 import ChartLegendIcon from '../../../assets/images/ChartLegendIcon';
 
