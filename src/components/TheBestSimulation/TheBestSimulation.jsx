@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Paper, TextField, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -9,6 +9,7 @@ import * as yup from 'yup';
 
 import TooltipIcon from '../TooltipIcon/TooltipIcon';
 import Preloader from '../loaders/Preloader';
+import { combinedKeyFinancialValues } from '../../utils/functions';
 
 const validationSchema = yup.object().shape({
     customer: yup.string().required('This field is required'),
@@ -32,16 +33,16 @@ const TheBestSimulation = ({
     setExecutiveSummaryData,
     setContributionBarGraphData,
     setExecutiveSummaryTableData,
+    customersList,
+    getCustomersList,
 }) => {
-    const [customersList, setCustomersList] = useState([]);
-
     const formik = useFormik({
         validationSchema,
         initialValues: {
             customer: '',
         },
-        onSubmit: () => {
-            const response = fetch(
+        onSubmit: async () => {
+            const response = await fetch(
                 `/sim1/best_results/?authorization=${token}&username=${email}&user_name=${userName}&customer_name=${formik.values.customer}`,
                 {
                     method: 'GET',
@@ -51,11 +52,17 @@ const TheBestSimulation = ({
                     },
                 }
             );
-            const json = response.json();
+            const json = await response.json();
             setMainTableData(Object.values(json[1]));
             setDetailsTableData(Object.values(json[3]));
             setBestRoi(json[5]);
-            setRoiBarGraphData(Object.values(json[6]));
+            setRoiBarGraphData(
+                combinedKeyFinancialValues(
+                    json.summary_graph_roi,
+                    json.summary_graph_npv,
+                    json.summary_graph_irr
+                )
+            );
             setPlSummaryTable(Object.values(json[8]));
             setPlCashFlowGraph(Object.values(json[10]));
             setPlDetailsTable(Object.values(json[12]));
@@ -68,21 +75,6 @@ const TheBestSimulation = ({
             setExecutiveSummaryTableData(json.npv_irr);
         },
     });
-
-    const getCustomersList = async () => {
-        const response = await fetch(
-            `/sim1/get_customers_list/?authorization=${token}&username=${email}&user_name=${userName}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Access-Control-Allow-Credentials': true,
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
-        const json = await response.json();
-        setCustomersList(Object.values(json['customers_list'].flat()));
-    };
 
     useEffect(() => {
         getCustomersList();

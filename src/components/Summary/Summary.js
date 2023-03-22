@@ -3,6 +3,7 @@ import { Stack, Typography } from '@mui/material';
 import MainTable from './MainTable/MainTable';
 import DetailsTable from './DetailsTable/DetailsTable';
 import RoiBarChart from './RoiBarChart/RoiBarChart';
+import {combinedKeyFinancialValues} from "../../utils/functions";
 
 const Summary = ({
     token,
@@ -41,7 +42,11 @@ const Summary = ({
         // console.log('simulation_main_table_selected_row: ', json);
         setDetailsTableData(Object.values(json[0]));
         setBestRoi(json[2]);
-        setRoiBarGraphData(Object.values(json[3]));
+        setRoiBarGraphData(combinedKeyFinancialValues(
+            json.summary_graph_roi,
+            json.summary_graph_npv,
+            json.summary_graph_irr
+        ));
         setPlSummaryTable(Object.values(json[5]));
         setPlCashFlowGraph(Object.values(json[7]));
         setPlDetailsTable(Object.values(json[9]));

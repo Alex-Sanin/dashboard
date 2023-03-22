@@ -1,5 +1,7 @@
 export const dataFormatter = (number) => new Intl.NumberFormat('en-US').format(number);
 
+
+// Configuration form
 export const timeFormatter = (seconds) => {
     if (seconds < 60) {
         return `${seconds}s`;
@@ -22,3 +24,23 @@ export const timeFormatter = (seconds) => {
         return `${hours}h ${minutes}m`;
     }
 };
+
+// Key Financial Indicators chart values
+
+export const combinedKeyFinancialValues = (roi, npv, irr) => {
+    const combinedArray = []
+    if (roi.length === npv.length && roi.length === irr.length) {
+
+        for (let i = 0; i < roi.length; i++) {
+            combinedArray.push({
+                roi: roi[i],
+                npv: npv[i],
+                irr: irr[i],
+                id: i,
+            });
+        }
+    }
+    return combinedArray
+}
+
+

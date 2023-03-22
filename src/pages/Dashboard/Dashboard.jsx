@@ -8,6 +8,7 @@ import ExecutiveSummary from '../../components/ExecutiveSummary/ExecutiveSummary
 import Summary from '../../components/Summary/Summary';
 import Result from '../../components/Results/Results';
 import { AuthContext } from '../../utils/AuthContext';
+import { combinedKeyFinancialValues } from '../../utils/functions';
 
 const Dashboard = () => {
     const [executiveSummaryData, setExecutiveSummaryData] = useState('');
@@ -24,6 +25,7 @@ const Dashboard = () => {
     const [plDiagramDescription, setPlDiagramDescription] = useState('');
     const [exampleFilePath, setExampleFilePath] = useState('');
     const [dataFilePath, setDataFilePath] = useState('');
+    const [customersList, setCustomersList] = useState([]);
 
     const { userName, token, email } = useContext(AuthContext);
 
@@ -42,7 +44,13 @@ const Dashboard = () => {
         setMainTableData(Object.values(json[1]));
         setDetailsTableData(Object.values(json[3]));
         setBestRoi(json[5]);
-        setRoiBarGraphData(Object.values(json[6]));
+        setRoiBarGraphData(
+            combinedKeyFinancialValues(
+                json.summary_graph_roi,
+                json.summary_graph_npv,
+                json.summary_graph_irr
+            )
+        );
         setPlSummaryTable(Object.values(json[8]));
         setPlCashFlowGraph(Object.values(json[10]));
         setPlDetailsTable(Object.values(json[12]));
@@ -53,7 +61,21 @@ const Dashboard = () => {
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
         setExecutiveSummaryTableData(json.npv_irr);
+    };
 
+    const getCustomersList = async () => {
+        const response = await fetch(
+            `/sim1/get_customers_list/?authorization=${token}&username=${email}&user_name=${userName}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+        const json = await response.json();
+        setCustomersList(Object.values(json['customers_list'].flat()));
     };
 
     useEffect(() => {
@@ -90,28 +112,27 @@ const Dashboard = () => {
                                     userName={userName}
                                     exampleFilePath={exampleFilePath}
                                     getMainTableData={getMainTableData}
+                                    getCustomersList={getCustomersList}
                                 />
                                 <TheBestSimulation
                                     token={token}
                                     email={email}
                                     userName={userName}
-
                                     setMainTableData={setMainTableData}
                                     setDetailsTableData={setDetailsTableData}
                                     setBestRoi={setBestRoi}
-
                                     setRoiBarGraphData={setRoiBarGraphData}
                                     setPlSummaryTable={setPlSummaryTable}
                                     setPlCashFlowGraph={setPlCashFlowGraph}
-
                                     setPlDetailsTable={setPlDetailsTable}
                                     setPlDiagram={setPlDiagram}
                                     setExampleFilePath={setExampleFilePath}
-
                                     setDataFilePath={setDataFilePath}
                                     setExecutiveSummaryData={setExecutiveSummaryData}
                                     setContributionBarGraphData={setContributionBarGraphData}
                                     setExecutiveSummaryTableData={setExecutiveSummaryTableData}
+                                    customersList={customersList}
+                                    getCustomersList={getCustomersList}
                                 />
                             </Stack>
                         </Grid>

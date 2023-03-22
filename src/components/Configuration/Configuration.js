@@ -71,7 +71,14 @@ const initialValues = {
     file: '',
 };
 
-const Configuration = ({ exampleFilePath, getMainTableData, token, email, userName }) => {
+const Configuration = ({
+    exampleFilePath,
+    getMainTableData,
+    getCustomersList,
+    token,
+    email,
+    userName,
+}) => {
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
     const [maxBatterySize, setMaxBatterySize] = useState(initialBatterySize);
     const [minBatteryPower, setMinBatteryPower] = useState(initialBatteryPower);
@@ -105,6 +112,7 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                 .then((response) => response.json())
                 .then((data) => handleErrorMessage(data))
                 .then(() => getMainTableData())
+                .then(() => getCustomersList())
                 .catch((error) => console.log('error', error));
             // formik.resetForm();
         },
@@ -273,7 +281,9 @@ const Configuration = ({ exampleFilePath, getMainTableData, token, email, userNa
                                 onChange={formik.handleChange}
                                 value={formik.values.simulationName}
                                 error={
-                                    formik.errors.simulationName && formik.touched.simulationName
+                                    (formik.errors.simulationName &&
+                                        formik.touched.simulationName) ||
+                                    errorMessage
                                 }
                                 helperText={
                                     formik.touched.simulationName && formik.errors.simulationName

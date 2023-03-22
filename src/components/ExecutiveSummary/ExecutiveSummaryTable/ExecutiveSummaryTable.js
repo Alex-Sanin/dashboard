@@ -47,7 +47,7 @@ const ExecutiveSummaryTable = ({ tableData }) => {
                         <TableHead>
                             <TableRow>
                                 {tableHead.map((headCell) => (
-                                    <TableCell key={headCell}>
+                                    <TableCell key={headCell + '_head_cell'}>
                                         {headCell.replace('_', ' ')}
                                     </TableCell>
                                 ))}
@@ -57,7 +57,7 @@ const ExecutiveSummaryTable = ({ tableData }) => {
                             {tableBody.map((row, index) => (
                                 <TableRow hover key={row + '_row'}>
                                     {row.map((cell) => (
-                                        <TableCell key={cell}>{cell}</TableCell>
+                                        <TableCell key={cell + '_body_cell'}>{cell}</TableCell>
                                     ))}
                                 </TableRow>
                             ))}
