@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Paper, TextField, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -10,6 +10,7 @@ import * as yup from 'yup';
 import TooltipIcon from '../TooltipIcon/TooltipIcon';
 import Preloader from '../loaders/Preloader';
 import { combinedKeyFinancialValues } from '../../utils/functions';
+import { AuthContext } from '../../utils/AuthContext';
 
 const validationSchema = yup.object().shape({
     customer: yup.string().required('This field is required'),
@@ -36,6 +37,8 @@ const TheBestSimulation = ({
     customersList,
     getCustomersList,
 }) => {
+    const { setExecutiveSummaryTitle } = useContext(AuthContext);
+
     const formik = useFormik({
         validationSchema,
         initialValues: {
@@ -73,6 +76,7 @@ const TheBestSimulation = ({
             setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
             setContributionBarGraphData(json.contribution_bar_graph);
             setExecutiveSummaryTableData(json.npv_irr);
+            setExecutiveSummaryTitle({ customerName: formik.values.customer, isFormsUpdate: true });
         },
     });
 

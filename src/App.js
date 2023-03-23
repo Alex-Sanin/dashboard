@@ -20,9 +20,27 @@ const App = () => {
     const [token, setToken] = useState('');
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
+    const [executiveSummaryTitle, setExecutiveSummaryTitle] = useState({
+        customerName: '',
+        simulationName: '',
+        isFormsUpdate: false,
+        isTablesUpdate: false,
+    });
 
     return (
-        <AuthContext.Provider value={{ setIsAuth, userName, setUserName, token, setToken, email, setEmail }}>
+        <AuthContext.Provider
+            value={{
+                setIsAuth,
+                userName,
+                setUserName,
+                token,
+                setToken,
+                email,
+                setEmail,
+                executiveSummaryTitle,
+                setExecutiveSummaryTitle,
+            }}
+        >
             <MaterialThemeProvider theme={materialTheme}>
                 <RouteProvider isAuth={isAuth} />
             </MaterialThemeProvider>

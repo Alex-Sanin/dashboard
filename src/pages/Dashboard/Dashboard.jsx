@@ -126,6 +126,7 @@ const Dashboard = () => {
                                     setPlCashFlowGraph={setPlCashFlowGraph}
                                     setPlDetailsTable={setPlDetailsTable}
                                     setPlDiagram={setPlDiagram}
+                                    setPlDiagramDescription={setPlDiagramDescription}
                                     setExampleFilePath={setExampleFilePath}
                                     setDataFilePath={setDataFilePath}
                                     setExecutiveSummaryData={setExecutiveSummaryData}

@@ -1,16 +1,30 @@
-import React from 'react';
+import { useContext } from 'react';
 import { Stack, Grid, Typography, Paper } from '@mui/material';
 
 import ContributionBarGraph from '../ExecutiveSummary/ContributionBarGraph/ContributionBarGraph';
 import ExecutiveSummaryTable from './ExecutiveSummaryTable/ExecutiveSummaryTable';
 import Preloader from '../loaders/Preloader';
+import { AuthContext } from '../../utils/AuthContext';
 
 const ExecutiveSummary = ({
     executiveSummaryData,
     contributionBarGraphData,
     executiveSummaryTableData,
 }) => {
+    const { executiveSummaryTitle } = useContext(AuthContext);
     const { configuration, results } = executiveSummaryData;
+    console.log('title', executiveSummaryTitle);
+
+    let title;
+    if (executiveSummaryTitle.isFormsUpdate) {
+        title = `Executive summary - Best Configuration For ${executiveSummaryTitle.customerName}`;
+    }
+    if (executiveSummaryTitle.isTablesUpdate) {
+        title = `Executive summary - ${executiveSummaryTitle.customerName} ${executiveSummaryTitle.simulationName}`;
+    }
+    if (!executiveSummaryTitle.isFormsUpdate && !executiveSummaryTitle.isTablesUpdate) {
+        title = 'Executive summary';
+    }
 
     if (!executiveSummaryData || !contributionBarGraphData || !executiveSummaryTableData) {
         return (
@@ -32,7 +46,7 @@ const ExecutiveSummary = ({
                 boxShadow: '0px 1px 15px rgba(0, 0, 0, 0.04)',
             }}
         >
-            <Typography variant="h2">Executive summary</Typography>
+            <Typography variant="h2">{title}</Typography>
             <Grid container>
                 <Grid item sm={12} md={4}>
                     <Stack direction="row" spacing={4}>
@@ -96,7 +110,7 @@ const ExecutiveSummary = ({
                     <ContributionBarGraph contributionBarGraphData={contributionBarGraphData} />
                 </Grid>
             </Grid>
-            <ExecutiveSummaryTable tableData={executiveSummaryTableData}/>
+            <ExecutiveSummaryTable tableData={executiveSummaryTableData} />
         </Stack>
     );
 };

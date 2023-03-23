@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,6 +12,7 @@ import { Stack, Typography } from '@mui/material';
 import EnhancedTableHead from '../EnhancedTableHead';
 import Preloader from '../../loaders/Preloader';
 import { dataFormatter } from '../../../utils/functions';
+import { AuthContext } from '../../../utils/AuthContext';
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -114,6 +115,8 @@ const DetailsTable = ({
     setContributionBarGraphData,
     setExecutiveSummaryTableData,
 }) => {
+    const { setExecutiveSummaryTitle } = useContext(AuthContext);
+
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('simulationMainId');
     const [selectedRow, setSelectedRow] = useState('');
@@ -136,7 +139,6 @@ const DetailsTable = ({
             }
         );
         const json = await response.json();
-        // console.log('simulation_details_table_selected_row: ', json);
         setPlSummaryTable(Object.values(json[1]));
         setPlCashFlowGraph(Object.values(json[3]));
         setPlDetailsTable(Object.values(json[5]));
@@ -146,6 +148,11 @@ const DetailsTable = ({
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
         setExecutiveSummaryTableData(json.npv_irr);
+        setExecutiveSummaryTitle({
+            customerName: json.customer_name,
+            simulationName: json.simulaiton_name,
+            isTablesUpdate: true,
+        });
     };
 
     const handleRequestSort = (event, property) => {

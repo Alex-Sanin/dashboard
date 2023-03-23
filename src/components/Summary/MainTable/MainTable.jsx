@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,6 +11,7 @@ import { Typography, Stack } from '@mui/material';
 
 import Preloader from '../../loaders/Preloader';
 import EnhancedTableHead from '../EnhancedTableHead';
+import { AuthContext } from '../../../utils/AuthContext';
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -86,6 +87,8 @@ const headCells = [
 ];
 
 const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData }) => {
+    const { setExecutiveSummaryTitle } = useContext(AuthContext);
+
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('id');
     const [selectedRow, setSelectedRow] = useState('');
@@ -98,13 +101,14 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
         setOrderBy(property);
     };
 
-    const handleRowSelect = (simulationMainId, userName) => {
+    const handleRowSelect = (simulationMainId, userName, customerName, simulationName) => {
         if (selectedRow === simulationMainId) {
             setSelectedRow('');
+            setExecutiveSummaryTitle({});
             getMainTableData();
         } else {
             setSelectedRow(simulationMainId);
-            getMainTableSelectedRowData(simulationMainId, userName);
+            getMainTableSelectedRowData(simulationMainId, userName, customerName, simulationName);
         }
     };
 
@@ -150,7 +154,9 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
                                                 onClick={() =>
                                                     handleRowSelect(
                                                         row.simulationMainId,
-                                                        row.userName
+                                                        row.userName,
+                                                        row.customerName,
+                                                        row.simulationName
                                                     )
                                                 }
                                                 tabIndex={-1}

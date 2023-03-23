@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { IconButton, SvgIcon, TextField, Tooltip, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -26,6 +26,7 @@ import {
 
 import TooltipIcon from '../TooltipIcon/TooltipIcon';
 import { timeFormatter } from '../../utils/functions';
+import { AuthContext } from '../../utils/AuthContext';
 
 const validationSchema = yup.object().shape({
     customerName: yup
@@ -79,6 +80,8 @@ const Configuration = ({
     email,
     userName,
 }) => {
+    const { setExecutiveSummaryTitle } = useContext(AuthContext);
+
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
     const [maxBatterySize, setMaxBatterySize] = useState(initialBatterySize);
     const [minBatteryPower, setMinBatteryPower] = useState(initialBatteryPower);
@@ -111,8 +114,9 @@ const Configuration = ({
             )
                 .then((response) => response.json())
                 .then((data) => handleErrorMessage(data))
-                .then(() => getMainTableData())
-                .then(() => getCustomersList())
+                // .then(() => getMainTableData())
+                // .then(() => getCustomersList())
+                .then()
                 .catch((error) => console.log('error', error));
             // formik.resetForm();
         },
@@ -238,6 +242,12 @@ const Configuration = ({
             setErrorMessage(response.message);
         } else {
             setErrorMessage('');
+            getMainTableData();
+            getCustomersList();
+            setExecutiveSummaryTitle({
+                customerName: formik.values.customerName,
+                isFormsUpdate: true,
+            });
         }
     };
 

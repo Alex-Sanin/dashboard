@@ -1,9 +1,11 @@
+import { useContext } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import MainTable from './MainTable/MainTable';
 import DetailsTable from './DetailsTable/DetailsTable';
 import RoiBarChart from './RoiBarChart/RoiBarChart';
-import {combinedKeyFinancialValues} from "../../utils/functions";
+import { combinedKeyFinancialValues } from '../../utils/functions';
+import { AuthContext } from '../../utils/AuthContext';
 
 const Summary = ({
     token,
@@ -27,7 +29,14 @@ const Summary = ({
     setContributionBarGraphData,
     setExecutiveSummaryTableData,
 }) => {
-    const getMainTableSelectedRowData = async (mainTableId, userName) => {
+    const { setExecutiveSummaryTitle } = useContext(AuthContext);
+
+    const getMainTableSelectedRowData = async (
+        mainTableId,
+        userName,
+        customerName,
+        simulationName
+    ) => {
         const response = await fetch(
             `/sim1/simulation_main_table_selected_row/?user_name=${profileName}&simulation_main_table_id=${mainTableId}&authorization=${token}&username=${email}&selected_row_name=${userName}`,
             {
@@ -39,14 +48,15 @@ const Summary = ({
             }
         );
         const json = await response.json();
-        // console.log('simulation_main_table_selected_row: ', json);
         setDetailsTableData(Object.values(json[0]));
         setBestRoi(json[2]);
-        setRoiBarGraphData(combinedKeyFinancialValues(
-            json.summary_graph_roi,
-            json.summary_graph_npv,
-            json.summary_graph_irr
-        ));
+        setRoiBarGraphData(
+            combinedKeyFinancialValues(
+                json.summary_graph_roi,
+                json.summary_graph_npv,
+                json.summary_graph_irr
+            )
+        );
         setPlSummaryTable(Object.values(json[5]));
         setPlCashFlowGraph(Object.values(json[7]));
         setPlDetailsTable(Object.values(json[9]));
@@ -56,6 +66,7 @@ const Summary = ({
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
         setExecutiveSummaryTableData(json.npv_irr);
+        setExecutiveSummaryTitle({ customerName, simulationName, isTablesUpdate: true });
     };
 
     return (

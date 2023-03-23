@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { ComposedChart, Bar, Cell, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 import Preloader from '../../loaders/Preloader';
 
@@ -11,15 +11,15 @@ const CustomTooltip = ({ active, payload }) => {
                 direction="column"
                 sx={{ p: '10px', backgroundColor: '#ffffff', border: '1px solid #bcbaba' }}
             >
-                <Typography
-                    sx={{ color: '#556b2f' }}
-                >{`${payload[0].dataKey.toUpperCase()} : ${payload[0].value} (years)`}</Typography>
-                <Typography
-                    sx={{ color: '#bcbaba' }}
-                >{`${payload[1].dataKey.toUpperCase()} : ${payload[1].value} ($ in Mil.)`}</Typography>
-                <Typography
-                    sx={{ color: '#8dc4b4' }}
-                >{`${payload[2].dataKey.toUpperCase()} : ${payload[2].value} (%)`}</Typography>
+                <Typography sx={{ color: '#556b2f' }}>{`${payload[0].dataKey.toUpperCase()} : ${
+                    payload[0].value
+                } (years)`}</Typography>
+                <Typography sx={{ color: '#bcbaba' }}>{`${payload[1].dataKey.toUpperCase()} : ${
+                    payload[1].value
+                } ($ in Mil.)`}</Typography>
+                <Typography sx={{ color: '#8dc4b4' }}>{`${payload[2].dataKey.toUpperCase()} : ${
+                    payload[2].value
+                } (%)`}</Typography>
             </Stack>
         );
     }
@@ -28,7 +28,6 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const RoiBarChart = ({ bestRoi, barChartData }) => {
-
     if (!barChartData.length) {
         return <Preloader />;
     }
@@ -42,7 +41,36 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
                 alignItems="center"
                 sx={{ overflowX: 'scroll' }}
             >
-                <BarChart
+                {/*<BarChart*/}
+                {/*    width={700}*/}
+                {/*    height={350}*/}
+                {/*    data={barChartData}*/}
+                {/*    margin={{*/}
+                {/*        top: 5,*/}
+                {/*        right: 30,*/}
+                {/*        left: 20,*/}
+                {/*        bottom: 5,*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    <CartesianGrid strokeDasharray="3 3" />*/}
+                {/*    <XAxis*/}
+                {/*        dataKey="id"*/}
+                {/*        label={{ value: 'Results', offset: -5, position: 'insideBottom' }}*/}
+                {/*    />*/}
+                {/*    <YAxis />*/}
+                {/*    <Tooltip content={<CustomTooltip />} />*/}
+                {/*    <Bar dataKey="roi" barSize={30}>*/}
+                {/*        {barChartData.map((entry, index) => (*/}
+                {/*            <Cell*/}
+                {/*                fill={entry.id === bestRoi ? '#556B2F' : '#bace9a'}*/}
+                {/*                key={`cell-${index}`}*/}
+                {/*            />*/}
+                {/*        ))}*/}
+                {/*    </Bar>*/}
+                {/*    <Bar dataKey="npv" fill="#e5e5e5" barSize={30} />*/}
+                {/*    <Bar dataKey="irr" fill="#b9f7e6" barSize={30} />*/}
+                {/*</BarChart>*/}
+                <ComposedChart
                     width={700}
                     height={350}
                     data={barChartData}
@@ -68,9 +96,9 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
                             />
                         ))}
                     </Bar>
-                    <Bar dataKey="npv" fill="#e5e5e5" barSize={30} />
-                    <Bar dataKey="irr" fill="#b9f7e6" barSize={30} />
-                </BarChart>
+                    <Line type="monotone" dataKey="npv" stroke="#e5e5e5" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="irr" stroke="#b9f7e6" activeDot={{ r: 8 }} />
+                </ComposedChart>
             </Stack>
         </Stack>
     );
