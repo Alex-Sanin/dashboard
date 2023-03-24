@@ -35,7 +35,6 @@ const Summary = ({
         mainTableId,
         userName,
         customerName,
-        simulationName
     ) => {
         const response = await fetch(
             `/sim1/simulation_main_table_selected_row/?user_name=${profileName}&simulation_main_table_id=${mainTableId}&authorization=${token}&username=${email}&selected_row_name=${userName}`,
@@ -66,7 +65,7 @@ const Summary = ({
         setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
         setContributionBarGraphData(json.contribution_bar_graph);
         setExecutiveSummaryTableData(json.npv_irr);
-        setExecutiveSummaryTitle({ customerName, simulationName, isTablesUpdate: true });
+        setExecutiveSummaryTitle({ customerName, isFormsUpdate: true });
     };
 
     return (
