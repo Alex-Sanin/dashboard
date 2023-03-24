@@ -13,7 +13,6 @@ const ExecutiveSummary = ({
 }) => {
     const { executiveSummaryTitle } = useContext(AuthContext);
     const { configuration, results } = executiveSummaryData;
-    console.log('title', executiveSummaryTitle);
 
     let title;
     if (executiveSummaryTitle.isFormsUpdate) {

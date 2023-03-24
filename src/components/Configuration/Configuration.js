@@ -25,6 +25,7 @@ import {
 } from '../../utils/constants';
 
 import TooltipIcon from '../TooltipIcon/TooltipIcon';
+import ProgressBar from './ProgressBar/ProgressBar';
 import { timeFormatter } from '../../utils/functions';
 import { AuthContext } from '../../utils/AuthContext';
 
@@ -94,6 +95,7 @@ const Configuration = ({
     const [maxPvCost, setMaxPvCost] = useState(initialPvCost);
     const [runSimulationsTime, setRunSimulationsTime] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [simulationProgress, setSimulationProgress] = useState(0);
 
     const formik = useFormik({
         validationSchema,
@@ -170,6 +172,21 @@ const Configuration = ({
             .catch((error) => console.log('error', error));
     };
 
+    const getProgressRequest = async () => {
+        const response = await fetch(
+            `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+        const json = await response.json();
+        setSimulationProgress(json['current_%_of_simulations']);
+    };
+
     useEffect(() => {
         if (formik.values.batteryMinSize) {
             setMaxBatterySize(
@@ -214,7 +231,6 @@ const Configuration = ({
         if (formik.values.pvMaxCost || formik.values.pvMaxCost === 0) {
             setMinPvCost(initialPvCost.filter((item) => item <= formik.values.pvMaxCost));
         }
-
         getSimulationRunTime(formik.values);
     }, [
         formik.values.batteryMinSize,
@@ -248,6 +264,12 @@ const Configuration = ({
                 customerName: formik.values.customerName,
                 isFormsUpdate: true,
             });
+            setTimeout(function getProgress() {
+                if (simulationProgress < 100) {
+                    getProgressRequest();
+                    setTimeout(getProgress, 2000);
+                }
+            }, 2000);
         }
     };
 
@@ -726,6 +748,7 @@ const Configuration = ({
                                     </Typography>
                                 </Stack>
                             )}
+                            <ProgressBar progress={simulationProgress} />
                         </Stack>
                     </Stack>
                 </form>
