@@ -41,6 +41,16 @@ while (interestRateValue <= 20) {
     interestRate.push(+interestRateValue);
     interestRateValue = interestRateValue + 1;
 }
+
+export const time = Array.from(Array(6), (_, index) => index + 1);
+
+export const dieselGenerator = [];
+let dieselGeneratorValue = 0;
+while (dieselGeneratorValue <= 1.01) {
+    dieselGenerator.push(+dieselGeneratorValue.toFixed(2));
+    dieselGeneratorValue = dieselGeneratorValue + 0.01;
+}
+
 export const initialBatterySize = Array.from(Array(100), (_, index) => index + 1);
 
 export const initialBatteryPower = Array.from(Array(50), (_, index) => index + 1);

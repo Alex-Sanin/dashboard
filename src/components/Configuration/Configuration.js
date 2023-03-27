@@ -12,10 +12,12 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import {
-    currencies,
-    regions,
+    // currencies,
+    // regions,
     discount,
     interestRate,
+    time,
+    dieselGenerator,
     initialBatterySize,
     initialBatteryPower,
     initialBatteryCost,
@@ -41,8 +43,8 @@ const validationSchema = yup.object().shape({
         .min(3, 'Customer name is too short')
         .max(100, 'Simulation name is too long')
         .required('This field is required'),
-    region: yup.string().required('This field is required'),
-    currency: yup.string().required('This field is required'),
+    // region: yup.string().required('This field is required'),
+    // currency: yup.string().required('This field is required'),
     batteryMinSize: yup.string().required('This field is required'),
     batteryMaxSize: yup.string().required('This field is required'),
     batteryMinPower: yup.string().required('This field is required'),
@@ -55,10 +57,13 @@ const validationSchema = yup.object().shape({
 const initialValues = {
     customerName: 'customer test 1',
     simulationName: 'simulation test 1',
-    region: 'Israel',
-    currency: 'NIS',
-    discount: '0',
+    // region: 'Israel',
+    // currency: 'NIS',
+    discountToConsumer: '0',
+    discountToGrid: '0',
     interestRate: '0',
+    time: '1',
+    dieselGenerator: '0',
     batteryMinSize: '8',
     batteryMaxSize: '8',
     batteryMinPower: '2',
@@ -74,13 +79,13 @@ const initialValues = {
 };
 
 const Configuration = ({
-    exampleFilePath,
-    getMainTableData,
-    getCustomersList,
-    token,
-    email,
-    userName,
-}) => {
+                           exampleFilePath,
+                           getMainTableData,
+                           getCustomersList,
+                           token,
+                           email,
+                           userName,
+                       }) => {
     const { setExecutiveSummaryTitle } = useContext(AuthContext);
 
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
@@ -116,11 +121,8 @@ const Configuration = ({
             )
                 .then((response) => response.json())
                 .then((data) => handleErrorMessage(data))
-                // .then(() => getMainTableData())
-                // .then(() => getCustomersList())
                 .then()
                 .catch((error) => console.log('error', error));
-            // formik.resetForm();
         },
     });
 
@@ -323,66 +325,104 @@ const Configuration = ({
                             />
                             <TooltipIcon tooltipText="Fill in simulation name" />
                         </Stack>
-                        <Stack direction="row" spacing={2}>
-                            <TextField
-                                fullWidth
-                                select
-                                label="Region"
-                                size="small"
-                                name="region"
-                                onChange={formik.handleChange}
-                                value={formik.values.region}
-                                error={formik.errors.region && formik.touched.region}
-                                helperText={formik.touched.region && formik.errors.region}
-                            >
-                                {regions.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <TooltipIcon tooltipText="Select region" />
-                        </Stack>
-                        <Stack direction="row" spacing={2}>
-                            <TextField
-                                fullWidth
-                                select
-                                label="Currency"
-                                size="small"
-                                name="currency"
-                                onChange={formik.handleChange}
-                                value={formik.values.currency}
-                                error={formik.errors.currency && formik.touched.currency}
-                                helperText={formik.touched.currency && formik.errors.currency}
-                            >
-                                {currencies.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <TooltipIcon tooltipText="Select currency" />
-                        </Stack>
+                        {/*<Stack direction="row" spacing={2}>*/}
+                        {/*    <TextField*/}
+                        {/*        fullWidth*/}
+                        {/*        select*/}
+                        {/*        label="Region"*/}
+                        {/*        size="small"*/}
+                        {/*        name="region"*/}
+                        {/*        onChange={formik.handleChange}*/}
+                        {/*        value={formik.values.region}*/}
+                        {/*        error={formik.errors.region && formik.touched.region}*/}
+                        {/*        helperText={formik.touched.region && formik.errors.region}*/}
+                        {/*    >*/}
+                        {/*        {regions.map((option) => (*/}
+                        {/*            <MenuItem key={option.value} value={option.value}>*/}
+                        {/*                {option.label}*/}
+                        {/*            </MenuItem>*/}
+                        {/*        ))}*/}
+                        {/*    </TextField>*/}
+                        {/*    <TooltipIcon tooltipText="Select region" />*/}
+                        {/*</Stack>*/}
+                        {/*<Stack direction="row" spacing={2}>*/}
+                        {/*    <TextField*/}
+                        {/*        fullWidth*/}
+                        {/*        select*/}
+                        {/*        label="Currency"*/}
+                        {/*        size="small"*/}
+                        {/*        name="currency"*/}
+                        {/*        onChange={formik.handleChange}*/}
+                        {/*        value={formik.values.currency}*/}
+                        {/*        error={formik.errors.currency && formik.touched.currency}*/}
+                        {/*        helperText={formik.touched.currency && formik.errors.currency}*/}
+                        {/*    >*/}
+                        {/*        {currencies.map((option) => (*/}
+                        {/*            <MenuItem key={option.value} value={option.value}>*/}
+                        {/*                {option.label}*/}
+                        {/*            </MenuItem>*/}
+                        {/*        ))}*/}
+                        {/*    </TextField>*/}
+                        {/*    <TooltipIcon tooltipText="Select currency" />*/}
+                        {/*</Stack>*/}
                         <Stack direction="column" spacing={2}>
                             <Typography variant="h3">Cost of Doing Business</Typography>
                             <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
-                                    label="Discount"
+                                    label="Discount to consumer"
                                     size="small"
-                                    name="discount"
+                                    name="discountToConsumer"
                                     onChange={formik.handleChange}
-                                    value={formik.values.discount}
-                                    error={formik.errors.discount && formik.touched.discount}
-                                    helperText={formik.touched.discount && formik.errors.discount}
+                                    value={formik.values.discountToConsumer}
+                                    error={
+                                        formik.errors.discountToConsumer &&
+                                        formik.touched.discountToConsumer
+                                    }
+                                    helperText={
+                                        formik.touched.discountToConsumer &&
+                                        formik.errors.discountToConsumer
+                                    }
                                 >
                                     {discount.map((option) => (
-                                        <MenuItem key={option} value={option}>
+                                        <MenuItem
+                                            key={option + '_discount_to_consumer'}
+                                            value={option}
+                                        >
                                             {option}%
                                         </MenuItem>
                                     ))}
                                 </TextField>
+                                <TooltipIcon tooltipText="Consumer % discount out of the (from the grid) delivered electricity" />
+                            </Stack>
+                            <Stack direction="row" spacing={2}>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    label="Discount to grid"
+                                    size="small"
+                                    name="discountToGrid"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.discountToGrid}
+                                    error={
+                                        formik.errors.discountToGrid &&
+                                        formik.touched.discountToGrid
+                                    }
+                                    helperText={
+                                        formik.touched.discountToGrid &&
+                                        formik.errors.discountToGrid
+                                    }
+                                >
+                                    {discount.map((option) => (
+                                        <MenuItem key={option + '_discount_to_grid'} value={option}>
+                                            {option}%
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TooltipIcon tooltipText="Supplier % discount out of the (to the grid) delivered electricity" />
+                            </Stack>
+                            <Stack direction="row" spacing={2}>
                                 <TextField
                                     fullWidth
                                     select
@@ -404,7 +444,56 @@ const Configuration = ({
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                                <TooltipIcon tooltipText="Select discount and Interest rate" />
+                                <TooltipIcon tooltipText="Interest rate" />
+                            </Stack>
+                        </Stack>
+                        <Stack direction="column" spacing={2}>
+                            <Typography variant="h3">Load Shedding</Typography>
+                            <Stack direction="row" spacing={2}>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    label="Time (h)"
+                                    size="small"
+                                    name="time"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.time}
+                                    error={formik.errors.time && formik.touched.time}
+                                    helperText={formik.touched.time && formik.errors.time}
+                                >
+                                    {time.map((option) => (
+                                        <MenuItem key={option + '_time'} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TooltipIcon tooltipText="The number of hours, per day, of electricity outage" />
+                            </Stack>
+                            <Stack direction="row" spacing={2}>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    label="Diesel generator ($/kW)"
+                                    size="small"
+                                    name="dieselGenerator"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.dieselGenerator}
+                                    error={
+                                        formik.errors.dieselGenerator &&
+                                        formik.touched.dieselGenerator
+                                    }
+                                    helperText={
+                                        formik.touched.dieselGenerator &&
+                                        formik.errors.dieselGenerator
+                                    }
+                                >
+                                    {dieselGenerator.map((option) => (
+                                        <MenuItem key={option + '_dieselGenerator'} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TooltipIcon tooltipText="Cost of running the diesel generator to compensate the electricity outage" />
                             </Stack>
                         </Stack>
 
