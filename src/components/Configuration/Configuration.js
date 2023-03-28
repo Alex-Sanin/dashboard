@@ -79,13 +79,13 @@ const initialValues = {
 };
 
 const Configuration = ({
-                           exampleFilePath,
-                           getMainTableData,
-                           getCustomersList,
-                           token,
-                           email,
-                           userName,
-                       }) => {
+    exampleFilePath,
+    getMainTableData,
+    getCustomersList,
+    token,
+    email,
+    userName,
+}) => {
     const { setExecutiveSummaryTitle } = useContext(AuthContext);
 
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
@@ -106,6 +106,8 @@ const Configuration = ({
         validationSchema,
         initialValues,
         onSubmit: (values) => {
+            setSimulationProgress(0);
+            handleProgressBar();
             const keys = Object.keys(values);
             const formData = new FormData();
             for (const key of keys) {
@@ -176,7 +178,7 @@ const Configuration = ({
 
     const getProgressRequest = async () => {
         const response = await fetch(
-            `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}`,
             {
                 method: 'GET',
                 headers: {
@@ -250,10 +252,24 @@ const Configuration = ({
     useEffect(() => {
         setErrorMessage('');
     }, [formik.values.simulationName]);
+
+    useEffect(() => {
+        if (simulationProgress > 0 && simulationProgress < 100) {
+            handleProgressBar();
+        }
+    }, [simulationProgress]);
+
     const onChangeFile = (e) => {
         formik.setFieldValue('file', e.currentTarget.files[0]);
     };
     const handleDeleteFile = () => formik.setFieldValue('file', '');
+
+    const handleProgressBar = () => {
+        console.log('inside %', simulationProgress);
+        setTimeout(getProgressRequest, 1000);
+    };
+
+    console.log('outside %', simulationProgress);
 
     const handleErrorMessage = (response) => {
         if (response.message === 'Simulation did NOT run as simulation name already exists') {
@@ -266,12 +282,6 @@ const Configuration = ({
                 customerName: formik.values.customerName,
                 isFormsUpdate: true,
             });
-            setTimeout(function getProgress() {
-                if (simulationProgress < 100) {
-                    getProgressRequest();
-                    setTimeout(getProgress, 2000);
-                }
-            }, 2000);
         }
     };
 
@@ -837,7 +847,7 @@ const Configuration = ({
                                     </Typography>
                                 </Stack>
                             )}
-                            <ProgressBar progress={simulationProgress} />
+                            <ProgressBar progress={simulationProgress.toFixed(1)} />
                         </Stack>
                     </Stack>
                 </form>

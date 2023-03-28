@@ -66,24 +66,24 @@ const headCells = [
         disablePadding: false,
         label: 'Simulation name',
     },
-    {
-        id: 'date',
-        numeric: false,
-        disablePadding: false,
-        label: 'Date',
-    },
-    {
-        id: 'region',
-        numeric: false,
-        disablePadding: false,
-        label: 'Region',
-    },
-    {
-        id: 'currency',
-        numeric: false,
-        disablePadding: false,
-        label: 'Currency',
-    },
+    // {
+    //     id: 'date',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: 'Date',
+    // },
+    // {
+    //     id: 'region',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: 'Region',
+    // },
+    // {
+    //     id: 'currency',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: 'Currency',
+    // },
 ];
 
 const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData }) => {
@@ -184,16 +184,16 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
                                                 <TableCell align="left">
                                                     {row.simulationName}
                                                 </TableCell>
-                                                <TableCell
-                                                    align="left"
-                                                    style={{ minWidth: '100px' }}
-                                                >
-                                                    {row.createTime}
-                                                </TableCell>
-                                                <TableCell align="left">{row.region}</TableCell>
-                                                <TableCell align="left">
-                                                    {row?.currency.toUpperCase()}
-                                                </TableCell>
+                                                {/*<TableCell*/}
+                                                {/*    align="left"*/}
+                                                {/*    style={{ minWidth: '100px' }}*/}
+                                                {/*>*/}
+                                                {/*    {row.createTime}*/}
+                                                {/*</TableCell>*/}
+                                                {/*<TableCell align="left">{row.region}</TableCell>*/}
+                                                {/*<TableCell align="left">*/}
+                                                {/*    {row?.currency}*/}
+                                                {/*</TableCell>*/}
                                             </TableRow>
                                         );
                                     })}

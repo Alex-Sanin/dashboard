@@ -11,6 +11,7 @@ const CustomTooltip = ({ active, payload }) => {
                 direction="column"
                 sx={{ p: '10px', backgroundColor: '#ffffff', border: '1px solid #bcbaba' }}
             >
+                <Typography sx={{ color: '#000000' }}>{`ID : ${payload[0].payload.id}`}</Typography>
                 <Typography sx={{ color: '#556b2f' }}>{`${payload[0].dataKey.toUpperCase()} : ${
                     payload[0].value
                 } (years)`}</Typography>
@@ -28,6 +29,8 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const RoiBarChart = ({ bestRoi, barChartData }) => {
+    const bestRoiData = barChartData.find((item) => item.id === bestRoi);
+
     if (!barChartData.length) {
         return <Preloader />;
     }
@@ -40,6 +43,7 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
                 justifyContent="center"
                 alignItems="center"
                 sx={{ overflowX: 'scroll' }}
+                spacing={2}
             >
                 {/*<BarChart*/}
                 {/*    width={700}*/}
@@ -96,9 +100,23 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
                             />
                         ))}
                     </Bar>
-                    <Line type="monotone" dataKey="npv" stroke="#e5e5e5" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="irr" stroke="#b9f7e6" activeDot={{ r: 8 }} />
+                    <Line
+                        type="monotone"
+                        dataKey="npv"
+                        stroke="#e5e5e5"
+                        strokeWidth={3}
+                        activeDot={{ r: 8 }}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="irr"
+                        stroke="#b9f7e6"
+                        strokeWidth={3}
+                        activeDot={{ r: 8 }}
+                    />
                 </ComposedChart>
+                <Typography>{`ID is ${bestRoiData.id}, ROI is ${bestRoiData.roi} years, NPV is ${bestRoiData.npv}$ in Mil., IRR is ${bestRoiData.irr}% of the best ROI `}</Typography>
+
             </Stack>
         </Stack>
     );
