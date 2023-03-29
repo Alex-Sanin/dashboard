@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { Typography, Stack } from '@mui/material';
 
 import Preloader from '../../loaders/Preloader';
 import BarTooltip from './BarTooltip';
 import { dataFormatter } from '../../../utils/functions';
+import {DescriptiveTextContext} from "../../../utils/DescriptiveTextContext";
 
 import ChartLegendIcon from '../../../assets/images/ChartLegendIcon';
+import DescriptiveText from "../../DescriptiveText/DescriptiveText";
 
 const ContributionBarGraph = ({ contributionBarGraphData }) => {
+
+    const { descriptiveText } = useContext(DescriptiveTextContext);
+
     let data = {};
 
     for (let key in contributionBarGraphData) {
@@ -23,10 +28,16 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
     }
 
     return (
-        <Stack direction="column" spacing={1} sx={{ width: '100%', ml: '-45px' }}>
+        <Stack direction="column" spacing={1} sx={{ width: '100%', ml: '-45px', position: 'relative'}}>
             <Typography variant="h3" sx={{ ml: '90px', textDecoration: 'underline' }}>
                 Yearly contribution (NIS)
             </Typography>
+            <DescriptiveText
+                text={descriptiveText.executiveSummaryYearlyContributionGraph}
+                top="35px"
+                left="250px"
+                tl
+            />
             <Stack direction="column" justifyContent="center">
                 <BarChart
                     width={400}

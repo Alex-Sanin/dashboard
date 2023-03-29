@@ -12,6 +12,8 @@ import { Typography, Stack } from '@mui/material';
 import Preloader from '../../loaders/Preloader';
 import EnhancedTableHead from '../EnhancedTableHead';
 import { AuthContext } from '../../../utils/AuthContext';
+import {DescriptiveTextContext} from "../../../utils/DescriptiveTextContext";
+import DescriptiveText from "../../DescriptiveText/DescriptiveText";
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -88,6 +90,7 @@ const headCells = [
 
 const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData }) => {
     const { setExecutiveSummaryTitle } = useContext(AuthContext);
+    const { descriptiveText } = useContext(DescriptiveTextContext);
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('id');
@@ -128,8 +131,20 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
     }
 
     return (
-        <Stack direction="column" spacing={2}>
+        <Stack direction="column" spacing={2} sx={{position: 'relative'}}>
             <Typography variant="h3">Main table</Typography>
+            <DescriptiveText
+                text={descriptiveText.summaryMainTableGeneral}
+                top="25px"
+                left="80px"
+                tl
+            />
+            <DescriptiveText
+                text={descriptiveText.summaryMainTableClick}
+                top="140px"
+                left="380px"
+                tl
+            />
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
                     <TableContainer>

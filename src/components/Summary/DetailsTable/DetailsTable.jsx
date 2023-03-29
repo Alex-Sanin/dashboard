@@ -13,6 +13,8 @@ import EnhancedTableHead from '../EnhancedTableHead';
 import Preloader from '../../loaders/Preloader';
 import { dataFormatter } from '../../../utils/functions';
 import { AuthContext } from '../../../utils/AuthContext';
+import { DescriptiveTextContext } from '../../../utils/DescriptiveTextContext';
+import DescriptiveText from '../../DescriptiveText/DescriptiveText';
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -116,6 +118,7 @@ const DetailsTable = ({
     setExecutiveSummaryTableData,
 }) => {
     const { setExecutiveSummaryTitle } = useContext(AuthContext);
+    const { descriptiveText } = useContext(DescriptiveTextContext);
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('simulationMainId');
@@ -186,8 +189,20 @@ const DetailsTable = ({
         return <Preloader />;
     }
     return (
-        <Stack direction="column" spacing={2}>
+        <Stack direction="column" spacing={2} sx={{ position: 'relative' }}>
             <Typography variant="h3">Details table</Typography>
+            <DescriptiveText
+                text={descriptiveText.summaryDetailsTableGeneral}
+                top="25px"
+                left="100px"
+                tl
+            />
+            <DescriptiveText
+                text={descriptiveText.summaryDetailsTableClick}
+                top="180px"
+                left="380px"
+                tl
+            />
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
                     <TableContainer>

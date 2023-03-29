@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Stack, Typography } from '@mui/material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 import { dataFormatter } from '../../../utils/functions';
 import ChartLegendIcon from '../../../assets/images/ChartLegendIcon';
 import Preloader from '../../loaders/Preloader';
+import {DescriptiveTextContext} from "../../../utils/DescriptiveTextContext";
+import DescriptiveText from "../../DescriptiveText/DescriptiveText";
 
 const CashFlowGraph = ({ graphData }) => {
+    const { descriptiveText } = useContext(DescriptiveTextContext);
+
     const [data, setData] = useState([]);
     const [isActiveLineOP, setIsActiveLineOP] = useState(true);
     const [isActiveLineAC, setIsActiveLineAC] = useState(true);
@@ -39,8 +43,14 @@ const CashFlowGraph = ({ graphData }) => {
     }
 
     return (
-        <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
+        <Stack direction="column" spacing={2} sx={{ width: '100%', position: 'relative' }}>
             <Typography variant="h3">P&L - Cash Flow (NIS)</Typography>
+            <DescriptiveText
+                text={descriptiveText.resultsPlCashFlow}
+                top="25px"
+                left="170px"
+                tl
+            />
             <Stack
                 direction="column"
                 justifyContent="center"

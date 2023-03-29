@@ -5,6 +5,8 @@ import ContributionBarGraph from '../ExecutiveSummary/ContributionBarGraph/Contr
 import ExecutiveSummaryTable from './ExecutiveSummaryTable/ExecutiveSummaryTable';
 import Preloader from '../loaders/Preloader';
 import { AuthContext } from '../../utils/AuthContext';
+import { DescriptiveTextContext } from '../../utils/DescriptiveTextContext';
+import DescriptiveText from '../DescriptiveText/DescriptiveText';
 
 const ExecutiveSummary = ({
     executiveSummaryData,
@@ -12,6 +14,7 @@ const ExecutiveSummary = ({
     executiveSummaryTableData,
 }) => {
     const { executiveSummaryTitle } = useContext(AuthContext);
+    const { descriptiveText } = useContext(DescriptiveTextContext);
     const { configuration, results } = executiveSummaryData;
 
     let title;
@@ -25,7 +28,12 @@ const ExecutiveSummary = ({
         title = 'Executive summary';
     }
 
-    if (!executiveSummaryData || !contributionBarGraphData || !executiveSummaryTableData) {
+    if (
+        !executiveSummaryData ||
+        !contributionBarGraphData ||
+        !executiveSummaryTableData ||
+        !descriptiveText
+    ) {
         return (
             <Paper sx={{ p: 5 }}>
                 <Preloader />
@@ -38,6 +46,7 @@ const ExecutiveSummary = ({
             direction="column"
             spacing={4}
             sx={{
+                posirion: 'relative',
                 py: 4,
                 px: 3,
                 backgroundColor: '#ffffff',
@@ -46,10 +55,22 @@ const ExecutiveSummary = ({
             }}
         >
             <Typography variant="h2">{title}</Typography>
+            <DescriptiveText
+                text={descriptiveText.executiveSummaryGeneral}
+                top="50px"
+                left="310px"
+                bl
+            />
             <Grid container>
                 <Grid item sm={12} md={4}>
                     <Stack direction="row" spacing={4}>
-                        <Stack direction="column" spacing={1}>
+                        <Stack
+                            direction="column"
+                            spacing={1}
+                            sx={{
+                                position: 'relative',
+                            }}
+                        >
                             <Typography variant="h3" sx={{ textDecoration: 'underline' }}>
                                 Configuration
                             </Typography>
@@ -81,11 +102,23 @@ const ExecutiveSummary = ({
                             <Typography variant="body1">
                                 Grid connection: {configuration.grid_connection}
                             </Typography>
+                            <DescriptiveText
+                                text={descriptiveText.executiveSummaryConfiguration}
+                                top="35px"
+                                left="110px"
+                                tl
+                            />
                         </Stack>
                     </Stack>
                 </Grid>
                 <Grid item sm={12} md={4}>
-                    <Stack direction="column" spacing={1}>
+                    <Stack
+                        direction="column"
+                        spacing={1}
+                        sx={{
+                            position: 'relative',
+                        }}
+                    >
                         <Typography variant="h3" sx={{ textDecoration: 'underline' }}>
                             Results
                         </Typography>
@@ -103,6 +136,12 @@ const ExecutiveSummary = ({
                         <Typography variant="body1">
                             Simulation id: {results['simulation #']}
                         </Typography>
+                        <DescriptiveText
+                            text={descriptiveText.executiveSummaryResults}
+                            top="35px"
+                            left="60px"
+                            tl
+                        />
                     </Stack>
                 </Grid>
                 <Grid item sm={12} md={4}>

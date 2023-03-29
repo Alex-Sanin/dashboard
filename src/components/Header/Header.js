@@ -1,11 +1,12 @@
 import { useContext } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography, Switch, Tooltip } from '@mui/material';
 
 import logo from '../../assets/images/logo.jpeg';
 import { AuthContext } from '../../utils/AuthContext';
 
-const Header = () => {
+const Header = ({ isDescriptiveText, setIsDescriptiveText }) => {
     const { userName } = useContext(AuthContext);
+    const descriptiveTextToggle = () => setIsDescriptiveText(!isDescriptiveText);
 
     return (
         <Box
@@ -22,7 +23,16 @@ const Header = () => {
                 sx={{ width: '100%', height: '80px' }}
             >
                 <img src={logo} alt="pic" style={{ height: '50px' }} />
-                <Typography variant="h3">{userName}</Typography>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                    <Typography variant="h3">{userName}</Typography>
+                    <Tooltip
+                        title="Descriptive text"
+                        placement="bottom"
+                        onClick={descriptiveTextToggle}
+                    >
+                        <Switch />
+                    </Tooltip>
+                </Stack>
             </Grid>
         </Box>
     );

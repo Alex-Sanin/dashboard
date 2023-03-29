@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,8 +9,12 @@ import { Stack, Typography } from '@mui/material';
 
 import Preloader from '../../../components/loaders/Preloader';
 import TableHead from '@mui/material/TableHead';
+import { DescriptiveTextContext } from '../../../utils/DescriptiveTextContext';
+import DescriptiveText from "../../DescriptiveText/DescriptiveText";
 
 const ExecutiveSummaryTable = ({ tableData }) => {
+    const { descriptiveText } = useContext(DescriptiveTextContext);
+
     const tableHead = Object.keys(tableData).map((headCell) => {
         if (headCell === 'graph_title') {
             return '';
@@ -18,7 +23,7 @@ const ExecutiveSummaryTable = ({ tableData }) => {
     });
 
     const transformData = (data) => {
-        const npvValues = ['NPV'];
+        const npvValues = ['NPV (NIS)'];
         const irrValues = ['IRR'];
 
         for (const key in data) {
@@ -39,8 +44,14 @@ const ExecutiveSummaryTable = ({ tableData }) => {
     }
 
     return (
-        <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
+        <Stack direction="column" spacing={2} sx={{ position: 'relative', width: '100%'}}>
             <Typography variant="h3">{tableData.graph_title}</Typography>
+            <DescriptiveText
+                text={descriptiveText.executiveSummaryNpvIrrTable}
+                top="-85px"
+                left="80px"
+                bl
+            />
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ maxWidth: '100%' }}>
                     <Table aria-labelledby="tableTitle" size="medium">
@@ -55,9 +66,9 @@ const ExecutiveSummaryTable = ({ tableData }) => {
                         </TableHead>
                         <TableBody>
                             {tableBody.map((row, index) => (
-                                <TableRow hover key={row + '_row'}>
-                                    {row.map((cell) => (
-                                        <TableCell key={cell + '_body_cell'}>{cell}</TableCell>
+                                <TableRow hover key={index + '_row'}>
+                                    {row.map((cell, index) => (
+                                        <TableCell key={index + '_body_cell'}>{cell}</TableCell>
                                     ))}
                                 </TableRow>
                             ))}

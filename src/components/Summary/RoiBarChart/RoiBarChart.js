@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { ComposedChart, Bar, Cell, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 import Preloader from '../../loaders/Preloader';
+import DescriptiveText from '../../DescriptiveText/DescriptiveText';
+import { DescriptiveTextContext } from '../../../utils/DescriptiveTextContext';
 
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -11,7 +13,7 @@ const CustomTooltip = ({ active, payload }) => {
                 direction="column"
                 sx={{ p: '10px', backgroundColor: '#ffffff', border: '1px solid #bcbaba' }}
             >
-                <Typography sx={{ color: '#000000' }}>{`ID : ${payload[0].payload.id}`}</Typography>
+                {/*<Typography sx={{ color: '#000000' }}>{`ID : ${payload[0].payload.id}`}</Typography>*/}
                 <Typography sx={{ color: '#556b2f' }}>{`${payload[0].dataKey.toUpperCase()} : ${
                     payload[0].value
                 } (years)`}</Typography>
@@ -29,15 +31,22 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const RoiBarChart = ({ bestRoi, barChartData }) => {
-    const bestRoiData = barChartData.find((item) => item.id === bestRoi);
+    // const bestRoiData = barChartData.find((item) => item.id === bestRoi);
+    const { descriptiveText } = useContext(DescriptiveTextContext);
 
     if (!barChartData.length) {
         return <Preloader />;
     }
 
     return (
-        <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
+        <Stack direction="column" spacing={2} sx={{ width: '100%', position: 'relative' }}>
             <Typography variant="h3">Key Financial Indicators</Typography>
+            <DescriptiveText
+                text={descriptiveText.summaryGraph}
+                top="25px"
+                left="190px"
+                tl
+            />{' '}
             <Stack
                 direction="column"
                 justifyContent="center"
@@ -104,19 +113,18 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
                         type="monotone"
                         dataKey="npv"
                         stroke="#e5e5e5"
-                        strokeWidth={3}
+                        strokeWidth={1}
                         activeDot={{ r: 8 }}
                     />
                     <Line
                         type="monotone"
                         dataKey="irr"
                         stroke="#b9f7e6"
-                        strokeWidth={3}
+                        strokeWidth={1}
                         activeDot={{ r: 8 }}
                     />
                 </ComposedChart>
-                <Typography>{`ID is ${bestRoiData.id}, ROI is ${bestRoiData.roi} years, NPV is ${bestRoiData.npv}$ in Mil., IRR is ${bestRoiData.irr}% of the best ROI `}</Typography>
-
+                {/*<Typography>{`ID is ${bestRoiData.id}, ROI is ${bestRoiData.roi} years, NPV is ${bestRoiData.npv}$ in Mil., IRR is ${bestRoiData.irr}% of the best ROI `}</Typography>*/}
             </Stack>
         </Stack>
     );

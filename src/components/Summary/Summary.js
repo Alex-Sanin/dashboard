@@ -6,6 +6,8 @@ import DetailsTable from './DetailsTable/DetailsTable';
 import RoiBarChart from './RoiBarChart/RoiBarChart';
 import { combinedKeyFinancialValues } from '../../utils/functions';
 import { AuthContext } from '../../utils/AuthContext';
+import {DescriptiveTextContext} from "../../utils/DescriptiveTextContext";
+import DescriptiveText from "../DescriptiveText/DescriptiveText";
 
 const Summary = ({
     token,
@@ -30,6 +32,7 @@ const Summary = ({
     setExecutiveSummaryTableData,
 }) => {
     const { setExecutiveSummaryTitle } = useContext(AuthContext);
+    const { descriptiveText } = useContext(DescriptiveTextContext);
 
     const getMainTableSelectedRowData = async (
         mainTableId,
@@ -78,9 +81,16 @@ const Summary = ({
                 backgroundColor: '#ffffff',
                 borderRadius: '10px',
                 boxShadow: '0px 1px 15px rgba(0, 0, 0, 0.04)',
+                position: 'relative',
             }}
         >
             <Typography variant="h2">Summary</Typography>
+            <DescriptiveText
+                text={descriptiveText.summaryGeneral}
+                top="-95px"
+                left="120px"
+                bl
+            />
             <MainTable
                 tableData={mainTableData}
                 getMainTableSelectedRowData={getMainTableSelectedRowData}

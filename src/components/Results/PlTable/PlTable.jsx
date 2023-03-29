@@ -9,8 +9,10 @@ import { Stack, Typography } from '@mui/material';
 
 import Preloader from '../../../components/loaders/Preloader';
 import { dataFormatter } from '../../../utils/functions';
+import DescriptiveText from '../../DescriptiveText/DescriptiveText';
+import React from 'react';
 
-const PlTable = ({ tableData, tableName }) => {
+const PlTable = ({ tableData, tableName, descriptiveText }) => {
     const isCellsName = (cell) => {
         return (
             cell.toLowerCase().includes('cost') ||
@@ -35,7 +37,13 @@ const PlTable = ({ tableData, tableName }) => {
         if (cell.match(/[a-zA-Z]/)) {
             return cell;
         }
-        if (cell.length === 4 && (cell.startsWith('202') || cell.startsWith('203') || cell.startsWith('204') || cell.startsWith('205'))) {
+        if (
+            cell.length === 4 &&
+            (cell.startsWith('202') ||
+                cell.startsWith('203') ||
+                cell.startsWith('204') ||
+                cell.startsWith('205'))
+        ) {
             return cell;
         }
         return dataFormatter(cell);
@@ -45,8 +53,9 @@ const PlTable = ({ tableData, tableName }) => {
         return <Preloader />;
     }
     return (
-        <Stack direction="column" spacing={2} sx={{ width: '100%' }}>
+        <Stack direction="column" spacing={2} sx={{ width: '100%', position: 'relative' }}>
             <Typography variant="h3">{tableName}</Typography>
+            <DescriptiveText text={descriptiveText} top="25px" left="160px" tl />
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
                     <TableContainer>

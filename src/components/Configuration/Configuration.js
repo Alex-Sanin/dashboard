@@ -30,6 +30,8 @@ import TooltipIcon from '../TooltipIcon/TooltipIcon';
 import ProgressBar from './ProgressBar/ProgressBar';
 import { timeFormatter } from '../../utils/functions';
 import { AuthContext } from '../../utils/AuthContext';
+import { DescriptiveTextContext } from '../../utils/DescriptiveTextContext';
+import DescriptiveText from '../DescriptiveText/DescriptiveText';
 
 const validationSchema = yup.object().shape({
     customerName: yup
@@ -87,6 +89,7 @@ const Configuration = ({
     userName,
 }) => {
     const { setExecutiveSummaryTitle } = useContext(AuthContext);
+    const { descriptiveText } = useContext(DescriptiveTextContext);
 
     const [minBatterySize, setMinBatterySize] = useState(initialBatterySize);
     const [maxBatterySize, setMaxBatterySize] = useState(initialBatterySize);
@@ -290,6 +293,7 @@ const Configuration = ({
             direction="column"
             spacing={4}
             sx={{
+                position: 'relative',
                 py: 4,
                 px: 3,
                 backgroundColor: '#ffffff',
@@ -298,6 +302,33 @@ const Configuration = ({
             }}
         >
             <Typography variant="h2">Configuration</Typography>
+            <DescriptiveText
+                text={descriptiveText.configurationGeneral}
+                top="-70px"
+                left="160px"
+                bl
+            />
+            <DescriptiveText
+                text={descriptiveText.configurationUploadData}
+                top="730px"
+                left="25px"
+                maxWidth='180px'
+                bl
+            />
+            <DescriptiveText
+                text={descriptiveText.configurationRunButton}
+                top="790px"
+                left="235px"
+                maxWidth='200px'
+                bl
+            />
+            <DescriptiveText
+                text={descriptiveText.configurationMessages}
+                top="1060px"
+                left="200px"
+                maxWidth='200px'
+                tl
+            />
             <FormControl fullWidth>
                 <form onSubmit={formik.handleSubmit}>
                     <Stack direction="column" spacing={2}>
@@ -457,55 +488,55 @@ const Configuration = ({
                                 <TooltipIcon tooltipText="Interest rate" />
                             </Stack>
                         </Stack>
-                        <Stack direction="column" spacing={2}>
-                            <Typography variant="h3">Load Shedding</Typography>
-                            <Stack direction="row" spacing={2}>
-                                <TextField
-                                    fullWidth
-                                    select
-                                    label="Time (h)"
-                                    size="small"
-                                    name="time"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.time}
-                                    error={formik.errors.time && formik.touched.time}
-                                    helperText={formik.touched.time && formik.errors.time}
-                                >
-                                    {time.map((option) => (
-                                        <MenuItem key={option + '_time'} value={option}>
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TooltipIcon tooltipText="The number of hours, per day, of electricity outage" />
-                            </Stack>
-                            <Stack direction="row" spacing={2}>
-                                <TextField
-                                    fullWidth
-                                    select
-                                    label="Diesel generator ($/kW)"
-                                    size="small"
-                                    name="dieselGenerator"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.dieselGenerator}
-                                    error={
-                                        formik.errors.dieselGenerator &&
-                                        formik.touched.dieselGenerator
-                                    }
-                                    helperText={
-                                        formik.touched.dieselGenerator &&
-                                        formik.errors.dieselGenerator
-                                    }
-                                >
-                                    {dieselGenerator.map((option) => (
-                                        <MenuItem key={option + '_dieselGenerator'} value={option}>
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                                <TooltipIcon tooltipText="Cost of running the diesel generator to compensate the electricity outage" />
-                            </Stack>
-                        </Stack>
+                        {/*<Stack direction="column" spacing={2}>*/}
+                        {/*    <Typography variant="h3">Load Shedding</Typography>*/}
+                        {/*    <Stack direction="row" spacing={2}>*/}
+                        {/*        <TextField*/}
+                        {/*            fullWidth*/}
+                        {/*            select*/}
+                        {/*            label="Time (h)"*/}
+                        {/*            size="small"*/}
+                        {/*            name="time"*/}
+                        {/*            onChange={formik.handleChange}*/}
+                        {/*            value={formik.values.time}*/}
+                        {/*            error={formik.errors.time && formik.touched.time}*/}
+                        {/*            helperText={formik.touched.time && formik.errors.time}*/}
+                        {/*        >*/}
+                        {/*            {time.map((option) => (*/}
+                        {/*                <MenuItem key={option + '_time'} value={option}>*/}
+                        {/*                    {option}*/}
+                        {/*                </MenuItem>*/}
+                        {/*            ))}*/}
+                        {/*        </TextField>*/}
+                        {/*        <TooltipIcon tooltipText="The number of hours, per day, of electricity outage" />*/}
+                        {/*    </Stack>*/}
+                        {/*    <Stack direction="row" spacing={2}>*/}
+                        {/*        <TextField*/}
+                        {/*            fullWidth*/}
+                        {/*            select*/}
+                        {/*            label="Diesel generator ($/kW)"*/}
+                        {/*            size="small"*/}
+                        {/*            name="dieselGenerator"*/}
+                        {/*            onChange={formik.handleChange}*/}
+                        {/*            value={formik.values.dieselGenerator}*/}
+                        {/*            error={*/}
+                        {/*                formik.errors.dieselGenerator &&*/}
+                        {/*                formik.touched.dieselGenerator*/}
+                        {/*            }*/}
+                        {/*            helperText={*/}
+                        {/*                formik.touched.dieselGenerator &&*/}
+                        {/*                formik.errors.dieselGenerator*/}
+                        {/*            }*/}
+                        {/*        >*/}
+                        {/*            {dieselGenerator.map((option) => (*/}
+                        {/*                <MenuItem key={option + '_dieselGenerator'} value={option}>*/}
+                        {/*                    {option}*/}
+                        {/*                </MenuItem>*/}
+                        {/*            ))}*/}
+                        {/*        </TextField>*/}
+                        {/*        <TooltipIcon tooltipText="Cost of running the diesel generator to compensate the electricity outage" />*/}
+                        {/*    </Stack>*/}
+                        {/*</Stack>*/}
 
                         <Stack direction="column" spacing={2}>
                             <Typography variant="h3">Battery</Typography>
