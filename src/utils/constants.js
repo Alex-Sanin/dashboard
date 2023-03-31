@@ -51,9 +51,9 @@ while (dieselGeneratorValue <= 1.01) {
     dieselGeneratorValue = dieselGeneratorValue + 0.01;
 }
 
-export const initialBatterySize = Array.from(Array(100), (_, index) => index + 1);
+export const initialBatterySize = Array.from(Array(101), (_, index) => index);
 
-export const initialBatteryPower = Array.from(Array(50), (_, index) => index + 1);
+export const initialBatteryPower = Array.from(Array(51), (_, index) => index);
 
 export const initialBatteryCost = [];
 let initialBatteryCostValue = 150;
@@ -62,8 +62,8 @@ while (initialBatteryCostValue <= 500) {
     initialBatteryCostValue = initialBatteryCostValue + 10;
 }
 
-export const initialPvSize = Array.from(Array(100), (_, index) => index + 1);
+export const initialPvSize = Array.from(Array(101), (_, index) => index);
 
 export const initialPvCost = [0, 800, 900, 1000, 1100, 1200];
 
-export const grid = Array.from(Array(10), (_, index) => index + 1);
+export const grid = Array.from(Array(11), (_, index) => index);
