@@ -181,7 +181,7 @@ const Configuration = ({
 
     const getProgressRequest = async () => {
         const response = await fetch(
-            `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}`,
+            `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
             {
                 method: 'GET',
                 headers: {
@@ -192,6 +192,13 @@ const Configuration = ({
         );
         const json = await response.json();
         setSimulationProgress(json['current_%_of_simulations']);
+        if (
+            json['current_%_of_simulations'] === simulationProgress &&
+            simulationProgress >= 0 &&
+            simulationProgress < 100
+        ) {
+            setTimeout(getProgressRequest, 1000);
+        }
     };
 
     useEffect(() => {
@@ -268,11 +275,8 @@ const Configuration = ({
     const handleDeleteFile = () => formik.setFieldValue('file', '');
 
     const handleProgressBar = () => {
-        console.log('inside %', simulationProgress);
         setTimeout(getProgressRequest, 1000);
     };
-
-    console.log('outside %', simulationProgress);
 
     const handleErrorMessage = (response) => {
         if (response.message === 'Simulation did NOT run as simulation name already exists') {
@@ -312,21 +316,21 @@ const Configuration = ({
                 text={descriptiveText.configurationUploadData}
                 top="730px"
                 left="25px"
-                maxWidth='180px'
+                maxWidth="180px"
                 bl
             />
             <DescriptiveText
                 text={descriptiveText.configurationRunButton}
                 top="790px"
                 left="235px"
-                maxWidth='200px'
+                maxWidth="200px"
                 bl
             />
             <DescriptiveText
                 text={descriptiveText.configurationMessages}
                 top="1060px"
                 left="200px"
-                maxWidth='200px'
+                maxWidth="200px"
                 tl
             />
             <FormControl fullWidth>
@@ -488,55 +492,55 @@ const Configuration = ({
                                 <TooltipIcon tooltipText="Interest rate" />
                             </Stack>
                         </Stack>
-                        {/*<Stack direction="column" spacing={2}>*/}
-                        {/*    <Typography variant="h3">Load Shedding</Typography>*/}
-                        {/*    <Stack direction="row" spacing={2}>*/}
-                        {/*        <TextField*/}
-                        {/*            fullWidth*/}
-                        {/*            select*/}
-                        {/*            label="Time (h)"*/}
-                        {/*            size="small"*/}
-                        {/*            name="time"*/}
-                        {/*            onChange={formik.handleChange}*/}
-                        {/*            value={formik.values.time}*/}
-                        {/*            error={formik.errors.time && formik.touched.time}*/}
-                        {/*            helperText={formik.touched.time && formik.errors.time}*/}
-                        {/*        >*/}
-                        {/*            {time.map((option) => (*/}
-                        {/*                <MenuItem key={option + '_time'} value={option}>*/}
-                        {/*                    {option}*/}
-                        {/*                </MenuItem>*/}
-                        {/*            ))}*/}
-                        {/*        </TextField>*/}
-                        {/*        <TooltipIcon tooltipText="The number of hours, per day, of electricity outage" />*/}
-                        {/*    </Stack>*/}
-                        {/*    <Stack direction="row" spacing={2}>*/}
-                        {/*        <TextField*/}
-                        {/*            fullWidth*/}
-                        {/*            select*/}
-                        {/*            label="Diesel generator ($/kW)"*/}
-                        {/*            size="small"*/}
-                        {/*            name="dieselGenerator"*/}
-                        {/*            onChange={formik.handleChange}*/}
-                        {/*            value={formik.values.dieselGenerator}*/}
-                        {/*            error={*/}
-                        {/*                formik.errors.dieselGenerator &&*/}
-                        {/*                formik.touched.dieselGenerator*/}
-                        {/*            }*/}
-                        {/*            helperText={*/}
-                        {/*                formik.touched.dieselGenerator &&*/}
-                        {/*                formik.errors.dieselGenerator*/}
-                        {/*            }*/}
-                        {/*        >*/}
-                        {/*            {dieselGenerator.map((option) => (*/}
-                        {/*                <MenuItem key={option + '_dieselGenerator'} value={option}>*/}
-                        {/*                    {option}*/}
-                        {/*                </MenuItem>*/}
-                        {/*            ))}*/}
-                        {/*        </TextField>*/}
-                        {/*        <TooltipIcon tooltipText="Cost of running the diesel generator to compensate the electricity outage" />*/}
-                        {/*    </Stack>*/}
-                        {/*</Stack>*/}
+                        <Stack direction="column" spacing={2}>
+                            <Typography variant="h3">Load Shedding</Typography>
+                            <Stack direction="row" spacing={2}>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    label="Time (h)"
+                                    size="small"
+                                    name="time"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.time}
+                                    error={formik.errors.time && formik.touched.time}
+                                    helperText={formik.touched.time && formik.errors.time}
+                                >
+                                    {time.map((option) => (
+                                        <MenuItem key={option + '_time'} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TooltipIcon tooltipText="The number of hours, per day, of electricity outage" />
+                            </Stack>
+                            <Stack direction="row" spacing={2}>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    label="Diesel generator ($/kW)"
+                                    size="small"
+                                    name="dieselGenerator"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.dieselGenerator}
+                                    error={
+                                        formik.errors.dieselGenerator &&
+                                        formik.touched.dieselGenerator
+                                    }
+                                    helperText={
+                                        formik.touched.dieselGenerator &&
+                                        formik.errors.dieselGenerator
+                                    }
+                                >
+                                    {dieselGenerator.map((option) => (
+                                        <MenuItem key={option + '_dieselGenerator'} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TooltipIcon tooltipText="Cost of running the diesel generator to compensate the electricity outage" />
+                            </Stack>
+                        </Stack>
 
                         <Stack direction="column" spacing={2}>
                             <Typography variant="h3">Battery</Typography>
@@ -854,7 +858,13 @@ const Configuration = ({
                                     </IconButton>
                                 </Stack>
                             )}
-                            <Button fullWidth variant="contained" size="large" type="submit">
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                size="large"
+                                type="submit"
+                                disabled={simulationProgress > 0 && simulationProgress < 100}
+                            >
                                 Run Simulation
                             </Button>
                             {errorMessage && (
@@ -878,7 +888,7 @@ const Configuration = ({
                                     </Typography>
                                 </Stack>
                             )}
-                            <ProgressBar progress={simulationProgress.toFixed(1)} />
+                            <ProgressBar progress={simulationProgress} />
                         </Stack>
                     </Stack>
                 </form>
