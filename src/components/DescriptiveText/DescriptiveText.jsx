@@ -11,24 +11,26 @@ const DescriptiveText = ({ text, maxWidth, top, left, tl, bl }) => {
         return null;
     }
 
-    return (
-        <Stack sx={{ position: 'absolute', top, left, maxWidth: maxWidth || 'none' }}>
-            {tl && (
-                <WrapperTL>
-                    <Typography variant="body3" align="center">
-                        {text}
-                    </Typography>
-                </WrapperTL>
-            )}
-            {bl && (
-                <WrapperBL>
-                    <Typography variant="body3" align="center">
-                        {text}
-                    </Typography>
-                </WrapperBL>
-            )}
-        </Stack>
-    );
+    if (text) {
+        return (
+            <Stack sx={{ position: 'absolute', top, left, maxWidth: maxWidth || 'none' }}>
+                {tl && (
+                    <WrapperTL>
+                        <Typography variant="body3" align="center">
+                            {text}
+                        </Typography>
+                    </WrapperTL>
+                )}
+                {bl && (
+                    <WrapperBL>
+                        <Typography variant="body3" align="center">
+                            {text}
+                        </Typography>
+                    </WrapperBL>
+                )}
+            </Stack>
+        );
+    }
 };
 
 export default DescriptiveText;

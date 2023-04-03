@@ -62,7 +62,12 @@ while (initialBatteryCostValue <= 500) {
     initialBatteryCostValue = initialBatteryCostValue + 10;
 }
 
-export const initialPvSize = Array.from(Array(100), (_, index) => index + 1);
+export const initialPvSize = [];
+let initialPvSizeValue = 0;
+while (initialPvSizeValue <= 100) {
+    initialPvSize.push(+initialPvSizeValue);
+    initialPvSizeValue = initialPvSizeValue + 1;
+}
 
 export const initialPvCost = [0, 800, 900, 1000, 1100, 1200];
 

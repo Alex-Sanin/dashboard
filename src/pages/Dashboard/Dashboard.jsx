@@ -28,7 +28,7 @@ const Dashboard = () => {
     const [dataFilePath, setDataFilePath] = useState('');
     const [customersList, setCustomersList] = useState([]);
     const [descriptiveText, setDescriptiveText] = useState({});
-    const [isDescriptiveText, setIsDescriptiveText] = useState(false);
+    const [isDescriptiveText, setIsDescriptiveText] = useState(true);
 
     const { userName, token, email } = useContext(AuthContext);
 
@@ -85,6 +85,7 @@ const Dashboard = () => {
             resultsEnergyFlowDiagram: json.results_energy_flow_diagram,
             resultsPlSummary: json.results_pl_summary,
             resultsPlDetails: json.results_pl_details,
+            information: json.information,
         });
     };
 

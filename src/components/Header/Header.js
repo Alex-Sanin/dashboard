@@ -1,11 +1,16 @@
 import { useContext } from 'react';
 import { Box, Grid, Stack, Typography, Switch, Tooltip } from '@mui/material';
 
-import logo from '../../assets/images/logo.jpeg';
 import { AuthContext } from '../../utils/AuthContext';
+import {DescriptiveTextContext} from "../../utils/DescriptiveTextContext";
+
+import logo from '../../assets/images/logo.jpeg';
+import iIcon from '../../assets/images/iIcon.jpg';
 
 const Header = ({ isDescriptiveText, setIsDescriptiveText }) => {
     const { userName } = useContext(AuthContext);
+    const { descriptiveText } = useContext(DescriptiveTextContext);
+
     const descriptiveTextToggle = () => setIsDescriptiveText(!isDescriptiveText);
 
     return (
@@ -30,8 +35,10 @@ const Header = ({ isDescriptiveText, setIsDescriptiveText }) => {
                         placement="bottom"
                         onClick={descriptiveTextToggle}
                     >
-                        <Switch />
+                        <Switch defaultChecked />
                     </Tooltip>
+                        <img src={iIcon} alt="pic" style={{ height: '20px' }} />
+                        <Typography variant="body3">{descriptiveText.information}</Typography>
                 </Stack>
             </Grid>
         </Box>
