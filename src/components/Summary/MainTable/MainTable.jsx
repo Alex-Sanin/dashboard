@@ -135,15 +135,16 @@ const MainTable = ({ tableData, getMainTableSelectedRowData, getMainTableData })
             <Typography variant="h3">Main table</Typography>
             <DescriptiveText
                 text={descriptiveText.summaryMainTableGeneral}
-                top="25px"
-                left="80px"
-                tl
+                top="-25px"
+                left="110px"
+                l
             />
             <DescriptiveText
                 text={descriptiveText.summaryMainTableClick}
-                top="140px"
-                left="380px"
-                tl
+                top="-40px"
+                left="720px"
+                width="140px"
+                bl
             />
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>

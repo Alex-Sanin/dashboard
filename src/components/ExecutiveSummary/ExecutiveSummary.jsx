@@ -57,7 +57,7 @@ const ExecutiveSummary = ({
             <Typography variant="h2">{title}</Typography>
             <DescriptiveText
                 text={descriptiveText.executiveSummaryGeneral}
-                top="50px"
+                top="55px"
                 left="310px"
                 bl
             />
@@ -104,9 +104,10 @@ const ExecutiveSummary = ({
                             </Typography>
                             <DescriptiveText
                                 text={descriptiveText.executiveSummaryConfiguration}
-                                top="35px"
-                                left="110px"
-                                tl
+                                top="-34px"
+                                left="140px"
+                                width="200px"
+                                l
                             />
                         </Stack>
                     </Stack>
@@ -138,9 +139,9 @@ const ExecutiveSummary = ({
                         </Typography>
                         <DescriptiveText
                             text={descriptiveText.executiveSummaryResults}
-                            top="35px"
-                            left="60px"
-                            tl
+                            top="-20px"
+                            left="90px"
+                            l
                         />
                     </Stack>
                 </Grid>

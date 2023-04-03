@@ -55,7 +55,7 @@ const PlTable = ({ tableData, tableName, descriptiveText }) => {
     return (
         <Stack direction="column" spacing={2} sx={{ width: '100%', position: 'relative' }}>
             <Typography variant="h3">{tableName}</Typography>
-            <DescriptiveText text={descriptiveText} top="25px" left="160px" tl />
+            <DescriptiveText text={descriptiveText} top="-25px" left="200px" l />
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>
                     <TableContainer>

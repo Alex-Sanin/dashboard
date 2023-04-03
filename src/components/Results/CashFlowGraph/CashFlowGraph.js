@@ -47,9 +47,9 @@ const CashFlowGraph = ({ graphData }) => {
             <Typography variant="h3">P&L - Cash Flow (NIS)</Typography>
             <DescriptiveText
                 text={descriptiveText.resultsPlCashFlow}
-                top="25px"
-                left="170px"
-                tl
+                top="-25px"
+                left="210px"
+                l
             />
             <Stack
                 direction="column"

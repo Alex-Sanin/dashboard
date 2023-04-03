@@ -126,6 +126,7 @@ const Configuration = ({
             )
                 .then((response) => response.json())
                 .then((data) => handleErrorMessage(data))
+                // .then(() => errorMessage ? null : handleProgressBar())
                 .then()
                 .catch((error) => console.log('error', error));
         },
@@ -180,25 +181,62 @@ const Configuration = ({
     };
 
     const getProgressRequest = async () => {
-        const response = await fetch(
+        // const response = await fetch(
+        //     `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
+        //     {
+        //         method: 'GET',
+        //         headers: {
+        //             'Access-Control-Allow-Credentials': true,
+        //             'Content-Type': 'application/json',
+        //         },
+        //     }
+        // );
+        //
+        // const json = await response.json();
+        // setSimulationProgress(json['current_%_of_simulations']);
+        // if (
+        //     json['current_%_of_simulations'] === simulationProgress &&
+        //     simulationProgress >= 0 &&
+        //     simulationProgress < 100 &&
+        //     !errorMessage
+        // ) {
+        //     setTimeout(getProgressRequest, 100);
+        // }
+        // if (errorMessage) {
+        //     setSimulationProgress(0)
+        // }
+
+        fetch(
             `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
             {
-                method: 'GET',
                 headers: {
                     'Access-Control-Allow-Credentials': true,
                     'Content-Type': 'application/json',
                 },
             }
-        );
-        const json = await response.json();
-        setSimulationProgress(json['current_%_of_simulations']);
-        if (
-            json['current_%_of_simulations'] === simulationProgress &&
-            simulationProgress >= 0 &&
-            simulationProgress < 100
-        ) {
-            setTimeout(getProgressRequest, 1000);
-        }
+        )
+            .then((response) => response.json())
+            // .then((data) => console.log('DATA-1', data))
+            // .then((data) => {
+            //     console.log('DATA-GLOBAL', data)
+            //         console.log('ERROR-GLOBAL', errorMessage)
+            //
+            //     if (errorMessage) {
+            //         console.log('DATA-2', data)
+            //         console.log('ERROR-1', errorMessage)
+            //         setSimulationProgress(0)
+            //     }
+            //     if (
+            //         // data['current_%_of_simulations'] === simulationProgress &&
+            //         simulationProgress >= 0 &&
+            //         simulationProgress < 100
+            //     ) {
+            //         console.log('DATA-3', data)
+            //         console.log('ERROR-2', errorMessage)
+            //         setSimulationProgress(data['current_%_of_simulations']);
+            //         setTimeout(getProgressRequest, 100);
+            //     }
+            // });
     };
 
     useEffect(() => {
@@ -308,27 +346,27 @@ const Configuration = ({
             <Typography variant="h2">Configuration</Typography>
             <DescriptiveText
                 text={descriptiveText.configurationGeneral}
-                top="-70px"
+                top="-60px"
                 left="160px"
                 bl
             />
             <DescriptiveText
                 text={descriptiveText.configurationUploadData}
-                top="730px"
-                left="25px"
-                maxWidth="180px"
+                top="930px"
+                left="390px"
+                width="180px"
                 bl
             />
             <DescriptiveText
                 text={descriptiveText.configurationRunButton}
-                top="790px"
-                left="235px"
-                maxWidth="200px"
-                bl
+                top="1140px"
+                left="-70px"
+                width="100px"
+                tr
             />
             <DescriptiveText
                 text={descriptiveText.configurationMessages}
-                top="1060px"
+                top="1230px"
                 left="200px"
                 maxWidth="200px"
                 tl

@@ -193,15 +193,17 @@ const DetailsTable = ({
             <Typography variant="h3">Details table</Typography>
             <DescriptiveText
                 text={descriptiveText.summaryDetailsTableGeneral}
-                top="25px"
-                left="100px"
-                tl
+                top="-35px"
+                left="125px"
+                width="260px"
+                l
             />
             <DescriptiveText
                 text={descriptiveText.summaryDetailsTableClick}
-                top="180px"
-                left="380px"
-                tl
+                top="-35px"
+                left="580px"
+                width="220px"
+                bl
             />
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ maxWidth: '100%', mb: 2, px: 3 }}>

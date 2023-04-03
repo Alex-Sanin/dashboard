@@ -87,7 +87,7 @@ const Summary = ({
             <Typography variant="h2">Summary</Typography>
             <DescriptiveText
                 text={descriptiveText.summaryGeneral}
-                top="-95px"
+                top="-85px"
                 left="120px"
                 bl
             />

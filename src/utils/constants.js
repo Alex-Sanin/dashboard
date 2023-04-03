@@ -1,5 +1,6 @@
 //Configuration form
-export const regions = [
+export const
+    regions = [
     {
         value: 'Israel',
         label: 'Israel',

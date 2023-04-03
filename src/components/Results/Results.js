@@ -36,7 +36,7 @@ const Result = ({
             }}
         >
             <Typography variant="h2">Result</Typography>
-            <DescriptiveText text={descriptiveText.resultsGeneral} top="-95px" left="80px" bl />
+            <DescriptiveText text={descriptiveText.resultsGeneral} top="-65px" left="80px" bl />
             <Stack direction="column" alignItems="center" spacing={4}>
                 <CashFlowGraph graphData={plCashFlowGraph} />
                 {plDiagram && (
@@ -46,9 +46,9 @@ const Result = ({
                         </Typography>
                         <DescriptiveText
                             text={descriptiveText.resultsEnergyFlowDiagram}
-                            top="45px"
-                            left="95px"
-                            tl
+                            top="-15px"
+                            left="130px"
+                            l
                         />
 
                         <PlDiagram

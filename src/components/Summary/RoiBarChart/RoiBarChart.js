@@ -42,7 +42,7 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
     return (
         <Stack direction="column" spacing={2} sx={{ width: '100%', position: 'relative' }}>
             <Typography variant="h3">Key Financial Indicators</Typography>
-            <DescriptiveText text={descriptiveText.summaryGraph} top="25px" left="190px" tl />{' '}
+            <DescriptiveText text={descriptiveText.summaryGraph} top="-35px" left="220px" l />
             <Stack
                 direction="column"
                 justifyContent="center"

@@ -48,7 +48,7 @@ const ExecutiveSummaryTable = ({ tableData }) => {
             <Typography variant="h3">{tableData.graph_title}</Typography>
             <DescriptiveText
                 text={descriptiveText.executiveSummaryNpvIrrTable}
-                top="-85px"
+                top="-75px"
                 left="80px"
                 bl
             />

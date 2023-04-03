@@ -34,9 +34,9 @@ const ContributionBarGraph = ({ contributionBarGraphData }) => {
             </Typography>
             <DescriptiveText
                 text={descriptiveText.executiveSummaryYearlyContributionGraph}
-                top="35px"
+                top="-115px"
                 left="250px"
-                tl
+                bl
             />
             <Stack direction="column" justifyContent="center">
                 <BarChart
