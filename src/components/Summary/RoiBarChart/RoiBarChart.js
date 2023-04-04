@@ -19,7 +19,7 @@ const CustomTooltip = ({ active, payload }) => {
                 } (years)`}</Typography>
                 <Typography sx={{ color: '#bcbaba' }}>{`${payload[1].dataKey.toUpperCase()} : ${
                     payload[1].value
-                } ($ in Mil.)`}</Typography>
+                } (NIS in Mil.)`}</Typography>
                 <Typography sx={{ color: '#8dc4b4' }}>{`${payload[2].dataKey.toUpperCase()} : ${
                     payload[2].value
                 } (%)`}</Typography>
@@ -122,9 +122,9 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
                 </ComposedChart>
                 <Stack direction="column" width="100%" alignItems="center">
                     <Typography>Best simulation result is: {bestRoiData.id}</Typography>
-                    <Typography>ROI: {bestRoiData.roi} years</Typography>
-                    <Typography>NPV: {bestRoiData.npv} 4$ Mil.</Typography>
-                    <Typography>IRR: {bestRoiData.irr}%</Typography>
+                    <Typography>ROI: {bestRoiData.roi} (years)</Typography>
+                    <Typography>NPV: {bestRoiData.npv} (NIS Mil.)</Typography>
+                    <Typography>IRR: {bestRoiData.irr} (%) </Typography>
                 </Stack>
             </Stack>
         </Stack>
