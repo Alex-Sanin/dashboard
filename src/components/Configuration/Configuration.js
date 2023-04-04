@@ -110,7 +110,6 @@ const Configuration = ({
         initialValues,
         onSubmit: (values) => {
             setSimulationProgress(0);
-            handleProgressBar();
             const keys = Object.keys(values);
             const formData = new FormData();
             for (const key of keys) {
@@ -121,16 +120,33 @@ const Configuration = ({
                 body: formData,
             };
             fetch(
-                `/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
+                `/sim1/validate_user_configuration/?authorization=${token}&username=${email}&user_name=${userName}`,
                 requestOptions
             )
                 .then((response) => response.json())
-                .then((data) => handleErrorMessage(data))
-                // .then(() => errorMessage ? null : handleProgressBar())
-                .then()
+                .then((data) => handleValidationResponse(data))
                 .catch((error) => console.log('error', error));
         },
     });
+
+    const runSimulation = async (values) => {
+        const keys = Object.keys(values);
+        const formData = new FormData();
+        for (const key of keys) {
+            formData.append(key, values[key]);
+        }
+        const requestOptions = {
+            method: 'POST',
+            body: formData,
+        };
+        await fetch(
+            `/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
+            requestOptions
+        );
+        // .then((response) => response.json())
+        // .then(() => handleProgressBar())
+        // .catch((error) => console.log('error', error));
+    };
 
     const getExampleFile = async () => {
         fetch(
@@ -181,62 +197,19 @@ const Configuration = ({
     };
 
     const getProgressRequest = async () => {
-        // const response = await fetch(
-        //     `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
-        //     {
-        //         method: 'GET',
-        //         headers: {
-        //             'Access-Control-Allow-Credentials': true,
-        //             'Content-Type': 'application/json',
-        //         },
-        //     }
-        // );
-        //
-        // const json = await response.json();
-        // setSimulationProgress(json['current_%_of_simulations']);
-        // if (
-        //     json['current_%_of_simulations'] === simulationProgress &&
-        //     simulationProgress >= 0 &&
-        //     simulationProgress < 100 &&
-        //     !errorMessage
-        // ) {
-        //     setTimeout(getProgressRequest, 100);
-        // }
-        // if (errorMessage) {
-        //     setSimulationProgress(0)
-        // }
-
-        fetch(
+        const response = await fetch(
             `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
             {
+                method: 'GET',
                 headers: {
                     'Access-Control-Allow-Credentials': true,
                     'Content-Type': 'application/json',
                 },
             }
-        )
-            .then((response) => response.json())
-            // .then((data) => console.log('DATA-1', data))
-            // .then((data) => {
-            //     console.log('DATA-GLOBAL', data)
-            //         console.log('ERROR-GLOBAL', errorMessage)
-            //
-            //     if (errorMessage) {
-            //         console.log('DATA-2', data)
-            //         console.log('ERROR-1', errorMessage)
-            //         setSimulationProgress(0)
-            //     }
-            //     if (
-            //         // data['current_%_of_simulations'] === simulationProgress &&
-            //         simulationProgress >= 0 &&
-            //         simulationProgress < 100
-            //     ) {
-            //         console.log('DATA-3', data)
-            //         console.log('ERROR-2', errorMessage)
-            //         setSimulationProgress(data['current_%_of_simulations']);
-            //         setTimeout(getProgressRequest, 100);
-            //     }
-            // });
+        );
+
+        const json = await response.json();
+        setSimulationProgress(json['current_%_of_simulations']);
     };
 
     useEffect(() => {
@@ -316,10 +289,13 @@ const Configuration = ({
         setTimeout(getProgressRequest, 1000);
     };
 
-    const handleErrorMessage = (response) => {
+    const handleValidationResponse = (response) => {
         if (response.message === 'Simulation did NOT run as simulation name already exists') {
             setErrorMessage(response.message);
-        } else {
+        }
+        if (response.message === 'Validate user configuration is OK') {
+            runSimulation(formik.values);
+            handleProgressBar();
             setErrorMessage('');
             getMainTableData();
             getCustomersList();
@@ -901,7 +877,11 @@ const Configuration = ({
                                 variant="contained"
                                 size="large"
                                 type="submit"
-                                disabled={simulationProgress > 0 && simulationProgress < 100}
+                                disabled={
+                                    simulationProgress > 0 &&
+                                    simulationProgress < 100 &&
+                                    !errorMessage
+                                }
                             >
                                 Run Simulation
                             </Button>

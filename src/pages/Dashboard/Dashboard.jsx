@@ -30,7 +30,7 @@ const Dashboard = () => {
     const [descriptiveText, setDescriptiveText] = useState({});
     const [isDescriptiveText, setIsDescriptiveText] = useState(true);
 
-    const { userName, token, email } = useContext(AuthContext);
+    const { userName, token, email, setExecutiveSummaryTitle } = useContext(AuthContext);
 
     const getMainTableData = async () => {
         const response = await fetch(

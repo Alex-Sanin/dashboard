@@ -17,15 +17,12 @@ const ExecutiveSummary = ({
     const { descriptiveText } = useContext(DescriptiveTextContext);
     const { configuration, results } = executiveSummaryData;
 
-    let title;
+    let title = `Executive summary - Best Configuration For ${executiveSummaryTitle.customerName}`;
     if (executiveSummaryTitle.isFormsUpdate) {
         title = `Executive summary - Best Configuration For ${executiveSummaryTitle.customerName}`;
     }
     if (executiveSummaryTitle.isTablesUpdate) {
         title = `Executive summary - ${executiveSummaryTitle.customerName} ${executiveSummaryTitle.simulationName}`;
-    }
-    if (!executiveSummaryTitle.isFormsUpdate && !executiveSummaryTitle.isTablesUpdate) {
-        title = 'Executive summary';
     }
 
     if (

@@ -33,10 +33,9 @@ const Header = ({ isDescriptiveText, setIsDescriptiveText }) => {
                     <Tooltip
                         title="Descriptive text"
                         placement="bottom"
-                        onClick={descriptiveTextToggle}
                     >
                         <Stack direction="row" alignItems="center" spacing={1}>
-                            <Switch defaultChecked />
+                            <Switch defaultChecked onClick={descriptiveTextToggle}/>
                             <img src={iIcon} alt="pic" style={{ height: '20px' }} />
                             <Typography variant="body3">{descriptiveText.information}</Typography>
                         </Stack>
