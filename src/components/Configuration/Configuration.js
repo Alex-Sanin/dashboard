@@ -101,6 +101,8 @@ const Configuration = ({
     const [maxPvSize, setMaxPvSize] = useState(initialPvSize);
     const [minPvCost, setMinPvCost] = useState(initialPvCost);
     const [maxPvCost, setMaxPvCost] = useState(initialPvCost);
+    const [isSimulationRunning, setIsSimulationRunning] = useState(false);
+    const [runSimulationResponse, setRunSimulationResponse] = useState('');
     const [runSimulationsTime, setRunSimulationsTime] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [simulationProgress, setSimulationProgress] = useState(0);
@@ -125,6 +127,7 @@ const Configuration = ({
             )
                 .then((response) => response.json())
                 .then((data) => handleValidationResponse(data))
+                .then(() => setRunSimulationResponse(''))
                 .catch((error) => console.log('error', error));
         },
     });
@@ -142,10 +145,11 @@ const Configuration = ({
         await fetch(
             `/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
             requestOptions
-        );
-        // .then((response) => response.json())
-        // .then(() => handleProgressBar())
-        // .catch((error) => console.log('error', error));
+        )
+            .then((response) => response.json())
+            .then((data) => setRunSimulationResponse(data.message))
+            .then(() => setIsSimulationRunning(false))
+            .catch((error) => console.log('error', error));
     };
 
     const getExampleFile = async () => {
@@ -275,28 +279,7 @@ const Configuration = ({
     }, [formik.values.simulationName]);
 
     useEffect(() => {
-        if (simulationProgress > 0 && simulationProgress < 100) {
-            handleProgressBar();
-        }
-    }, [simulationProgress]);
-
-    const onChangeFile = (e) => {
-        formik.setFieldValue('file', e.currentTarget.files[0]);
-    };
-    const handleDeleteFile = () => formik.setFieldValue('file', '');
-
-    const handleProgressBar = () => {
-        setTimeout(getProgressRequest, 1000);
-    };
-
-    const handleValidationResponse = (response) => {
-        if (response.message === 'Simulation did NOT run as simulation name already exists') {
-            setErrorMessage(response.message);
-        }
-        if (response.message === 'Validate user configuration is OK') {
-            runSimulation(formik.values);
-            handleProgressBar();
-            setErrorMessage('');
+        if (runSimulationResponse) {
             getMainTableData();
             getCustomersList();
             setExecutiveSummaryTitle({
@@ -304,7 +287,43 @@ const Configuration = ({
                 isFormsUpdate: true,
             });
         }
+    }, [runSimulationResponse]);
+
+    useEffect(() => {
+        let intervalId;
+
+        if (isSimulationRunning) {
+            intervalId = setInterval(() => {
+                getProgressRequest();
+            }, 2000);
+        }
+
+        return () => {
+            setTimeout(() => {
+                clearInterval(intervalId);
+            }, 2000);
+        };
+    }, [isSimulationRunning]);
+
+    const onChangeFile = (e) => {
+        formik.setFieldValue('file', e.currentTarget.files[0]);
     };
+    const handleDeleteFile = () => formik.setFieldValue('file', '');
+
+    const handleValidationResponse = (response) => {
+        if (response.message === 'Simulation did NOT run as simulation name already exists') {
+            setErrorMessage(response.message);
+        }
+        if (response.message === 'Validate user configuration is OK') {
+            runSimulation(formik.values);
+            setIsSimulationRunning(true);
+            setErrorMessage('');
+        }
+    };
+
+    console.log('IS RUN', isSimulationRunning);
+    console.log('SIMULATION RESPONSE', runSimulationResponse);
+    console.log('PROGRESS', simulationProgress);
 
     return (
         <Stack

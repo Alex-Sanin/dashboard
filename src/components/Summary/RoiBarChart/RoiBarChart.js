@@ -39,6 +39,8 @@ const RoiBarChart = ({ bestRoi, barChartData }) => {
         return <Preloader />;
     }
 
+    // console.log('DATA', barChartData)
+
     return (
         <Stack direction="column" spacing={2} sx={{ width: '100%', position: 'relative' }}>
             <Typography variant="h3">Key Financial Indicators</Typography>
