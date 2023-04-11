@@ -287,7 +287,7 @@ const Configuration = ({
                 isFormsUpdate: true,
             });
         }
-    }, [runSimulationResponse]);
+    }, [runSimulationResponse, formik.values.customerName]);
 
     useEffect(() => {
         let intervalId;
@@ -321,9 +321,9 @@ const Configuration = ({
         }
     };
 
-    console.log('IS RUN', isSimulationRunning);
-    console.log('SIMULATION RESPONSE', runSimulationResponse);
-    console.log('PROGRESS', simulationProgress);
+    // console.log('IS RUN', isSimulationRunning);
+    // console.log('SIMULATION RESPONSE', runSimulationResponse);
+    // console.log('PROGRESS', simulationProgress);
 
     return (
         <Stack
@@ -896,11 +896,7 @@ const Configuration = ({
                                 variant="contained"
                                 size="large"
                                 type="submit"
-                                disabled={
-                                    simulationProgress > 0 &&
-                                    simulationProgress < 100 &&
-                                    !errorMessage
-                                }
+                                disabled={isSimulationRunning}
                             >
                                 Run Simulation
                             </Button>

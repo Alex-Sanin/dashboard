@@ -33,9 +33,9 @@ export const combinedKeyFinancialValues = (roi, npv, irr) => {
 
         for (let i = 0; i < roi.length; i++) {
             combinedArray.push({
-                roi: roi[i],
-                npv: npv[i],
-                irr: irr[i],
+                roi: Number(roi[i]),
+                npv: Number(npv[i]),
+                irr: Number(irr[i]),
                 id: i,
             });
         }
