@@ -73,3 +73,4 @@ while (initialPvSizeValue <= 100) {
 export const initialPvCost = [0, 800, 900, 1000, 1100, 1200];
 
 export const grid = Array.from(Array(10), (_, index) => index + 1);
+export const backend_netloc = 'http://localhost:8000';
