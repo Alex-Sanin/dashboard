@@ -46,7 +46,7 @@ const TheBestSimulation = ({
         },
         onSubmit: async () => {
             const response = await fetch(
-                `/sim1/best_results/?authorization=${token}&username=${email}&user_name=${userName}&customer_name=${formik.values.customer}`,
+                `/api/sim1/best_results/?authorization=${token}&username=${email}&user_name=${userName}&customer_name=${formik.values.customer}`,
                 {
                     method: 'GET',
                     headers: {

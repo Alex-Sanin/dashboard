@@ -122,7 +122,7 @@ const Configuration = ({
                 body: formData,
             };
             fetch(
-                `/sim1/validate_user_configuration/?authorization=${token}&username=${email}&user_name=${userName}`,
+                `/api/sim1/validate_user_configuration/?authorization=${token}&username=${email}&user_name=${userName}`,
                 requestOptions
             )
                 .then((response) => response.json())
@@ -143,7 +143,7 @@ const Configuration = ({
             body: formData,
         };
         await fetch(
-            `/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `/api/sim1/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
             requestOptions
         )
             .then((response) => response.json())
@@ -154,7 +154,7 @@ const Configuration = ({
 
     const getExampleFile = async () => {
         fetch(
-            `/sim1/download_file?file=${exampleFilePath}&authorization=${token}&username=${email}&user_name=${userName}`,
+            `/api/sim1/download_file?file=${exampleFilePath}&authorization=${token}&username=${email}&user_name=${userName}`,
             {
                 method: 'GET',
                 headers: {
@@ -192,7 +192,7 @@ const Configuration = ({
             body: formData,
         };
         fetch(
-            `/sim1/get_simulation_run_time/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `/api/sim1/get_simulation_run_time/?authorization=${token}&username=${email}&user_name=${userName}`,
             requestOptions
         )
             .then((response) => response.json())
@@ -202,7 +202,7 @@ const Configuration = ({
 
     const getProgressRequest = async () => {
         const response = await fetch(
-            `/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
+            `/api/sim1/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
             {
                 method: 'GET',
                 headers: {
