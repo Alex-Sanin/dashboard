@@ -40,7 +40,7 @@ const Summary = ({
         customerName,
     ) => {
         const response = await fetch(
-            `/api/sim1/simulation_main_table_selected_row/?user_name=${profileName}&simulation_main_table_id=${mainTableId}&authorization=${token}&username=${email}&selected_row_name=${userName}`,
+            `/api/simulation/simulation_main_table_selected_row/?user_name=${profileName}&simulation_main_table_id=${mainTableId}&authorization=${token}&username=${email}&selected_row_name=${userName}`,
             {
                 method: 'GET',
                 headers: {

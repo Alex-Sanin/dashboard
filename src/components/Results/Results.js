@@ -21,7 +21,7 @@ const Result = ({
 }) => {
     const { descriptiveText } = useContext(DescriptiveTextContext);
 
-    const resultFileLink = `${backend_netloc}/api/sim1/download_file?file=${dataFilePath}&authorization=${token}&username=${email}&user_name=${userName}`;
+    const resultFileLink = `${backend_netloc}/api/simulation/download_file?file=${dataFilePath}&authorization=${token}&username=${email}&user_name=${userName}`;
 
     return (
         <Stack

@@ -35,7 +35,7 @@ const Login = () => {
                     password: formik.values.password,
                 }),
             };
-            fetch('/api/sim1/user_authentication/', requestOptions)
+            fetch('/api/simulation/user_authentication/', requestOptions)
                 .then((response) => response.json())
                 .then((data) => handleAuth(data))
                 .catch((error) => console.log('error', error));

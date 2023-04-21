@@ -34,7 +34,7 @@ const Dashboard = () => {
 
     const getMainTableData = async () => {
         const response = await fetch(
-            `/api/sim1/get_all_data/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `/api/simulation/get_all_data/?authorization=${token}&username=${email}&user_name=${userName}`,
             {
                 method: 'GET',
                 headers: {
@@ -91,7 +91,7 @@ const Dashboard = () => {
 
     const getCustomersList = async () => {
         const response = await fetch(
-            `/api/sim1/get_customers_list/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `/api/simulation/get_customers_list/?authorization=${token}&username=${email}&user_name=${userName}`,
             {
                 method: 'GET',
                 headers: {
