@@ -1,0 +1,17 @@
+# I needed to install xsel
+[Unit]
+Description=Front-end
+After=network.target
+
+[Service]
+#Cleaning command: docker compose down && docker container stop $(docker container ls -aq) && docker container rm $(docker container ls -aq) && docker system prune -af
+ExecStart=/home/ubuntu/v045_ec2/applications/simulation/code/backend/django_02/my_env/bin/python -m uvicorn django_02.asgi:application --workers=3 --bind --host 0.0.0.0 --port 8000
+
+User=ubuntu
+WorkingDirectory=/home/ubuntu/v045_ec2/applications/simulation/code/backend/django_02
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec=5min
+
+[Install]
+WantedBy=multi-user.target
