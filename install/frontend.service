@@ -4,7 +4,6 @@ Description=Front-end
 After=network.target
 
 [Service]
-#Cleaning command: docker compose down && docker container stop $(docker container ls -aq) && docker container rm $(docker container ls -aq) && docker system prune -af
 ExecStart=/usr/bin/node /usr/bin/serve -s build
 
 User=ubuntu
