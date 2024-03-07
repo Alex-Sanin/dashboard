@@ -1,42 +1,26 @@
-import { useState } from 'react';
-import { Stack, Typography, Box, Tab, Tabs } from '@mui/material';
+import React, { useContext } from 'react';
+import { Stack, Typography, Button } from '@mui/material';
 
-import EnergyCirculationDiagram from './EnergyCirculationDiagram/EnergyCirculationDiagram';
-import PL from './PL/PL';
-import DerailedResults from './DerailedResults/DerailedResults';
-import LineChartResults from './LineChartResults/LineChartResults';
-import BarChartResult from './BarChartResults/BarChartResults';
+import PlTable from './PlTable/PlTable';
+import CashFlowGraph from './CashFlowGraph/CashFlowGraph';
+import PlDiagram from './PlDiagram/PlDiagram';
+import DescriptiveText from '../DescriptiveText/DescriptiveText';
+import { DescriptiveTextContext } from '../../utils/DescriptiveTextContext';
 
-const TabPanel = ({ children, value, index, ...other }) => {
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-};
+const Result = ({
+    token,
+    email,
+    userName,
+    plSummaryTable,
+    plCashFlowGraph,
+    plDetailsTable,
+    plDiagram,
+    plDiagramDescription,
+    dataFilePath,
+}) => {
+    const { descriptiveText } = useContext(DescriptiveTextContext);
 
-const a11yProps = (index) => {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-};
-const Result = () => {
-    const [value, setValue] = useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const resultFileLink = `http://18.158.182.8:8001/sim1/download_file?file=${dataFilePath}&authorization=${token}&username=${email}&user_name=${userName}`;
 
     return (
         <Stack
@@ -48,42 +32,56 @@ const Result = () => {
                 backgroundColor: '#ffffff',
                 borderRadius: '10px',
                 boxShadow: '0px 1px 15px rgba(0, 0, 0, 0.04)',
+                position: 'relative',
             }}
         >
             <Typography variant="h2">Result</Typography>
-            <Box sx={{ width: '100%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                        <Tab label="P&L" {...a11yProps(0)} />
-                        <Tab label="Derailed results" {...a11yProps(1)} />
-                        <Tab label="Diagram" {...a11yProps(2)} />
-                        <Tab label="Line chart" {...a11yProps(3)} />
-                        <Tab label="Bar chart" {...a11yProps(4)} />
-                    </Tabs>
-                </Box>
-                <TabPanel value={value} index={0}>
-                    <PL />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <DerailedResults />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                    <Stack
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="flex-start"
-                        sx={{ pt: 3 }}
-                    >
-                        <EnergyCirculationDiagram />
+            <DescriptiveText text={descriptiveText.resultsGeneral} top="-65px" left="80px" bl />
+            <Stack direction="column" alignItems="center" spacing={4}>
+                <CashFlowGraph graphData={plCashFlowGraph} />
+                {plDiagram && (
+                    <Stack sx={{position: 'relative',}}>
+                        <Typography variant="h3" width="100%">
+                            Energy Flow
+                        </Typography>
+                        <DescriptiveText
+                            text={descriptiveText.resultsEnergyFlowDiagram}
+                            top="-15px"
+                            left="130px"
+                            l
+                        />
+
+                        <PlDiagram
+                            diagramData={plDiagram}
+                            plDiagramDescription={plDiagramDescription}
+                        />
                     </Stack>
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                    <LineChartResults />
-                </TabPanel>
-                <TabPanel value={value} index={4}>
-                    <BarChartResult />
-                </TabPanel>
-            </Box>
+                )}
+                <PlTable
+                    tableData={plSummaryTable}
+                    tableName="P&l Summary - Yearly"
+                    descriptiveText={descriptiveText.resultsPlSummary}
+                />
+                <PlTable
+                    tableData={plDetailsTable}
+                    tableName="P&L Details - Yearly"
+                    descriptiveText={descriptiveText.resultsPlDetails}
+                />
+            </Stack>
+            {dataFilePath && (
+                <Stack direction="row" justifyContent="flex-end">
+                    <a href={resultFileLink} download style={{ textDecoration: 'none' }}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            type="submit"
+                            sx={{ width: '220px' }}
+                        >
+                            Download Data
+                        </Button>
+                    </a>
+                </Stack>
+            )}
         </Stack>
     );
 };

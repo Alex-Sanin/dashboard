@@ -1,43 +1,50 @@
 // Global imports
+import { useState } from 'react';
 import { ThemeProvider as MaterialThemeProvider } from '@mui/material/styles';
-import { Grid, Stack } from '@mui/material';
 
-// Local imports
-import Header from './components/Header/Header';
-import Configuration from './components/Configuration/Configuration';
-import Summary from './components/Summary/Summary';
-import Result from './components/Results/Results';
 import { materialTheme } from './theme';
+import { AuthContext } from './utils/AuthContext';
+import { PrivateRoutes, PublicRoutes } from './pages/routes';
 
 import './App.css';
 
+const RouteProvider = ({ isAuth }) => {
+    if (!isAuth) {
+        return <PublicRoutes />;
+    }
+    return <PrivateRoutes />;
+};
+
 const App = () => {
+    const [isAuth, setIsAuth] = useState(false);
+    const [token, setToken] = useState('');
+    const [userName, setUserName] = useState('');
+    const [email, setEmail] = useState('');
+    const [executiveSummaryTitle, setExecutiveSummaryTitle] = useState({
+        customerName: '',
+        simulationName: '',
+        isFormsUpdate: false,
+        isTablesUpdate: false,
+    });
+
     return (
-        <MaterialThemeProvider theme={materialTheme}>
-            <Stack
-                direction="column"
-                sx={{
-                    width: '100%',
-                    minHeight: '100vh',
-                    pb: 10,
-                    backgroundColor: '#E5E5E5',
-                    gap: '40px',
-                }}
-            >
-                <Header />
-                <Grid container spacing={3} sx={{ px: 10 }}>
-                    <Grid item sm={12} md={4}>
-                        <Configuration />
-                    </Grid>
-                    <Grid item sm={12} md={8}>
-                        <Stack direction="column" spacing={3}>
-                            <Summary />
-                            <Result />
-                        </Stack>
-                    </Grid>
-                </Grid>
-            </Stack>
-        </MaterialThemeProvider>
+        <AuthContext.Provider
+            value={{
+                setIsAuth,
+                userName,
+                setUserName,
+                token,
+                setToken,
+                email,
+                setEmail,
+                executiveSummaryTitle,
+                setExecutiveSummaryTitle,
+            }}
+        >
+            <MaterialThemeProvider theme={materialTheme}>
+                <RouteProvider isAuth={isAuth} />
+            </MaterialThemeProvider>
+        </AuthContext.Provider>
     );
 };
 
