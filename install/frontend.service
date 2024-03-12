@@ -1,0 +1,16 @@
+# I needed to install xsel
+[Unit]
+Description=Front-end
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /usr/bin/serve -s build
+
+User=ubuntu
+WorkingDirectory=/home/ubuntu/v045_ec2/applications/simulation/code/frontend/dashboard-version_0.2.0 2
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec=5min
+
+[Install]
+WantedBy=multi-user.target
