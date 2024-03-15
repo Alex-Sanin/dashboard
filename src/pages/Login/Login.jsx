@@ -31,6 +31,7 @@ const Login = () => {
         onSubmit: () => {
             const requestOptions = {
                 method: 'POST',
+                mode: "cors",  // Change the mode to CORS
                 body: JSON.stringify({
                     email: formik.values.email,
                     password: formik.values.password,
