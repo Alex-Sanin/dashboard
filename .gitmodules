@@ -1,0 +1,6 @@
+[submodule "dashboard"]
+	path = dashboard
+	url = https://github.com/Alex-Sanin/dashboard.git
+[submodule "simulation"]
+	path = simulation
+	url = https://github.com/esadot/simulation.git
