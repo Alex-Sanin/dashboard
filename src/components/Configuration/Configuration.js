@@ -24,6 +24,7 @@ import {
     initialPvSize,
     initialPvCost,
     grid,
+    backend_netloc,
 } from '../../utils/constants';
 
 import TooltipIcon from '../TooltipIcon/TooltipIcon';
@@ -122,7 +123,7 @@ const Configuration = ({
                 body: formData,
             };
             fetch(
-                `/api/simulation/validate_user_configuration/?authorization=${token}&username=${email}&user_name=${userName}`,
+                `${backend_netloc}/simulation/validate_user_configuration/?authorization=${token}&username=${email}&user_name=${userName}`,
                 requestOptions
             )
                 .then((response) => response.json())
@@ -143,7 +144,7 @@ const Configuration = ({
             body: formData,
         };
         await fetch(
-            `/api/simulation/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `${backend_netloc}/simulation/run_simulation/?authorization=${token}&username=${email}&user_name=${userName}`,
             requestOptions
         )
             .then((response) => response.json())
@@ -154,7 +155,7 @@ const Configuration = ({
 
     const getExampleFile = async () => {
         fetch(
-            `/api/simulation/download_file?file=${exampleFilePath}&authorization=${token}&username=${email}&user_name=${userName}`,
+            `${backend_netloc}/simulation/download_file?file=${exampleFilePath}&authorization=${token}&username=${email}&user_name=${userName}`,
             {
                 method: 'GET',
                 headers: {
@@ -192,7 +193,7 @@ const Configuration = ({
             body: formData,
         };
         fetch(
-            `/api/simulation/get_simulation_run_time/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `${backend_netloc}/simulation/get_simulation_run_time/?authorization=${token}&username=${email}&user_name=${userName}`,
             requestOptions
         )
             .then((response) => response.json())
@@ -202,7 +203,7 @@ const Configuration = ({
 
     const getProgressRequest = async () => {
         const response = await fetch(
-            `/api/simulation/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
+            `${backend_netloc}/simulation/progress_bar/?authorization=${token}&username=${email}&user_name=${userName}&total_number_of_simulations=${runSimulationsTime.total_number_of_simulations}&customer_name=${formik.values.customerName}&simulation_name=${formik.values.simulationName}`,
             {
                 method: 'GET',
                 headers: {

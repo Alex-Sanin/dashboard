@@ -3,7 +3,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function(app) {
   app.use(
-    '/api',
+    '/simulation',
     createProxyMiddleware({
       pathRewrite: {'^/api' : ''}, //so that the requests in the backend doesn't have /api prefix
       target: 'http://localhost:8000',
