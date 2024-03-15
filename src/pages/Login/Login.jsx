@@ -12,6 +12,7 @@ import { AuthContext } from '../../utils/AuthContext';
 import { ReactComponent as ShowIcon } from '../../assets/images/Show.svg';
 import { ReactComponent as HideIcon } from '../../assets/images/Hide.svg';
 import logo from '../../assets/images/logo.jpeg';
+import {backend_netloc} from '../../utils/constants';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Please enter a valid email').required('This field is required'),
@@ -35,7 +36,7 @@ const Login = () => {
                     password: formik.values.password,
                 }),
             };
-            fetch('/sim1/user_authentication/', requestOptions)
+            fetch(`${backend_netloc}/simulation/user_authentication/`, requestOptions)
                 .then((response) => response.json())
                 .then((data) => handleAuth(data))
                 .catch((error) => console.log('error', error));

@@ -10,6 +10,7 @@ import Result from '../../components/Results/Results';
 import { AuthContext } from '../../utils/AuthContext';
 import { DescriptiveTextContext } from '../../utils/DescriptiveTextContext';
 import { combinedKeyFinancialValues } from '../../utils/functions';
+import { backend_netloc } from '../../utils/constants';
 
 const Dashboard = () => {
     const [executiveSummaryData, setExecutiveSummaryData] = useState('');
@@ -34,7 +35,7 @@ const Dashboard = () => {
 
     const getMainTableData = async () => {
         const response = await fetch(
-            `/sim1/get_all_data/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `${backend_netloc}/simulation/get_all_data/?authorization=${token}&username=${email}&user_name=${userName}`,
             {
                 method: 'GET',
                 headers: {
@@ -91,7 +92,7 @@ const Dashboard = () => {
 
     const getCustomersList = async () => {
         const response = await fetch(
-            `/sim1/get_customers_list/?authorization=${token}&username=${email}&user_name=${userName}`,
+            `${backend_netloc}/simulation/get_customers_list/?authorization=${token}&username=${email}&user_name=${userName}`,
             {
                 method: 'GET',
                 headers: {

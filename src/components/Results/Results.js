@@ -6,6 +6,7 @@ import CashFlowGraph from './CashFlowGraph/CashFlowGraph';
 import PlDiagram from './PlDiagram/PlDiagram';
 import DescriptiveText from '../DescriptiveText/DescriptiveText';
 import { DescriptiveTextContext } from '../../utils/DescriptiveTextContext';
+import {backend_netloc} from '../../utils/constants';
 
 const Result = ({
     token,
@@ -20,7 +21,7 @@ const Result = ({
 }) => {
     const { descriptiveText } = useContext(DescriptiveTextContext);
 
-    const resultFileLink = `http://18.158.182.8:8001/sim1/download_file?file=${dataFilePath}&authorization=${token}&username=${email}&user_name=${userName}`;
+    const resultFileLink = `${backend_netloc}/simulation/download_file?file=${dataFilePath}&authorization=${token}&username=${email}&user_name=${userName}`;
 
     return (
         <Stack

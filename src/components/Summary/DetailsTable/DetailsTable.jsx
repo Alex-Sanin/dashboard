@@ -15,6 +15,7 @@ import { dataFormatter } from '../../../utils/functions';
 import { AuthContext } from '../../../utils/AuthContext';
 import { DescriptiveTextContext } from '../../../utils/DescriptiveTextContext';
 import DescriptiveText from '../../DescriptiveText/DescriptiveText';
+import {backend_netloc} from '../../../utils/constants';
 
 const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -132,7 +133,7 @@ const DetailsTable = ({
         userName
     ) => {
         const response = await fetch(
-            `/sim1/simulation_details_table_selected_row/?user_name=${profileName}&simulation_main_table_id=${simulationMainId}&simulation_details_table_id=${simulationsDetailsId}&authorization=${token}&username=${email}&selected_row_name=${userName}`,
+            `${backend_netloc}/simulation/simulation_details_table_selected_row/?user_name=${profileName}&simulation_main_table_id=${simulationMainId}&simulation_details_table_id=${simulationsDetailsId}&authorization=${token}&username=${email}&selected_row_name=${userName}`,
             {
                 method: 'GET',
                 headers: {
