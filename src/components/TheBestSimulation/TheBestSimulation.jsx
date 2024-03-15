@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import {backend_netloc} from '../../utils/constants';
 
 import TooltipIcon from '../TooltipIcon/TooltipIcon';
 import Preloader from '../loaders/Preloader';
@@ -46,7 +47,7 @@ const TheBestSimulation = ({
         },
         onSubmit: async () => {
             const response = await fetch(
-                `/api/simulation/best_results/?authorization=${token}&username=${email}&user_name=${userName}&customer_name=${formik.values.customer}`,
+                `${backend_netloc}/api/simulation/best_results/?authorization=${token}&username=${email}&user_name=${userName}&customer_name=${formik.values.customer}`,
                 {
                     method: 'GET',
                     headers: {
