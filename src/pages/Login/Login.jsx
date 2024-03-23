@@ -47,10 +47,15 @@ const Login = () => {
 
     const handleAuth = (data) => {
         if (data.message === 'Login successful') {
+            data['auth'] = true;
             setIsAuth(true);
             setUserName(data['user first name'] + '_' + data['user last name']);
             setToken(data.token);
+            if (!('email' in data)){
+                data['email'] = formik.values.email;
+            }
             setEmail(formik.values.email);
+            window.localStorage.setItem('auth',JSON.stringify(data));
         } else {
             setErrorMessage('The email address or password is incorrect');
         }

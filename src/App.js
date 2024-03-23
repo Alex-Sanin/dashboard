@@ -1,5 +1,5 @@
 // Global imports
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeProvider as MaterialThemeProvider } from '@mui/material/styles';
 
 import { materialTheme } from './theme';
@@ -26,6 +26,17 @@ const App = () => {
         isFormsUpdate: false,
         isTablesUpdate: false,
     });
+    useEffect(()=>{
+        const storedIsAuth = window.localStorage.getItem('auth');
+        if (storedIsAuth){
+            const data = JSON.parse(storedIsAuth);
+            setIsAuth(data.auth);
+            setUserName(data['user first name'] + '_' + data['user last name']);
+            setToken(data.token);
+            setEmail(data['email']);
+
+        }
+    }, [isAuth, setIsAuth, setUserName, setToken, setEmail]);
 
     return (
         <AuthContext.Provider
