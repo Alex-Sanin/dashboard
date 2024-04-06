@@ -27,15 +27,8 @@ const App = () => {
         isTablesUpdate: false,
     });
     useEffect(()=>{
-        /*
-        //Uncomment this block to make the app log out
-        const data = {'auth': false, 'user first name': 'test', 'user last name': 'test', 'token': 'test', 'email': ''};
-        setIsAuth(false);
-        setUserName(data['user first name'] + '_' + data['user last name']);
-        setToken(data.token);
-        setEmail(data['email']);
-        window.localStorage.setItem('auth',JSON.stringify(data));*/
         const storedIsAuth = window.localStorage.getItem('auth');
+        console.log("storedauth", storedIsAuth);
         if (storedIsAuth){
             const data = JSON.parse(storedIsAuth);
             setIsAuth(data.auth);
