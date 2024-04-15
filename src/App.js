@@ -28,7 +28,6 @@ const App = () => {
     });
     useEffect(()=>{
         const storedIsAuth = window.localStorage.getItem('auth');
-        console.log("storedauth", storedIsAuth);
         if (storedIsAuth){
             const data = JSON.parse(storedIsAuth);
             setIsAuth(data.auth);
