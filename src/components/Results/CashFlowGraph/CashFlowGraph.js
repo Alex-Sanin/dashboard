@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Paper } from '@mui/material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 import { dataFormatter } from '../../../utils/functions';
@@ -39,7 +39,7 @@ const CashFlowGraph = ({ graphData }) => {
     }, [graphData]);
 
     if (!graphData) {
-        return <Preloader />;
+        return <Paper sx={{ p: 5 }}>No cash flow graph to display</Paper>;
     }
 
     return (

@@ -33,7 +33,15 @@ const ExecutiveSummary = ({
     ) {
         return (
             <Paper sx={{ p: 5 }}>
-                <Preloader />
+                <Typography variant="h2">Executive summary</Typography>
+                <DescriptiveText
+                    text={descriptiveText.executiveSummaryGeneral}
+                    top="55px"
+                    left="310px"
+                    bl
+                />
+                No simulations to get the executive summary from
+                {/* <Preloader /> */}
             </Paper>
         );
     }

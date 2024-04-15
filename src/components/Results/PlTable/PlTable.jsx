@@ -50,7 +50,7 @@ const PlTable = ({ tableData, tableName, descriptiveText }) => {
     };
 
     if (!tableData) {
-        return <Preloader />;
+        return <Paper sx={{ p: 5 }}>No PI table to display</Paper>;
     }
     return (
         <Stack direction="column" spacing={2} sx={{ width: '100%', position: 'relative' }}>

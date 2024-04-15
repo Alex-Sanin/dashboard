@@ -187,7 +187,7 @@ const DetailsTable = ({
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData?.length) : 0;
 
     if (!tableData) {
-        return <Preloader />;
+       return <Paper sx={{ p: 5 }}>No data to display</Paper>;
     }
     return (
         <Stack direction="column" spacing={2} sx={{ position: 'relative' }}>
