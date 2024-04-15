@@ -45,26 +45,6 @@ const Dashboard = () => {
             }
         );
         const json = await response.json();
-        setMainTableData(Object.values(json[1]));
-        setDetailsTableData(Object.values(json[3]));
-        setBestRoi(json[5]);
-        setRoiBarGraphData(
-            combinedKeyFinancialValues(
-                json.summary_graph_roi,
-                json.summary_graph_npv,
-                json.summary_graph_irr
-            )
-        );
-        setPlSummaryTable(Object.values(json[8]));
-        setPlCashFlowGraph(Object.values(json[10]));
-        setPlDetailsTable(Object.values(json[12]));
-        setPlDiagram(Object.values(json[14]));
-        setPlDiagramDescription(Object.values(json[16]));
-        setExampleFilePath(json[18]);
-        setDataFilePath(json[20]);
-        setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
-        setContributionBarGraphData(json.contribution_bar_graph);
-        setExecutiveSummaryTableData(json.npv_irr);
         setDescriptiveText({
             executiveSummaryGeneral: json.executive_summary_general,
             executiveSummaryConfiguration: json.executive_summary_configuration,
@@ -88,6 +68,45 @@ const Dashboard = () => {
             resultsPlDetails: json.results_pl_details,
             information: json.information,
         });
+        if (Object.keys(json).length === 21) {
+            console.log('No simulation data found');
+            setMainTableData(null);
+            setDetailsTableData(null);
+            setBestRoi(null);
+            setRoiBarGraphData(null);
+            setPlSummaryTable(null);
+            setPlCashFlowGraph(null);
+            setPlDetailsTable(null);
+            setPlDiagram(null);
+            setPlDiagramDescription(null);
+            setExampleFilePath(null);
+            setDataFilePath(null);
+            setExecutiveSummaryData({ configuration: null, results: null });
+            setContributionBarGraphData(null);
+            setExecutiveSummaryTableData(null);
+            return;
+        }
+        console.log('simulation data found', json);
+        setMainTableData(Object.values(json[1]));
+        setDetailsTableData(Object.values(json[3]));
+        setBestRoi(json[5]);
+        setRoiBarGraphData(
+            combinedKeyFinancialValues(
+                json.summary_graph_roi,
+                json.summary_graph_npv,
+                json.summary_graph_irr
+            )
+        );
+        setPlSummaryTable(Object.values(json[8]));
+        setPlCashFlowGraph(Object.values(json[10]));
+        setPlDetailsTable(Object.values(json[12]));
+        setPlDiagram(Object.values(json[14]));
+        setPlDiagramDescription(Object.values(json[16]));
+        setExampleFilePath(json[18]);
+        setDataFilePath(json[20]);
+        setExecutiveSummaryData({ configuration: json.configuration, results: json.results });
+        setContributionBarGraphData(json.contribution_bar_graph);
+        setExecutiveSummaryTableData(json.npv_irr);
     };
 
     const getCustomersList = async () => {
